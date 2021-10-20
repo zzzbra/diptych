@@ -1,4 +1,4 @@
-const Pool = require("pf").Pool;
+const Pool = require("pg").Pool;
 
 const pool = new Pool({
     user: "zzzbra",

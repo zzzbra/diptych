@@ -1,5 +1,0 @@
-{
-    "scripts": {
-        "dev": "nodemon server/index.js"
-    }
-}

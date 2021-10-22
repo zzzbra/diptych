@@ -6,8 +6,10 @@ import ListTodos from './components/ListTodos/index';
 function App() {
   return (
     <div className="max-w-lg mx-auto py-10">
-      <ListTodos />
       <InputTodo />
+      <div className="mt-10">
+        <ListTodos />
+      </div>
     </div>
   );
 }

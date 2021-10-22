@@ -1,11 +1,13 @@
 import React from 'react';
 
 import InputTodo from './components/InputTodo';
+import ListTodos from './components/ListTodos/index';
 
 function App() {
   return (
     <div className="max-w-lg mx-auto py-10">
-        <InputTodo />
+      <ListTodos />
+      <InputTodo />
     </div>
   );
 }

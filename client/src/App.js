@@ -2,6 +2,7 @@ import React from 'react';
 
 import InputTodo from './components/InputTodo';
 import ListTodos from './components/ListTodos/index';
+import Modal from './components/Modal';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <div className="mt-10">
         <ListTodos />
       </div>
+      <Modal />
     </div>
   );
 }

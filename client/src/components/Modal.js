@@ -1,10 +1,13 @@
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Input from './Input';
 
-export default function Modal() {
-  const [open, setOpen] = useState(true);
-
+export default function Modal({
+  open,
+  setOpen,
+  description,
+  setDescription,
+}) {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -54,7 +57,16 @@ export default function Modal() {
                     >
                       Edit To Do
                     </Dialog.Title>
-                    <div className="mt-2"></div>
+                    <div className="mt-2">
+                      <Input
+                        id="edit-todo-input"
+                        label="Make your changes below:"
+                        onChange={(e) =>
+                          setDescription(e.target.value)
+                        }
+                        value={description}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

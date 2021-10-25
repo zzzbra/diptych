@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Modal from './Modal';
 
-const EditTodo = () => {
+const EditTodo = ({ previousDescription, updateTodo }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
-    <button className="p-2 hover:underline focus:underline">
-      Edit
-    </button>
+    <>
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="p-2 hover:underline focus:underline"
+      >
+        Edit
+      </button>
+      <Modal
+        open={isModalOpen}
+        setOpen={setIsModalOpen}
+        previousDescription={previousDescription}
+        updateTodo={updateTodo}
+      />
+    </>
   );
 };
 

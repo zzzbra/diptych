@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 
 const EditTodo = ({ previousDescription, updateTodo }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [updatedDescription, setUpdatedDescription] = useState(
+    previousDescription,
+  );
+
+  useEffect(() => {
+    if (isModalOpen) setUpdatedDescription(previousDescription);
+  }, [previousDescription, isModalOpen]);
+
   return (
     <>
       <button
@@ -14,7 +22,8 @@ const EditTodo = ({ previousDescription, updateTodo }) => {
       <Modal
         open={isModalOpen}
         setOpen={setIsModalOpen}
-        previousDescription={previousDescription}
+        updatedDescription={updatedDescription}
+        setUpdatedDescription={setUpdatedDescription}
         updateTodo={updateTodo}
       />
     </>

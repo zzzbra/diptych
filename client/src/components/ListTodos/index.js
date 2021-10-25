@@ -1,45 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import EditTodo from '../EditTodo';
+import { getTodos, deleteTodo, updateTodo } from '../../data/methods';
 
 const ListTodos = () => {
   const [todos, setTodos] = useState([]);
 
-  const getTodos = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/todos');
-      const data = await response.json();
-      setTodos(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const updateTodo = async ({ id, description }) => {
-    try {
-      const body = { description };
-      await fetch(`http://localhost:5000/todos/${id}`, {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'PUT',
-        body: JSON.stringify(body),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const deleteTodo = async (id) => {
-    try {
-      await fetch(`http://localhost:5000/todos/${id}`, {
-        method: 'DELETE',
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    getTodos();
-  });
+    getTodos(setTodos);
+  }, []);
 
   return (
     <ul className="flex flex-col">
@@ -52,7 +20,7 @@ const ListTodos = () => {
           <span className="flex flex-row flex-nowrap items-center">
             <EditTodo
               {...{
-                description,
+                previousDescription: description,
                 updateTodo: (description) =>
                   // capturing the todo_id in a closure
                   updateTodo({ description, id: todo_id }),

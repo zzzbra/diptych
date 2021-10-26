@@ -1,16 +1,29 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
 
-import InputTodo from './components/InputTodo';
-import ListTodos from './components/ListTodos/index';
+import Classroom from './routes/Classroom';
+import Planner from './routes/Planner';
+import StudySession from './routes/StudySession';
+
+// TODO: flesh this out
+const isTeacher = true;
 
 function App() {
   return (
-    <div className="max-w-lg mx-auto py-10">
-      <InputTodo />
-      <div className="mt-10">
-        <ListTodos />
-      </div>
-    </div>
+    <Router>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          component={isTeacher ? Planner : Classroom}
+        />
+        <Route exact path="/study-session" component={StudySession} />
+      </Switch>
+    </Router>
   );
 }
 

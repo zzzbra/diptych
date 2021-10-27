@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import Input from './Input';
+import todosAPI from '../apis/todos';
 
 const InputTodo = () => {
   const [description, setDescription] = useState('');
 
   const handleInputChange = (e) => setDescription(e.target.value);
 
+  // TODO: genericize and move out to api/todos
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { description };
-      await fetch('http://localhost:5000/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+      await todosAPI.post('http://localhost:5000/todos', { description });
       setDescription('');
     } catch (error) {
       console.error(error.message);

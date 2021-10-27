@@ -1,13 +1,16 @@
 import axios from 'axios';
 
-export default axios.create({
-  baseUrl: 'http://localhost:5000/api/v1/todos',
+const protocol = process.env.SERVER_PROTOCOL || 'https';
+const host = process.env.SERVER_HOST || 'localhost';
+const port = process.env.SERVER_PORT || '5000';
+
+const todosAPI = axios.create({
+  baseURL: `${protocol}://${host}:${port}/api/v1/todos`,
 });
 
 export const getTodos = async (setTodos) => {
   try {
-    const response = await fetch('http://localhost:5000/todos');
-    const data = await response.json();
+    const { data } = await todosAPI.get('http://localhost:5000/api/v1/todos');
     setTodos(data);
   } catch (error) {
     console.error(error);
@@ -16,11 +19,8 @@ export const getTodos = async (setTodos) => {
 
 export const updateTodo = async ({ id, description }) => {
   try {
-    const body = { description };
-    await fetch(`http://localhost:5000/todos/${id}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'PUT',
-      body: JSON.stringify(body),
+    await todosAPI.put(`http://localhost:5000/api/v1/todos/${id}`, {
+      description,
     });
   } catch (error) {
     console.error(error);
@@ -29,10 +29,10 @@ export const updateTodo = async ({ id, description }) => {
 
 export const deleteTodo = async (id) => {
   try {
-    await fetch(`http://localhost:5000/todos/${id}`, {
-      method: 'DELETE',
-    });
+    await todosAPI.delete(`http://localhost:5000/api/v1/todos/${id}`);
   } catch (error) {
     console.error(error);
   }
 };
+
+export default todosAPI;

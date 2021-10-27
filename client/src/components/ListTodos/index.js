@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import EditTodo from '../EditTodo';
-import { getTodos, deleteTodo, updateTodo } from '../../data/methods';
+import { getTodos, deleteTodo, updateTodo } from '../../apis/todos';
 
 const ListTodos = () => {
   const [todos, setTodos] = useState([]);

@@ -11,7 +11,9 @@ const InputTodo = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await todosAPI.post('http://localhost:5000/todos', { description });
+      await todosAPI.post('http://localhost:5000/api/v1/todos', {
+        description,
+      });
       setDescription('');
     } catch (error) {
       console.error(error.message);

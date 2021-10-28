@@ -63,7 +63,6 @@ app.put('/api/v1/todos/:id', async (req, res) => {
       [description, id],
     );
 
-    console.log(result);
     res.json('Todo was updated');
   } catch (err) {
     console.error(err.message);

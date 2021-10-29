@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import EditTodo from './EditTodo';
+import Button from './Button';
 import { getTodos, deleteTodo, updateTodo } from '../apis/todos';
 
 const ListTodos = () => {
@@ -26,12 +27,13 @@ const ListTodos = () => {
                   updateTodo({ description, id: todo_id }),
               }}
             />
-            <button
-              className="ml-4 p-2 bg-red-700 rounded-lg border text-white hover:bg-red-800 font-medium text-sm px-5 py-2.5 text-center"
+            <Button
+              className="ml-4"
+              color="red"
               onClick={() => deleteTodo(todo_id)}
             >
               Delete
-            </button>
+            </Button>
           </span>
         </li>
       ))}

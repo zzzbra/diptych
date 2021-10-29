@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Input from './Input';
 import todosAPI from '../apis/todos';
+import Button from './Button';
 
 const InputTodo = () => {
   const [description, setDescription] = useState('');
@@ -31,9 +32,7 @@ const InputTodo = () => {
           value={description}
         />
       </div>
-      <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-        Add
-      </button>
+      <Button type="submit">Add</Button>
     </form>
   );
 };

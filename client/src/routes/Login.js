@@ -42,13 +42,12 @@ const Login = () => {
         >
           Sign In
         </button>
-        {/* TODO: */}
-        {/* <a
-            class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
-            href="#"
-          >
-            Forgot Password?
-          </a> */}
+        <a
+          class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
+          href="/register"
+        >
+          Don't have an account? Sign up.
+        </a>
       </div>
     </PageContentWrapper>
   );

@@ -12,7 +12,7 @@ const InputTodo = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await todosAPI.post('http://localhost:5000/api/v1/todos', {
+      await todosAPI.post('/', {
         description,
       });
       setDescription('');

@@ -12,7 +12,7 @@ const LOGIN_FAILURE_RESPONSE_MESSAGE = 'Password or Email is incorrect';
 router.post('/register', validInfo, async (req, res) => {
   try {
     // 1. descructure the req.body()
-    const { name, email, password } = req.body;
+    const { name, email, password, isTeacher } = req.body;
 
     // 2. check if user exists --> throw error if not
     const user = await pool.query('SELECT * FROM users WHERE user_email = $1', [
@@ -32,8 +32,8 @@ router.post('/register', validInfo, async (req, res) => {
 
     // 4. enter the new user inside our database
     const newUser = await pool.query(
-      'INSERT INTO users(user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *',
-      [name, email, bcryptPassword],
+      'INSERT INTO users(user_name, user_email, user_password, user_is_teacher) VALUES ($1, $2, $3, $4) RETURNING *',
+      [name, email, bcryptPassword, isTeacher],
     );
 
     // 5. generating our jwt token

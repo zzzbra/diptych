@@ -1,5 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
 import Classroom from './routes/Classroom';
 import Planner from './routes/Planner';
@@ -11,13 +16,62 @@ import Register from './routes/Register';
 const isTeacher = true;
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
     <Router>
       <Switch>
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/" component={isTeacher ? Planner : Classroom} />
-        <Route exact path="/study-session" component={StudySession} />
+        <Route
+          exact
+          path="/login"
+          component={(props) =>
+            !isAuthenticated ? (
+              <Login {...{ props }} />
+            ) : (
+              <Redirect to="/dashboard" />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/register"
+          component={(props) =>
+            !isAuthenticated ? (
+              <Register {...{ props }} />
+            ) : (
+              <Redirect to="/dashboard" />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/dashboard"
+          component={
+            (props) =>
+              !isAuthenticated ? (
+                <Login {...{ props }} />
+              ) : (
+                <Redirect to="/dashboard" />
+              )
+            // TODO
+            // isTeacher ? (
+            //   <Planner {...{ props }} />
+            // ) : (
+            //   <Classroom {...{ props }} />
+            // )
+          }
+        />
+        <Route
+          exact
+          path="/study-session"
+          component={(props) =>
+            isAuthenticated ? (
+              <StudySession {...{ props }} />
+            ) : (
+              <Redirect to="/login" />
+            )
+          }
+        />
       </Switch>
     </Router>
   );

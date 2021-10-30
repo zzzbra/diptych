@@ -7,6 +7,7 @@ const registrationSchema = Joi.object({
   password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9@]{3,30}$')).required(),
   // TODO: handle repeat password validation as well
   // repeatPassword: 'password',
+  isTeacher: Joi.boolean(),
 });
 
 const loginSchema = Joi.object({

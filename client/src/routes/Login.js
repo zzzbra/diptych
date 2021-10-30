@@ -1,11 +1,11 @@
 import React from 'react';
 
-import PageContentWrapper from '../components/PageContentWrapper';
-
 const Login = () => {
   return (
-    <PageContentWrapper>
-      <h1>Login</h1>
+    <>
+      <div className="mb-10">
+        <h1 className="text-4xl mb-8">Login</h1>
+      </div>
       <div class="mb-4">
         <label
           class="block text-grey-darker text-sm font-bold mb-2"
@@ -49,7 +49,7 @@ const Login = () => {
           Don't have an account? Sign up.
         </a>
       </div>
-    </PageContentWrapper>
+    </>
   );
 };
 

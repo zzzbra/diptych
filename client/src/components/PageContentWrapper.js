@@ -1,7 +1,14 @@
 import React from 'react';
 
-const PageContentWrapper = ({ children }) => {
-  return <div className="max-w-lg mx-auto py-10">{children}</div>;
+import Navigation from './Navigation';
+
+const PageContentWrapper = ({ children, ...props }) => {
+  return (
+    <>
+      <Navigation {...props} />
+      <main className="max-w-xl mx-auto py-10">{children}</main>;
+    </>
+  );
 };
 
 export default PageContentWrapper;

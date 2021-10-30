@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
 import authAPI from '../apis/auth';
-import PageContentWrapper from '../components/PageContentWrapper';
 import Button from '../components/Button';
 
-const Register = () => {
+const Register = ({ setIsAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,14 +30,17 @@ const Register = () => {
         },
       );
 
-      console.log(response);
+      // get token & redirect on success
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      setIsAuthenticated(true);
     } catch (error) {
       console.error(error.message);
     }
   };
 
   return (
-    <PageContentWrapper>
+    <>
       <div className="mb-10">
         <h1 className="text-4xl mb-3">Register</h1>
         <p>Sign up for a new account.</p>
@@ -140,7 +142,7 @@ const Register = () => {
           </a>
         </div>
       </form>
-    </PageContentWrapper>
+    </>
   );
 };
 

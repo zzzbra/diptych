@@ -3,7 +3,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
+
 const pool = require('./db');
+const auth = require('./routes/auth');
 
 const PORT = process.env.SERVER_PORT;
 
@@ -13,6 +15,10 @@ app.use(morgan('dev')); // predefined: combined, common, dev, short, tiny
 app.use(express.json()); // req.body
 
 // Routes
+
+// register & login
+
+app.use('/api/v1/auth', auth);
 
 // create a todo
 app.post('/api/v1/todos', async (req, res) => {

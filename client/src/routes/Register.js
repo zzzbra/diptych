@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PageContentWrapper from '../components/PageContentWrapper';
+import Button from '../components/Button';
 
 const Register = () => {
   return (
@@ -51,19 +52,13 @@ const Register = () => {
         <p class="text-red text-xs italic">Please confirm your password.</p>
       </div>
       <div class="flex items-center justify-between">
-        <button
-          class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
-          type="button"
+        <Button>Sign In</Button>
+        <a
+          class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
+          href="/login"
         >
-          Sign In
-        </button>
-        {/* TODO: */}
-        {/* <a
-            class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
-            href="#"
-          >
-            Forgot Password?
-          </a> */}
+          Forgot Password?
+        </a>
       </div>
     </PageContentWrapper>
   );

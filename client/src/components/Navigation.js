@@ -6,14 +6,20 @@ import Button from './Button';
 const Navigation = ({ isAuthenticated, setIsAuthenticated, userName }) => {
   console.log({ isAuthenticated });
   return (
-    <nav className="py-5">
-      <div className="max-w-xl mx-auto flex justify-between">
+    <nav className="py-5 border-b-2">
+      <div className="max-w-2xl mx-auto flex justify-between">
         <span className="flex items-center">
           <AcademicCapIcon className="w-10" />
           <span className="ml-2">MOOC-SRS</span>
         </span>
         {isAuthenticated ? (
-          <Button onClick={() => setIsAuthenticated(!isAuthenticated)}>
+          <Button
+            onClick={() => {
+              // TODO: create portable logout method from this
+              localStorage.removeItem('token');
+              setIsAuthenticated(!isAuthenticated);
+            }}
+          >
             Log Out
           </Button>
         ) : (

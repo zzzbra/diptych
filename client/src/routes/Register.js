@@ -18,8 +18,6 @@ const Register = ({ setIsAuthenticated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('submit clicked. ', formData);
-    console.log(authAPI);
 
     try {
       const response = await authAPI.post(

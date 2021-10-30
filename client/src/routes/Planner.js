@@ -7,7 +7,7 @@ import ListTodos from '../components/ListTodos';
 const Planner = ({ setIsAuthenticated }) => {
   return (
     <>
-      <h1 className="6xl">My Decks</h1>
+      <h1 className="text-3xl mb-6">My Decks</h1>
       <InputTodo />
       <div className="mt-10">
         <ListTodos />

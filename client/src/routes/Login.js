@@ -9,7 +9,6 @@ const Login = ({ setIsAuthenticated }) => {
     email: '',
     password: '',
   });
-  console.log(formData);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,7 +16,6 @@ const Login = ({ setIsAuthenticated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('submit clicked. ', formData);
 
     try {
       const response = await authAPI.post(
@@ -43,10 +41,10 @@ const Login = ({ setIsAuthenticated }) => {
         <h1 className="text-4xl mb-8">Login</h1>
       </div>
       <form onSubmit={handleSubmit}>
-        <div class="mb-4">
+        <div className="mb-4">
           <label
             className="block text-grey-darker text-sm font-bold mb-2"
-            for="email"
+            htmlFor="email"
           >
             Email
           </label>
@@ -62,7 +60,7 @@ const Login = ({ setIsAuthenticated }) => {
         <div className="mb-6">
           <label
             className="block text-grey-darker text-sm font-bold mb-2"
-            for="password"
+            htmlFor="password"
           >
             Password
           </label>

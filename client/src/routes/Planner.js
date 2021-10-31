@@ -4,7 +4,7 @@ import React from 'react';
 import InputTodo from '../components/InputTodo';
 import ListTodos from '../components/ListTodos';
 
-const Planner = ({ setIsAuthenticated }) => {
+const Planner = () => {
   return (
     <>
       <h1 className="text-3xl mb-6">My Decks</h1>

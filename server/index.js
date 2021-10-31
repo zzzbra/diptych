@@ -6,6 +6,7 @@ const morgan = require('morgan');
 
 const pool = require('./db');
 const auth = require('./routes/auth');
+const profile = require('./routes/profile');
 
 const PORT = process.env.SERVER_PORT;
 
@@ -19,6 +20,10 @@ app.use(express.json()); // req.body
 // register & login
 
 app.use('/api/v1/auth', auth);
+
+// Currently just pulls from the auth table -- need to split the actual auth
+// stuff and the user identity stuff into separate tables
+app.use('/api/v1/profile', profile);
 
 // create a todo
 app.post('/api/v1/todos', async (req, res) => {

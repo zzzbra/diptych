@@ -1,6 +1,7 @@
 import React from 'react';
 import { AcademicCapIcon } from '@heroicons/react/outline';
 
+import { clearToken } from '../utils/auth';
 import Button from './Button';
 
 const Navigation = ({ isAuthenticated, setIsAuthenticated, userName }) => {
@@ -15,9 +16,10 @@ const Navigation = ({ isAuthenticated, setIsAuthenticated, userName }) => {
         {isAuthenticated ? (
           <Button
             onClick={() => {
-              // TODO: create portable logout method from this
-              localStorage.removeItem('token');
-              setIsAuthenticated(!isAuthenticated);
+              console.log('Log out button clicked');
+              clearToken();
+              // TODO: include update ot global state with clearToken action
+              setIsAuthenticated(false);
             }}
           >
             Log Out

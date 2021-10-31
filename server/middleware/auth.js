@@ -6,6 +6,7 @@ module.exports = async (req, res, next) => {
     const jwtToken = req.header('token');
 
     if (!jwtToken) {
+      console.error('ERROR: NO JWT IN HEADER');
       return res.status(403).json('Unauthorized');
     }
 

@@ -72,7 +72,7 @@ const Login = ({ setIsAuthenticated }) => {
             type="password"
             value={formData.password}
           />
-          <p className="text-red text-xs italic">Please choose a password.</p>
+          {/* <p className="text-red text-xs italic">Forgot your password?</p> */}
         </div>
         <div className="flex items-center justify-between">
           <Button

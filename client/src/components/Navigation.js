@@ -5,7 +5,6 @@ import { clearToken } from '../utils/auth';
 import Button from './Button';
 
 const Navigation = ({ isAuthenticated, setIsAuthenticated, userName }) => {
-  console.log({ isAuthenticated });
   return (
     <nav className="py-5 border-b-2">
       <div className="max-w-2xl mx-auto flex justify-between">
@@ -16,7 +15,6 @@ const Navigation = ({ isAuthenticated, setIsAuthenticated, userName }) => {
         {isAuthenticated ? (
           <Button
             onClick={() => {
-              console.log('Log out button clicked');
               clearToken();
               // TODO: include update ot global state with clearToken action
               setIsAuthenticated(false);

@@ -6,11 +6,11 @@ import Classroom from './Classroom';
 import Planner from './Planner';
 
 const Dashboard = (props) => {
-  const [userProfileData, setUserProfileData] = useState({});
+  const [userProfileData = {}, setUserProfileData] = useState({});
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await getUserProfileData();
+      const { data = {} } = await getUserProfileData();
       setUserProfileData(data);
     };
 
@@ -18,11 +18,11 @@ const Dashboard = (props) => {
   }, []);
 
   // Get user's `isTeacher value here` and show Planner or Classroom
-  const isTeacher = userProfileData.user_is_teacher;
+  const { user_is_teacher = false } = userProfileData;
 
-  const View = isTeacher ? Planner : Classroom;
+  const View = user_is_teacher ? Planner : Classroom;
 
-  return <View {...props} />;
+  return <View {...{ userProfileData, ...props }} />;
 };
 
 export default Dashboard;

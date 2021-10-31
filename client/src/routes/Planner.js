@@ -4,9 +4,11 @@ import React from 'react';
 import InputTodo from '../components/InputTodo';
 import ListTodos from '../components/ListTodos';
 
-const Planner = () => {
+const Planner = ({ userProfileData }) => {
+  const { user_name } = userProfileData;
   return (
     <>
+      <h2 className="text-l mb-3">Greetings, {user_name}!</h2>
       <h1 className="text-3xl mb-6">My Decks</h1>
       <InputTodo />
       <div className="mt-10">

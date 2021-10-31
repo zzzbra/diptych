@@ -2,7 +2,6 @@ const { loginSchema, registrationSchema } = require('../utils/validators');
 
 module.exports = (req, res, next) => {
   const { email, name, password, isTeacher } = req.body;
-  console.log(req.body, email, name, password, isTeacher);
 
   if (req.path === '/register') {
     const validatedReqContents = registrationSchema.validate({

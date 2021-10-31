@@ -19,22 +19,10 @@ export async function getUserProfileData() {
       },
     });
 
-    console.log('profile GET data: ', data);
-
     return data;
   } catch (error) {
     console.error(error.message);
   }
 }
-
-// export const register = async (formData) => {
-//   try {
-//     const data = await authAPI.post('/register', {
-
-//     });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
 
 export default profileAPI;

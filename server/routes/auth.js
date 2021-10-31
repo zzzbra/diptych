@@ -54,19 +54,18 @@ router.post('/login', validInfo, async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
-      console.log('No such user registered.');
+      console.info('No such user registered.');
       return res.status(401).json(LOGIN_FAILURE_RESPONSE_MESSAGE);
     }
 
     // check if incoming password is the same as one in DB
-    console.log(password, user.rows[0].user_password);
     const validPassword = await bcrypt.compare(
       password,
       user.rows[0].user_password,
     );
 
     if (!validPassword) {
-      console.log('Invalid password.');
+      console.info('Invalid password.');
       return res.status(401).json(LOGIN_FAILURE_RESPONSE_MESSAGE);
     }
 
@@ -78,7 +77,7 @@ router.post('/login', validInfo, async (req, res) => {
   }
 });
 
-router.get('/is-verified', authorization, async (req, res) => {
+router.get('/is-authorized', authorization, async (req, res) => {
   try {
     res.json(true);
   } catch (error) {

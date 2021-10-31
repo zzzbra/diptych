@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Input from './Input';
 import todosAPI from '../apis/todos';
 import Button from './Button';
+import { getToken } from '../utils/auth';
 
 const InputTodo = () => {
   const [description, setDescription] = useState('');
@@ -12,9 +13,17 @@ const InputTodo = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await todosAPI.post('/', {
-        description,
-      });
+      await todosAPI.post(
+        '',
+        {
+          description,
+        },
+        {
+          headers: {
+            token: getToken(),
+          },
+        },
+      );
       setDescription('');
     } catch (error) {
       console.error(error.message);

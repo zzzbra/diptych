@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -13,8 +13,19 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import PageContentWrapper from './components/PageContentWrapper';
 
+import { isAuthorized } from './apis/auth';
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      const authStatus = await isAuthorized();
+      setIsAuthenticated(authStatus);
+    };
+
+    checkAuthorization();
+  }, []);
 
   return (
     <PageContentWrapper {...{ isAuthenticated, setIsAuthenticated }}>

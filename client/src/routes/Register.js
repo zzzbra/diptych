@@ -12,8 +12,14 @@ const Register = ({ setIsAuthenticated }) => {
     isTeacher: false,
   });
 
+  // TODO: create regular input
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // TODO: create Checkbox Input
+  const handleCheckboxChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.checked });
   };
 
   const handleSubmit = async (e) => {
@@ -44,15 +50,15 @@ const Register = ({ setIsAuthenticated }) => {
         <p>Sign up for a new account.</p>
       </div>
       <form onSubmit={handleSubmit}>
-        <div class="my-4">
+        <div className="my-4">
           <label
-            class="block text-grey-darker text-sm font-bold mb-2"
-            for="name"
+            className="block text-grey-darker text-sm font-bold mb-2"
+            htmlFor="name"
           >
             Name
           </label>
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
             id="name"
             name="name"
             type="text"
@@ -61,15 +67,15 @@ const Register = ({ setIsAuthenticated }) => {
             value={formData.name}
           />
         </div>
-        <div class="mb-6">
+        <div className="mb-6">
           <label
-            class="block text-grey-darker text-sm font-bold mb-2"
-            for="email"
+            className="block text-grey-darker text-sm font-bold mb-2"
+            htmlFor="email"
           >
             Email
           </label>
           <input
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
             id="email"
             name="email"
             type="text"
@@ -78,34 +84,34 @@ const Register = ({ setIsAuthenticated }) => {
             value={formData.email}
           />
         </div>
-        <div class="mb-6">
+        <div className="mb-6">
           <label
-            class="block text-grey-darker text-sm font-bold mb-2"
-            for="password"
+            className="block text-grey-darker text-sm font-bold mb-2"
+            htmlFor="password"
           >
             Password
           </label>
           <input
-            class="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3"
+            className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3"
             id="password"
             name="password"
             type="password"
             onChange={handleChange}
             // placeholder="******************"
-            value={formData.password}
+            checked={formData.password}
           />
-          {/* <p class="text-red text-xs italic">Please choose a password.</p> */}
+          {/* <p className="text-red text-xs italic">Please choose a password.</p> */}
         </div>
         {/* TODO: revisit this with other form validation work: */}
-        {/* <div class="mb-6">
+        {/* <div className="mb-6">
           <label
-            class="block text-grey-darker text-sm font-bold mb-2"
-            for="passwordConfirmation"
+            className="block text-grey-darker text-sm font-bold mb-2"
+            htmlFor="passwordConfirmation"
           >
             Confirm Password
           </label>
           <input
-            class="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3"
+            className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3"
             id="passwordConfirmation"
             name="passwordConfirmation"
             type="password"
@@ -114,10 +120,10 @@ const Register = ({ setIsAuthenticated }) => {
             value={formData.passwordConfirmation}
           />
         </div> */}
-        <div class="mb-12">
+        <div className="mb-12">
           <label
-            class="block text-grey-darker text-sm font-bold mb-2"
-            for="isTeacher"
+            className="block text-grey-darker text-sm font-bold mb-2"
+            htmlFor="isTeacher"
           >
             <input
               className="mr-2"
@@ -125,15 +131,15 @@ const Register = ({ setIsAuthenticated }) => {
               name="isTeacher"
               type="checkbox"
               checked={formData.isTeacher}
-              onChange={handleChange}
+              onChange={handleCheckboxChange}
             />
             I am a course instructor
           </label>
         </div>
-        <div class="flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <Button type="submit">Sign Up</Button>
           <a
-            class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
+            className="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
             href="/login"
           >
             Already have an account?

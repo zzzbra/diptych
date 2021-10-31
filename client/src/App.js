@@ -7,8 +7,7 @@ import {
 } from 'react-router-dom';
 
 // Might handle these in dashboard view
-// import Classroom from './routes/Classroom';
-import Planner from './routes/Planner';
+import Dashboard from './routes/Dashboard';
 import StudySession from './routes/StudySession';
 import Login from './routes/Login';
 import Register from './routes/Register';
@@ -21,6 +20,17 @@ function App() {
     <PageContentWrapper {...{ isAuthenticated, setIsAuthenticated }}>
       <Router>
         <Switch>
+          <Route
+            exact
+            path="/"
+            component={(props) =>
+              !isAuthenticated ? (
+                <Login {...props} {...{ setIsAuthenticated }} />
+              ) : (
+                <Redirect to="/dashboard" />
+              )
+            }
+          />
           <Route
             exact
             path="/login"
@@ -47,14 +57,8 @@ function App() {
             exact
             path="/dashboard"
             component={(props) =>
-              // TODO
-              // isTeacher ? (
-              //   <Planner {...{ props }} />
-              // ) : (
-              //   <Classroom {...{ props }} />
-              // )
               isAuthenticated ? (
-                <Planner {...props} {...{ setIsAuthenticated }} />
+                <Dashboard {...props} {...{ setIsAuthenticated }} />
               ) : (
                 <Redirect to="/login" />
               )

@@ -35,9 +35,10 @@ router.get('', authorization, async (req, res) => {
 router.get('/:todo_id', authorization, async (req, res) => {
   try {
     const { todo_id } = req.params;
-    const todo = await pool.query('SELECT * FROM todos WHERE todo_id = $1', [
-      todo_id,
-    ]);
+    const todo = await pool.query(
+      'SELECT * FROM todos WHERE todo_id = $1 AND user_id = $2',
+      [todo_id, req.user],
+    );
 
     res.json(todo.rows[0]);
   } catch (err) {
@@ -50,12 +51,12 @@ router.put('/:todo_id', authorization, async (req, res) => {
   try {
     const { todo_id } = req.params;
     const { description } = req.body;
-    const result = await pool.query(
-      'UPDATE todos SET description = $1 WHERE todo_id = $2',
-      [description, todo_id],
+    const updatedTodo = await pool.query(
+      'UPDATE todos SET description = $1 WHERE todo_id = $2 AND user_id = $3 RETURNING *',
+      [description, todo_id, req.user],
     );
 
-    res.json('Todo was updated');
+    res.json(updatedTodo.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -65,7 +66,10 @@ router.put('/:todo_id', authorization, async (req, res) => {
 router.delete('/:todo_id', authorization, async (req, res) => {
   try {
     const { todo_id } = req.params;
-    await pool.query('DELETE FROM todos WHERE todo_id = $1', [todo_id]);
+    await pool.query('DELETE FROM todos WHERE todo_id = $1 AND user_id = $2', [
+      todo_id,
+      req.user,
+    ]);
     res.json('Todo was deleted');
   } catch (err) {
     console.error(err.message);

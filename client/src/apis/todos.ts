@@ -1,17 +1,21 @@
 import axios from 'axios';
+import React from 'react';
 
 import { getToken } from '../utils/auth';
 
 // TODO: set up FE env variables
-const protocol = process.env.SERVER_PROTOCOL || 'http';
-const host = process.env.SERVER_HOST || 'localhost';
-const port = process.env.SERVER_PORT || '5000';
+// const protocol = process.env.SERVER_PROTOCOL || 'http';
+// const host = process.env.SERVER_HOST || 'localhost';
+// const port = process.env.SERVER_PORT || '5000';
+const protocol = 'http';
+const host = 'localhost';
+const port = '5000';
 
 const todosAPI = axios.create({
   baseURL: `${protocol}://${host}:${port}/api/v1/todos`,
 });
 
-export const getTodos = async (setTodos) => {
+export const getTodos = async (setTodos: React.Dispatch<React.SetStateAction<never[]>>) => {
   try {
     const { data } = await todosAPI.get('', { headers: { token: getToken() } });
     setTodos(data);
@@ -20,7 +24,12 @@ export const getTodos = async (setTodos) => {
   }
 };
 
-export const updateTodo = async ({ id, description }) => {
+interface UpdateTodoArgs {
+  id: string,
+  description: string
+}
+
+export const updateTodo = async ({ id, description }: UpdateTodoArgs) => {
   try {
     await todosAPI.put(
       `/${id}`,
@@ -38,7 +47,7 @@ export const updateTodo = async ({ id, description }) => {
   }
 };
 
-export const deleteTodo = async (id) => {
+export const deleteTodo = async (id: string) => {
   try {
     await todosAPI.delete(`/${id}`, {
       headers: {

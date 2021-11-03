@@ -5,8 +5,8 @@ import { getUserProfileData } from '../apis/profile';
 import Classroom from './Classroom';
 import Planner from './Planner';
 
-const Dashboard = (props) => {
-  const [userProfileData = {}, setUserProfileData] = useState({});
+const Dashboard = (props: any) => {
+  const [userProfileData, setUserProfileData] = useState({});
 
   useEffect(() => {
     const getData = async () => {

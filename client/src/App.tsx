@@ -34,7 +34,7 @@ function App() {
           <Route
             exact
             path="/"
-            component={(props) =>
+            component={(props: any) =>
               !isAuthenticated ? (
                 <Login {...props} {...{ setIsAuthenticated }} />
               ) : (
@@ -45,7 +45,7 @@ function App() {
           <Route
             exact
             path="/login"
-            component={(props) =>
+            component={(props: any) =>
               !isAuthenticated ? (
                 <Login {...props} {...{ setIsAuthenticated }} />
               ) : (
@@ -56,7 +56,7 @@ function App() {
           <Route
             exact
             path="/register"
-            component={(props) =>
+            component={(props: any) =>
               !isAuthenticated ? (
                 <Register {...props} {...{ setIsAuthenticated }} />
               ) : (
@@ -67,7 +67,7 @@ function App() {
           <Route
             exact
             path="/dashboard"
-            component={(props) =>
+            component={(props: any) =>
               isAuthenticated ? (
                 <Dashboard {...props} {...{ setIsAuthenticated }} />
               ) : (
@@ -78,9 +78,9 @@ function App() {
           <Route
             exact
             path="/study-session"
-            component={(props) =>
+            component={(props: any) =>
               isAuthenticated ? (
-                <StudySession {...{ props }} />
+                <StudySession {...props} />
               ) : (
                 <Redirect to="/login" />
               )

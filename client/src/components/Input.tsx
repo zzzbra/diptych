@@ -1,6 +1,16 @@
 import React from 'react';
 
-const Input = ({ id, label, onChange, placeholder, value }) => {
+interface InputArgs {
+  className?: string,
+  id: string,
+  label?: string,
+  // https://stackoverflow.com/questions/40676343/typescript-input-onchange-event-target-value
+  onChange (e: React.FormEvent<HTMLInputElement>): void,
+  placeholder?: string
+  value?: string | undefined,
+}
+
+const Input = ({ id, label, onChange, placeholder, value }: InputArgs) => {
   return (
     <>
       <label

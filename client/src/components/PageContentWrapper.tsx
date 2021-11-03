@@ -2,7 +2,9 @@ import React from 'react';
 
 import Navigation from './Navigation';
 
-const PageContentWrapper = ({ children, ...props }) => {
+
+
+const PageContentWrapper = ({ children, ...props }: any) => {
   return (
     <>
       <Navigation {...props} />

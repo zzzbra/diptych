@@ -4,9 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import GlobalProviders from './state/GlobalProviders';
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <GlobalProviders>
+      <App />
+    </GlobalProviders>
   </React.StrictMode>,
   document.getElementById('root'),
 );

@@ -5,6 +5,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 // Might handle these in dashboard view
 import Dashboard from './routes/Dashboard';
@@ -16,6 +17,9 @@ import PageContentWrapper from './components/PageContentWrapper';
 import { isAuthorized } from './apis/auth';
 
 function App() {
+  const state = useSelector((state) => state);
+  console.log(state);
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {

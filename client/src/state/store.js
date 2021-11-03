@@ -1,7 +1,11 @@
 import { createStore } from 'redux';
-import reducers from './reducers';
+import reducers from './features/reducers';
 
-const initialState = {};
+const initialState = {
+  counter: {
+    value: 0,
+  },
+};
 
 export const store = createStore(
   reducers,

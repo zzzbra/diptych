@@ -17,8 +17,7 @@ import PageContentWrapper from './components/PageContentWrapper';
 import { isAuthorized } from './apis/auth';
 
 function App() {
-  const state = useSelector((state) => state);
-  console.log(state);
+  const counter = useSelector((state) => state.counter);
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -33,6 +32,7 @@ function App() {
 
   return (
     <PageContentWrapper {...{ isAuthenticated, setIsAuthenticated }}>
+      Counter: {counter.value}
       <Router>
         <Switch>
           <Route

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 
-const EditTodo = ({ previousDescription, updateTodo }) => {
+interface EditTodoArgs {
+  previousDescription: string,
+  updateTodo: (newTodo: string) => void
+}
+const EditTodo = ({ previousDescription, updateTodo }: EditTodoArgs) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedDescription, setUpdatedDescription] = useState(
     previousDescription,

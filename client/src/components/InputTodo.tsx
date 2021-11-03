@@ -7,10 +7,10 @@ import { getToken } from '../utils/auth';
 const InputTodo = () => {
   const [description, setDescription] = useState('');
 
-  const handleInputChange = (e) => setDescription(e.target.value);
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => setDescription(e.currentTarget.value);
 
   // TODO: genericize and move out to api/todos
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await todosAPI.post(
@@ -25,7 +25,7 @@ const InputTodo = () => {
         },
       );
       setDescription('');
-    } catch (error) {
+    } catch (error: any) {
       console.error(error.message);
     }
   };

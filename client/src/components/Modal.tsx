@@ -2,13 +2,21 @@ import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Input from './Input';
 
+interface ModalProps {
+  open: boolean,
+  setOpen: (state: boolean) => void,
+  updatedDescription: string,
+  setUpdatedDescription: (u: string) => void,
+  updateTodo: (newTodo: string) => void,
+}
+
 export default function Modal({
   open,
   setOpen,
   updatedDescription,
   setUpdatedDescription,
   updateTodo,
-}) {
+}: ModalProps) {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -64,7 +72,7 @@ export default function Modal({
                         id="edit-todo-input"
                         label="Make your changes below:"
                         onChange={(e) =>
-                          setUpdatedDescription(e.target.value)
+                          setUpdatedDescription(e.currentTarget.value)
                         }
                         value={updatedDescription}
                       />

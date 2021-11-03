@@ -1,22 +1,27 @@
 import React from 'react';
 import cn from 'classnames';
 
-import tailwindColorDict from 'tailwindcss/colors';
+// import TailwindColors from 'tailwindcss/colors';
 
-// colors
-const colors = Object.keys(tailwindColorDict);
+type ButtonTypes = "button" | "submit" | "reset" | undefined;
+
+interface ButtonProps {
+  // TODO: figure this out
+  // color?: typeof TailwindColors,
+  color?: string,
+  children: any,
+  className?: string,
+  onClick?: any, // Optional, as in case of form submit button
+  type?: ButtonTypes,
+}
 
 const Button = ({
   children,
   className,
   onClick,
-  color = 'blue',
-  type = 'button',
-}) => {
-  if (!colors.includes(color)) {
-    throw Error(`Using unsupported Color for button: ${color}`);
-  }
-
+  color = "blue",
+  type = "button",
+}: ButtonProps ) => {
   return (
     <button
       {...{

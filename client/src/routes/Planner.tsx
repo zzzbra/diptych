@@ -1,10 +1,15 @@
 // Teacher Dashboard
 import React from 'react';
 
+import { UserProfile } from '../models';
 import InputTodo from '../components/InputTodo';
 import ListTodos from '../components/ListTodos';
 
-const Planner = ({ userProfileData }) => {
+interface PlannerProps {
+  userProfileData: UserProfile,
+}
+
+const Planner = ({ userProfileData }: PlannerProps) => {
   const { user_name } = userProfileData;
   return (
     <>

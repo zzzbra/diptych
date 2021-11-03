@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 
 import { getToken } from '../utils/auth';
+import { Todo } from '../models';
 
 // TODO: set up FE env variables
 // const protocol = process.env.SERVER_PROTOCOL || 'http';
@@ -15,7 +16,7 @@ const todosAPI = axios.create({
   baseURL: `${protocol}://${host}:${port}/api/v1/todos`,
 });
 
-export const getTodos = async (setTodos: React.Dispatch<React.SetStateAction<never[]>>) => {
+export const getTodos = async (setTodos: React.Dispatch<React.SetStateAction<Todo[]>>) => {
   try {
     const { data } = await todosAPI.get('', { headers: { token: getToken() } });
     setTodos(data);

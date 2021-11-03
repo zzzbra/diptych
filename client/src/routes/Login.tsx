@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 
 import authAPI from '../apis/auth';
+import { TopLevelComponentProps } from '../models';
 
 import Button from '../components/Button';
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = ({ setIsAuthenticated }: TopLevelComponentProps) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -30,7 +31,7 @@ const Login = ({ setIsAuthenticated }) => {
       const token = response.data.token;
       localStorage.setItem('token', token);
       setIsAuthenticated(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error.message);
     }
   };

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getToken } from '../utils/auth';
+import { UserProfile } from '../models';
 
 // TODO: set up FE env variables
 // const protocol = process.env.SERVER_PROTOCOL || 'http';
@@ -13,18 +14,29 @@ const profileAPI = axios.create({
   baseURL: `${protocol}://${host}:${port}/api/v1/profile`,
 });
 
-export async function getUserProfileData() {
+export async function getUserProfileData(): Promise<UserProfile | undefined> {
   const token = getToken();
   try {
-    const response = await profileAPI.get(``, {
+    const { data } = await profileAPI.get<UserProfile>(``, {
       headers: {
         token,
       },
     });
 
-    return response;
+    return data;
   } catch (error: any) {
+    // https://hashnode.com/post/how-to-use-axios-with-typescript-ckqi62md803s28us1baqyaj4u
+    // if (axios.isAxiosError(error)) {
+    //   const serverError = error as AxiosError<ServerError>;
+    //   if (serverError && serverError.response) {
+    //     return serverError.response.data;
+    //   }
+    // }
+  
     console.error(error.message);
+    return {};
+
+    // return { error: "Something went wrong " }
   }
 }
 

@@ -6,6 +6,7 @@ import cn from 'classnames';
 type ButtonTypes = "button" | "submit" | "reset" | undefined;
 
 interface ButtonProps {
+  // TODO: figure this out
   // color?: typeof TailwindColors,
   color?: string,
   children: any,
@@ -18,8 +19,8 @@ const Button = ({
   children,
   className,
   onClick,
-  color, // TODO: figure out how to handle a default value here
-  type,
+  color = "blue",
+  type = "button",
 }: ButtonProps ) => {
   return (
     <button

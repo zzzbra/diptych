@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import EditTodo from './EditTodo';
 import Button from './Button';
 import { getTodos, deleteTodo, updateTodo } from '../apis/todos';
-
-
+import { Todo } from '../models';
 
 const ListTodos = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
     getTodos(setTodos);

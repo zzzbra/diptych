@@ -2,16 +2,11 @@ import React from 'react';
 import { AcademicCapIcon } from '@heroicons/react/outline';
 import { useHistory } from 'react-router';
 
+import { TopLevelComponentProps } from '../models';
 import { clearToken } from '../utils/auth';
 import Button from './Button';
 
-interface NavigationProps {
-  isAuthenticated: boolean,
-  // setIsAuthenticated: React.Dispatch<React.SetStateAction<never[]>>,
-  setIsAuthenticated: (authStatus: boolean) => void,
-}
-
-const Navigation = ({ isAuthenticated, setIsAuthenticated }: NavigationProps) => {
+const Navigation = ({ isAuthenticated, setIsAuthenticated }: TopLevelComponentProps) => {
   const history = useHistory();
 
   return (

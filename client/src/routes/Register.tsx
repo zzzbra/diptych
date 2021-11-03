@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 import authAPI from '../apis/auth';
 import Button from '../components/Button';
+import { TopLevelComponentProps } from '../models';
 
-const Register = ({ setIsAuthenticated }) => {
+const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,16 +14,16 @@ const Register = ({ setIsAuthenticated }) => {
   });
 
   // TODO: create regular input
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
   };
 
   // TODO: create Checkbox Input
-  const handleCheckboxChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.checked });
+  const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.checked });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -38,7 +39,7 @@ const Register = ({ setIsAuthenticated }) => {
       const token = response.data.token;
       localStorage.setItem('token', token);
       setIsAuthenticated(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error.message);
     }
   };
@@ -98,7 +99,6 @@ const Register = ({ setIsAuthenticated }) => {
             type="password"
             onChange={handleChange}
             // placeholder="******************"
-            checked={formData.password}
           />
           {/* <p className="text-red text-xs italic">Please choose a password.</p> */}
         </div>

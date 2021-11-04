@@ -5,6 +5,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Might handle these in dashboard view
 import Dashboard from './routes/Dashboard';
@@ -13,10 +14,20 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import PageContentWrapper from './components/PageContentWrapper';
 
-import { isAuthorized } from './apis/auth';
+import { isAuthorized } from './features/auth/auth.slice';
+
+import {
+  incrementCounter,
+  decrementCounter,
+} from './features/counter/counter.slice';
+import Button from './components/Button';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // TODO: schema for store?
+  const { count } = useSelector((state: any) => state.counter);
+  console.log(count);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const checkAuthorization = async () => {
@@ -29,6 +40,9 @@ function App() {
 
   return (
     <PageContentWrapper {...{ isAuthenticated, setIsAuthenticated }}>
+      Counter: {count}
+      <Button onClick={() => dispatch(incrementCounter())}>+</Button>
+      <Button onClick={() => dispatch(decrementCounter())}>-</Button>
       <Router>
         <Switch>
           <Route

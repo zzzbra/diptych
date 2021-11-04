@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import { getUserProfileData } from '../apis/profile';
-  import { UserProfile } from '../models';
+import { getUserProfileData } from '../features/profile/profile.slice';
+import { UserProfile } from '../models';
 
 import Classroom from './Classroom';
 import Planner from './Planner';
 
 const Dashboard = (props: any) => {
-  const [userProfileData, setUserProfileData] = useState<UserProfile | undefined>({});
+  const [userProfileData, setUserProfileData] = useState<
+    UserProfile | undefined
+  >({});
 
   useEffect(() => {
     const getData = async () => {

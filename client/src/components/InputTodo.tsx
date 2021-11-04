@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import Input from './Input';
-import todosAPI from '../apis/todos';
+import todosAPI from '../features/todos/todo.slice';
 import Button from './Button';
 import { getToken } from '../utils/auth';
 
 const InputTodo = () => {
   const [description, setDescription] = useState('');
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => setDescription(e.currentTarget.value);
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) =>
+    setDescription(e.currentTarget.value);
 
   // TODO: genericize and move out to api/todos
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

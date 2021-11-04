@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import authAPI from '../apis/auth';
+import authAPI from '../features/auth/auth.slice';
 import { TopLevelComponentProps } from '../models';
 
 import Button from '../components/Button';

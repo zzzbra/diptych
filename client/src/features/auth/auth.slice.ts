@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from '../utils/auth';
+import { getToken } from '../../utils/auth';
 
 // TODO: set up FE env variables
 // const protocol = process.env.SERVER_PROTOCOL || 'http';
@@ -22,7 +22,7 @@ export const isAuthorized = async () => {
     });
 
     return data;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
   }
 };

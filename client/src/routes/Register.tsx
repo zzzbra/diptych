@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import authAPI from '../apis/auth';
+import authAPI from '../features/auth/auth.slice';
 import Button from '../components/Button';
 import { TopLevelComponentProps } from '../models';
 
@@ -20,7 +20,10 @@ const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
 
   // TODO: create Checkbox Input
   const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.checked });
+    setFormData({
+      ...formData,
+      [e.currentTarget.name]: e.currentTarget.checked,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

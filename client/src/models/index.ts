@@ -2,31 +2,58 @@
 
 // API response
 export interface Todo {
-  todo_id: string,
-  user_id: string,
-  description: string,
+  todoId: string;
+  userId: string;
+  description: string;
 }
 
-// API Response
+export type TodosResponse = Todo[];
+
+export interface LoginParameters {
+  email: string;
+  password: string;
+}
+
+// Request params
+export interface RegistrationParameters {
+  name: string;
+  email: string;
+  password: string;
+  isTeacher: boolean;
+}
+
 export interface UserProfile {
-  user_id?: string,
-  user_name?: string,
-  user_email?: string,
-  user_is_teacher?: string,
+  userId: string;
+  userName: string;
+  userEmail: string;
+  userIsTeacher: boolean;
+}
+
+export interface AuthResponse {
+  user: UserProfile;
+  token: string;
+}
+
+export interface ApiErrorResponse {
+  status?: any; // number | string ?
+  data?: any;
+}
+
+export interface IsAuthenticatedResponse {
+  isAuthenticated: boolean;
 }
 
 export interface TopLevelComponentProps {
-  isAuthenticated: boolean,
+  isAuthenticated: boolean;
   // setIsAuthenticated: React.Dispatch<React.SetStateAction<never[]>>,
-  setIsAuthenticated: (authStatus: boolean) => void,
+  setIsAuthenticated: (authStatus: boolean) => void;
 }
 
 // move into {name}.type.ts
 export type ServerData = {
   data: any;
-}
+};
 
 export type ServerError = {
-  error: string,
-}
-
+  error: string;
+};

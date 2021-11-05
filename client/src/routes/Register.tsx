@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 
-import authAPI from '../features/auth/auth.slice';
+// import authAPI from '../features/auth/auth.slice';
+import { useRegistrationMutation } from '../app/services/auth';
 import Button from '../components/Button';
 import { TopLevelComponentProps } from '../models';
 
 const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
+  const [register, { isLoading, error }] = useRegistrationMutation();
+  console.log({ isLoading }, 'error: ', error);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    // passwordConfirmation: '',
     isTeacher: false,
   });
 
@@ -30,17 +33,18 @@ const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
     e.preventDefault();
 
     try {
-      const response = await authAPI.post(
-        '/register',
-        { ...formData },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
+      // const response = await authAPI.post(
+      //   '/register',
+      //   { ...formData },
+      //   {
+      //     headers: { 'Content-Type': 'application/json' },
+      //   },
+      // );
+      // const data = await register(formData).unwrap();
 
       // get token & redirect on success
-      const token = response.data.token;
-      localStorage.setItem('token', token);
+      // const token = data.token;
+      // localStorage.setItem('token', token);
       setIsAuthenticated(true);
     } catch (error: any) {
       console.error(error.message);
@@ -67,7 +71,6 @@ const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
             name="name"
             type="text"
             onChange={handleChange}
-            // placeholder="Name"
             value={formData.name}
           />
         </div>
@@ -84,7 +87,6 @@ const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
             name="email"
             type="text"
             onChange={handleChange}
-            // placeholder="Email"
             value={formData.email}
           />
         </div>
@@ -101,28 +103,8 @@ const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
             name="password"
             type="password"
             onChange={handleChange}
-            // placeholder="******************"
           />
-          {/* <p className="text-red text-xs italic">Please choose a password.</p> */}
         </div>
-        {/* TODO: revisit this with other form validation work: */}
-        {/* <div className="mb-6">
-          <label
-            className="block text-grey-darker text-sm font-bold mb-2"
-            htmlFor="passwordConfirmation"
-          >
-            Confirm Password
-          </label>
-          <input
-            className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3"
-            id="passwordConfirmation"
-            name="passwordConfirmation"
-            type="password"
-            onChange={handleChange}
-            placeholder="******************"
-            value={formData.passwordConfirmation}
-          />
-        </div> */}
         <div className="mb-12">
           <label
             className="block text-grey-darker text-sm font-bold mb-2"

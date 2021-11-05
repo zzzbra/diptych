@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -14,7 +15,7 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import PageContentWrapper from './components/PageContentWrapper';
 
-import { isAuthorized } from './features/auth/auth.slice';
+import { useIsAuthenticatedQuery } from './app/services/auth';
 
 import {
   incrementCounter,
@@ -23,23 +24,25 @@ import {
 import Button from './components/Button';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // TODO: schema for store?
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { count } = useSelector((state: any) => state.counter);
   console.log(count);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const checkAuthorization = async () => {
-      const authStatus = await isAuthorized();
-      setIsAuthenticated(authStatus);
-    };
+  // useEffect(() => {
+  //   const checkAuthorization = async () => {
+  //     const authStatus = await isAuthorized();
+  //     setIsAuthenticated(authStatus);
+  //   };
 
-    checkAuthorization();
-  }, []);
+  //   checkAuthorization();
+  // }, []);
+
+  // FIXME!
+  const { data: isAuthenticated } = useIsAuthenticatedQuery();
 
   return (
-    <PageContentWrapper {...{ isAuthenticated, setIsAuthenticated }}>
+    <PageContentWrapper>
       Counter: {count}
       <Button onClick={() => dispatch(incrementCounter())}>+</Button>
       <Button onClick={() => dispatch(decrementCounter())}>-</Button>
@@ -50,7 +53,7 @@ function App() {
             path="/"
             component={(props: any) =>
               !isAuthenticated ? (
-                <Login {...props} {...{ setIsAuthenticated }} />
+                <Login {...props} />
               ) : (
                 <Redirect to="/dashboard" />
               )
@@ -61,7 +64,7 @@ function App() {
             path="/login"
             component={(props: any) =>
               !isAuthenticated ? (
-                <Login {...props} {...{ setIsAuthenticated }} />
+                <Login {...props} />
               ) : (
                 <Redirect to="/dashboard" />
               )
@@ -72,7 +75,7 @@ function App() {
             path="/register"
             component={(props: any) =>
               !isAuthenticated ? (
-                <Register {...props} {...{ setIsAuthenticated }} />
+                <Register {...props} />
               ) : (
                 <Redirect to="/dashboard" />
               )
@@ -83,7 +86,7 @@ function App() {
             path="/dashboard"
             component={(props: any) =>
               isAuthenticated ? (
-                <Dashboard {...props} {...{ setIsAuthenticated }} />
+                <Dashboard {...props} />
               ) : (
                 <Redirect to="/login" />
               )

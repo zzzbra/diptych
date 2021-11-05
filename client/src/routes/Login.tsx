@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 
-import authAPI from '../features/auth/auth.slice';
 import { TopLevelComponentProps } from '../models';
+import { useLoginMutation } from '../app/services/auth';
+import { setCredentials } from '../features/auth/auth.slice';
 
 import Button from '../components/Button';
 
@@ -11,6 +14,10 @@ const Login = ({ setIsAuthenticated }: TopLevelComponentProps) => {
     password: '',
   });
 
+  const [login, { error, isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const { push } = useHistory();
+
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
   };
@@ -18,23 +25,34 @@ const Login = ({ setIsAuthenticated }: TopLevelComponentProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const response = await authAPI.post(
-        '/login',
-        { ...formData },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
+    console.log('Login submit button');
 
-      // get token & redirect on success
-      const token = response.data.token;
-      localStorage.setItem('token', token);
-      setIsAuthenticated(true);
+    try {
+      // const response = await authAPI.post(
+      //   '/login',
+      //   { ...formData },
+      //   {
+      //     headers: { 'Content-Type': 'application/json' },
+      //   },
+      // );
+      // // get token & redirect on success
+      // const token = response.data.token;
+      // localStorage.setItem('token', token);
+      // setIsAuthenticated(true);
+      const user = await login(formData).unwrap();
+      dispatch(setCredentials(user));
+      push('/dashboard');
     } catch (error: any) {
       console.error(error.message);
     }
   };
+
+  if (isLoading) return <h1>Loading</h1>;
+
+  if (!!error) {
+    console.log(error.status);
+    return <h1>ERROR</h1>;
+  }
 
   return (
     <>

@@ -9,7 +9,7 @@ import Planner from './Planner';
 const Dashboard = (props: any) => {
   const [userProfileData, setUserProfileData] = useState<
     UserProfile | undefined
-  >({});
+  >(); // default previously needed to be an empty object...
 
   useEffect(() => {
     const getData = async () => {
@@ -21,9 +21,9 @@ const Dashboard = (props: any) => {
   }, []);
 
   // Get user's `isTeacher value here` and show Planner or Classroom
-  const { user_is_teacher = false } = userProfileData || {};
+  const { userIsTeacher = false } = userProfileData || {};
 
-  const View = user_is_teacher ? Planner : Classroom;
+  const View = userIsTeacher ? Planner : Classroom;
 
   return <View {...{ userProfileData, ...props }} />;
 };

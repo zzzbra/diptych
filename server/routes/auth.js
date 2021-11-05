@@ -9,6 +9,25 @@ const authorization = require('../middleware/auth');
 
 const LOGIN_FAILURE_RESPONSE_MESSAGE = 'Password or Email is incorrect';
 
+const buildAuthResponse = (userRowFromDatabase) => {
+  const {
+    user_id: id,
+    user_name: name,
+    user_email: email,
+  } = userRowFromDatabase;
+
+  const token = jwtGenerator(user.rows[0].user_id);
+
+  return {
+    user: {
+      id,
+      name,
+      email,
+    },
+    token,
+  };
+};
+
 router.post('/register', validInfo, async (req, res) => {
   try {
     // 1. descructure the req.body()
@@ -37,8 +56,9 @@ router.post('/register', validInfo, async (req, res) => {
     );
 
     // 5. generating our jwt token
-    const token = jwtGenerator(newUser.rows[0].user_id);
-    res.json(token);
+    const responseBody = buildAuthResponse(newUser.rows[0]);
+
+    res.json(responseBody);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('SERVER ERROR');
@@ -69,8 +89,8 @@ router.post('/login', validInfo, async (req, res) => {
       return res.status(401).json(LOGIN_FAILURE_RESPONSE_MESSAGE);
     }
 
-    const token = jwtGenerator(user.rows[0].user_id);
-    res.json({ token });
+    const responseBody = buildAuthResponse(user.rows[0]);
+    res.json(responseBody);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('SERVER ERROR');

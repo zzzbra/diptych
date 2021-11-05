@@ -34,8 +34,6 @@ export async function getUserProfileData(): Promise<UserProfile | undefined> {
     // }
 
     console.error(error.message);
-    return {};
-
     // return { error: "Something went wrong " }
   }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Input from './Input';
-import todosAPI from '../features/todos/todo.slice';
+import todosAPI from '../features/todo/todo.slice';
 import Button from './Button';
 import { getToken } from '../utils/auth';
 

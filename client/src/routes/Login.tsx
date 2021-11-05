@@ -50,7 +50,7 @@ const Login = ({ setIsAuthenticated }: TopLevelComponentProps) => {
   if (isLoading) return <h1>Loading</h1>;
 
   if (!!error) {
-    console.log(error.status);
+    console.log(error);
     return <h1>ERROR</h1>;
   }
 

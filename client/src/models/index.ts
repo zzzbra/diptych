@@ -42,18 +42,3 @@ export interface ApiErrorResponse {
 export interface IsAuthenticatedResponse {
   isAuthenticated: boolean;
 }
-
-export interface TopLevelComponentProps {
-  isAuthenticated: boolean;
-  // setIsAuthenticated: React.Dispatch<React.SetStateAction<never[]>>,
-  setIsAuthenticated: (authStatus: boolean) => void;
-}
-
-// move into {name}.type.ts
-export type ServerData = {
-  data: any;
-};
-
-export type ServerError = {
-  error: string;
-};

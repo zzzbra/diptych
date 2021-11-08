@@ -12,7 +12,7 @@ const authApi = baseApi.injectEndpoints({
       query: (userRegistrationInfo) => ({
         url: '/v1/auth/register',
         method: 'post',
-        body: userRegistrationInfo,
+        data: userRegistrationInfo,
       }),
     }),
     isAuthenticated: build.query<IsAuthenticatedResponse, void>({
@@ -25,7 +25,7 @@ const authApi = baseApi.injectEndpoints({
       query: (userCredentials) => ({
         url: '/v1/auth/login',
         method: 'post',
-        body: userCredentials,
+        data: userCredentials,
       }),
     }),
   }),

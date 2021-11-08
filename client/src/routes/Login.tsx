@@ -8,7 +8,7 @@ import { setCredentials } from '../features/auth/auth.slice';
 
 import Button from '../components/Button';
 
-const Login = ({ setIsAuthenticated }: TopLevelComponentProps) => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,7 +25,7 @@ const Login = ({ setIsAuthenticated }: TopLevelComponentProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log('Login submit button');
+    console.log('Login submit button; formData: ', formData);
 
     try {
       // const response = await authAPI.post(

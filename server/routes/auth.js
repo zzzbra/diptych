@@ -16,7 +16,7 @@ const buildAuthResponse = (userRowFromDatabase) => {
     user_email: email,
   } = userRowFromDatabase;
 
-  const token = jwtGenerator(user.rows[0].user_id);
+  const token = jwtGenerator(id);
 
   return {
     user: {

@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { RootState } from './../../app/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserProfile } from '../../models';
@@ -35,9 +36,12 @@ export default authSlice.reducer;
 
 export const selectCurrentUser = (state: RootState) => state.auth.user;
 
+export const useCheckIsAuthenticated = () =>
+  useSelector((state: RootState) => !!state.auth.token);
+
 //--------------------------------------------------
 // import axios from 'axios';
-// import { getToken } from '../../utils/auth';
+// import { getToken } from './utils';
 
 // // TODO: set up FE env variables
 // // const protocol = process.env.SERVER_PROTOCOL || 'http';
@@ -53,7 +57,7 @@ export const selectCurrentUser = (state: RootState) => state.auth.user;
 
 // export const isAuthorized = async () => {
 //   try {
-//     const { data } = await authAPI.get('/is-authorized', {
+//     const { data } = await authAPI.get('/is-authenticated', {
 //       headers: {
 //         token: getToken(),
 //       },
@@ -61,7 +65,7 @@ export const selectCurrentUser = (state: RootState) => state.auth.user;
 
 //     return data;
 //   } catch (error: any) {
-//     console.error('GET is-authorized:', error);
+//     console.error('GET is-authenticated:', error);
 //   }
 // };
 

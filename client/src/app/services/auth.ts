@@ -17,7 +17,7 @@ const authApi = baseApi.injectEndpoints({
     }),
     isAuthenticated: build.query<IsAuthenticatedResponse, void>({
       query: () => ({
-        url: '/v1/auth/is-authorized',
+        url: '/v1/auth/is-authenticated',
         method: 'get',
       }),
     }),

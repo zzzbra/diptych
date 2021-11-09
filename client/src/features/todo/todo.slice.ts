@@ -1,8 +1,8 @@
-import { Todo } from './../../models/index';
 import axios from 'axios';
+
 import baseApi from '../../app/services/baseApi';
-import { getToken } from '../../utils/auth';
-import { TodosResponse } from '../../models';
+import { getToken } from '../auth/utils';
+import { Todo, TodosResponse } from '../../models';
 
 // TODO: set up FE env variables
 const protocol = 'http';

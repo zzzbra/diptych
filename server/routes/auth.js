@@ -97,7 +97,7 @@ router.post('/login', validInfo, async (req, res) => {
   }
 });
 
-router.get('/is-authorized', authorization, async (req, res) => {
+router.get('/is-authenticated', authorization, async (req, res) => {
   try {
     res.json(true);
   } catch (error) {

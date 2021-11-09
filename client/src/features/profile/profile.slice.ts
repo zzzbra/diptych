@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from '../../utils/auth';
+import { getToken } from '../auth/utils';
 import { UserProfile } from '../../models';
 
 // TODO: set up FE env variables

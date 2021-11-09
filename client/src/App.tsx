@@ -8,26 +8,29 @@ import {
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// Might handle these in dashboard view
 import Dashboard from './routes/Dashboard';
 import StudySession from './routes/StudySession';
 import Login from './routes/Login';
 import Register from './routes/Register';
 import PageContentWrapper from './components/PageContentWrapper';
 
-import { useIsAuthenticatedQuery } from './app/services/auth';
-
 import {
   incrementCounter,
   decrementCounter,
 } from './features/counter/counter.slice';
 import Button from './components/Button';
+import { useCheckIsAuthenticated } from './features/auth/auth.slice';
+import { RootState } from './app/store';
 
 function App() {
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { count } = useSelector((state: any) => state.counter);
-  console.log(count);
+  const { count } = useSelector((state: RootState) => state.counter);
+  const { user, token } = useSelector((state: RootState) => state.auth);
+  console.log('count from global state:', count);
   const dispatch = useDispatch();
+
+  const isAuthenticated = useCheckIsAuthenticated();
+  console.log({ isAuthenticated }, { user }, { token });
 
   // useEffect(() => {
   //   const checkAuthorization = async () => {
@@ -39,7 +42,7 @@ function App() {
   // }, []);
 
   // FIXME!
-  const { data: isAuthenticated } = useIsAuthenticatedQuery();
+  // const { data: isAuthenticated } = useIsAuthenticatedQuery();
 
   return (
     <PageContentWrapper>

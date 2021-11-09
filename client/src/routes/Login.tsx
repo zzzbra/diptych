@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { TopLevelComponentProps } from '../models';
 import { useLoginMutation } from '../app/services/auth';
 import { setCredentials } from '../features/auth/auth.slice';
 
@@ -40,6 +39,7 @@ const Login = () => {
       // localStorage.setItem('token', token);
       // setIsAuthenticated(true);
       const user = await login(formData).unwrap();
+      console.log("'user' from login mutation: ", user);
       dispatch(setCredentials(user));
       push('/dashboard');
     } catch (error: any) {

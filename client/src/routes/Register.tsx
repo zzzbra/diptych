@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 // import authAPI from '../features/auth/auth.slice';
 import { useRegistrationMutation } from '../app/services/auth';
 import Button from '../components/Button';
-import { TopLevelComponentProps } from '../models';
+// import { useCheckIsAuthenticated } from '../features/auth/auth.slice';
 
-const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
+const Register = () => {
   const [register, { isLoading, error }] = useRegistrationMutation();
   console.log({ isLoading }, 'error: ', error);
+  // const isAuthenticated = useCheckIsAuthenticated();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -33,6 +34,9 @@ const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
     e.preventDefault();
 
     try {
+      const authResponse = await register(formData);
+      console.log('set this to global state: ', { authResponse });
+
       // const response = await authAPI.post(
       //   '/register',
       //   { ...formData },
@@ -45,7 +49,7 @@ const Register = ({ setIsAuthenticated }: TopLevelComponentProps) => {
       // get token & redirect on success
       // const token = data.token;
       // localStorage.setItem('token', token);
-      setIsAuthenticated(true);
+      // setIsAuthenticated(true);
     } catch (error: any) {
       console.error(error.message);
     }

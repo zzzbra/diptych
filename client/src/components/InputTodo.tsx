@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Input from './Input';
 import todosAPI from '../features/todo/todo.slice';
 import Button from './Button';
-import { getToken } from '../utils/auth';
+import { getToken } from '../features/auth/utils';
 
 const InputTodo = () => {
   const [description, setDescription] = useState('');

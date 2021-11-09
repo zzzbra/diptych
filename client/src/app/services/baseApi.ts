@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import get from 'lodash/get';
 import { createApi, BaseQueryFn } from '@reduxjs/toolkit/query/react';
 
-import { getToken } from '../../utils/auth';
+import { getToken } from '../../features/auth/utils';
 import { ApiErrorResponse } from './../../models/index';
 // import { SerializedError } from '@reduxjs/toolkit';
 
@@ -29,7 +29,8 @@ const axiosBaseQuery =
   async ({ url, method, data, headers = {} }, { getState }) => {
     console.log('baseApi: ', { url }, { data });
     // Assuming auth is always required for now...
-    // Figure out a better approach here later.
+    // Figure out a better approach here later, maybe
+    // using prepareHeaders
     const state = getState();
     console.log('state: ', state);
     const token = get(state, 'auth.token') || getToken();

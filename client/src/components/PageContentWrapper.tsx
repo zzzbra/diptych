@@ -2,8 +2,6 @@ import React from 'react';
 
 import Navigation from './Navigation';
 
-
-
 const PageContentWrapper = ({ children, ...props }: any) => {
   return (
     <>

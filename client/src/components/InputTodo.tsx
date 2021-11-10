@@ -1,37 +1,28 @@
 import React, { useState } from 'react';
 import Input from './Input';
-import todosAPI from '../features/todo/todo.slice';
 import Button from './Button';
-import { getToken } from '../features/auth/utils';
+import { useAddNewTodoMutation } from '../app/services/todo';
 
 const InputTodo = () => {
   const [description, setDescription] = useState('');
+  const [addNewTodo, { isLoading }] = useAddNewTodoMutation();
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) =>
     setDescription(e.currentTarget.value);
 
-  // TODO: genericize and move out to api/todos
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await todosAPI.post(
-        '',
-        {
-          description,
-        },
-        {
-          headers: {
-            token: getToken(),
-          },
-        },
-      );
+      await addNewTodo({ description });
       setDescription('');
     } catch (error: any) {
       console.error(error.message);
     }
   };
 
-  return (
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <form onSubmit={handleFormSubmit}>
       <div className="mb-6">
         <Input

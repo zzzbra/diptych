@@ -3,20 +3,19 @@ import { RootState } from './../../app/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserProfile } from '../../models';
 
-// note: already have UserProfile type
-// interface User {
-//   userName: string;
-//   userEmail: string;
-// }
-
 type AuthState = {
   user: UserProfile | null;
   token: string | null;
+  isAuthenticated: boolean;
 };
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { user: null, token: null } as AuthState,
+  initialState: {
+    user: null,
+    token: null,
+    isAuthenticated: false,
+  } as AuthState,
   reducers: {
     setCredentials: (
       state,
@@ -26,6 +25,7 @@ const authSlice = createSlice({
     ) => {
       state.user = user;
       state.token = token;
+      state.isAuthenticated = true;
     },
   },
 });
@@ -34,40 +34,7 @@ export const { setCredentials } = authSlice.actions;
 
 export default authSlice.reducer;
 
-export const selectCurrentUser = (state: RootState) => state.auth.user;
+export const selectCurrentUserAuth = (state: RootState) => state.auth;
 
 export const useCheckIsAuthenticated = () =>
-  useSelector((state: RootState) => !!state.auth.token);
-
-//--------------------------------------------------
-// import axios from 'axios';
-// import { getToken } from './utils';
-
-// // TODO: set up FE env variables
-// // const protocol = process.env.SERVER_PROTOCOL || 'http';
-// // const host = process.env.SERVER_HOST || 'localhost';
-// // const port = process.env.SERVER_PORT || '5000';
-// const protocol = 'http';
-// const host = 'localhost';
-// const port = '5000';
-
-// const authAPI = axios.create({
-//   baseURL: `${protocol}://${host}:${port}/api/v1/auth`,
-// });
-
-// export const isAuthorized = async () => {
-//   try {
-//     const { data } = await authAPI.get('/is-authenticated', {
-//       headers: {
-//         token: getToken(),
-//       },
-//     });
-
-//     return data;
-//   } catch (error: any) {
-//     console.error('GET is-authenticated:', error);
-//   }
-// };
-
-// export default authAPI;
-// -------------------------------------------------------------------------
+  useSelector((state: RootState) => state.auth.isAuthenticated);

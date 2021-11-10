@@ -1,32 +1,32 @@
-// import React, { useEffect, useState } from 'react';
 import React from 'react';
 import EditTodo from './EditTodo';
 import Button from './Button';
-// import { getTodos, deleteTodo, updateTodo } from '../features/todos/todo.slice';
 import {
-  deleteTodo,
-  updateTodo,
+  useDeleteTodoMutation,
+  useUpdateTodoMutation,
   useGetTodosQuery,
-} from '../features/todo/todo.slice';
-// import { Todo } from '../models';
+} from '../app/services/todo';
 
 const ListTodos = () => {
-  // const [todos, setTodos] = useState<Todo[]>([]);
-  // const [todos] = useState<Todo[]>([]);
-  const { data: todos = [], error, isLoading } = useGetTodosQuery();
+  const {
+    data: todos = [],
+    error,
+    isError,
+    isLoading,
+    isFetching,
+  } = useGetTodosQuery();
 
-  // useEffect(() => {
-  //   getTodos();
-  //   // FIXME
-  //   // getTodos(setTodos);
-  // }, []);
+  const [updateTodo] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation();
 
-  if (isLoading) return <h1>Loading</h1>;
-
-  if (!!error) {
+  if (isError) {
     console.log(error);
     return <h1>Error!</h1>;
   }
+
+  if (isLoading) return <h1>Loading...</h1>;
+
+  if (isFetching) return <h1>Fetching...</h1>;
 
   return (
     <ul className="flex flex-col">
@@ -48,7 +48,7 @@ const ListTodos = () => {
             <Button
               className="ml-4"
               color="red"
-              onClick={() => deleteTodo(todoId)}
+              onClick={() => deleteTodo({ id: todoId })}
             >
               Delete
             </Button>

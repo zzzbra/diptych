@@ -13,7 +13,7 @@ const Login = () => {
     password: '',
   });
 
-  const [login, { error, isLoading }] = useLoginMutation();
+  const [login, { error, isError, isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const { push } = useHistory();
 
@@ -24,22 +24,8 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log('Login submit button; formData: ', formData);
-
     try {
-      // const response = await authAPI.post(
-      //   '/login',
-      //   { ...formData },
-      //   {
-      //     headers: { 'Content-Type': 'application/json' },
-      //   },
-      // );
-      // // get token & redirect on success
-      // const token = response.data.token;
-      // localStorage.setItem('token', token);
-      // setIsAuthenticated(true);
       const user = await login(formData).unwrap();
-      console.log("'user' from login mutation: ", user);
       dispatch(setCredentials(user));
       push('/dashboard');
     } catch (error: any) {
@@ -49,9 +35,8 @@ const Login = () => {
 
   if (isLoading) return <h1>Loading</h1>;
 
-  if (!!error) {
-    console.log(error);
-    return <h1>ERROR</h1>;
+  if (isError) {
+    return <h1>{JSON.stringify(error, null, 2)}</h1>;
   }
 
   return (

@@ -10,6 +10,8 @@ const camelCaseKeys = (todoFromDb) =>
 
 // create a todo
 router.post('', authorization, async (req, res) => {
+  console.log({ req });
+  console.log('req.body: ', req.body);
   try {
     const { description } = req.body;
     const newTodo = await pool.query(
@@ -31,7 +33,7 @@ router.get('', authorization, async (req, res) => {
       [req.user],
     );
 
-    const responseBody = allTodos.rows.map(camelCaseKeys(row));
+    const responseBody = allTodos.rows.map((row) => camelCaseKeys(row));
 
     res.json(responseBody);
   } catch (err) {

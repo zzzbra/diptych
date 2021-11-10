@@ -6,7 +6,6 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Dashboard from './routes/Dashboard';
 import StudySession from './routes/StudySession';
@@ -14,41 +13,13 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import PageContentWrapper from './components/PageContentWrapper';
 
-import {
-  incrementCounter,
-  decrementCounter,
-} from './features/counter/counter.slice';
-import Button from './components/Button';
-import { useCheckIsAuthenticated } from './features/auth/auth.slice';
-import { RootState } from './app/store';
+import { useAuth } from './features/auth/hooks';
 
 function App() {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { count } = useSelector((state: RootState) => state.counter);
-  const { user, token } = useSelector((state: RootState) => state.auth);
-  console.log('count from global state:', count);
-  const dispatch = useDispatch();
-
-  const isAuthenticated = useCheckIsAuthenticated();
-  console.log({ isAuthenticated }, { user }, { token });
-
-  // useEffect(() => {
-  //   const checkAuthorization = async () => {
-  //     const authStatus = await isAuthorized();
-  //     setIsAuthenticated(authStatus);
-  //   };
-
-  //   checkAuthorization();
-  // }, []);
-
-  // FIXME!
-  // const { data: isAuthenticated } = useIsAuthenticatedQuery();
+  const { isAuthenticated } = useAuth();
 
   return (
     <PageContentWrapper>
-      Counter: {count}
-      <Button onClick={() => dispatch(incrementCounter())}>+</Button>
-      <Button onClick={() => dispatch(decrementCounter())}>-</Button>
       <Router>
         <Switch>
           <Route

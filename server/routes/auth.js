@@ -11,18 +11,20 @@ const LOGIN_FAILURE_RESPONSE_MESSAGE = 'Password or Email is incorrect';
 
 const buildAuthResponse = (userRowFromDatabase) => {
   const {
-    user_id: id,
-    user_name: name,
-    user_email: email,
+    user_id: userId,
+    user_name: userName,
+    user_email: userEmail,
+    user_is_teacher: userIsTeacher,
   } = userRowFromDatabase;
 
-  const token = jwtGenerator(id);
+  const token = jwtGenerator(userId);
 
   return {
     user: {
-      id,
-      name,
-      email,
+      userId,
+      userName,
+      userEmail,
+      userIsTeacher,
     },
     token,
   };
@@ -99,7 +101,11 @@ router.post('/login', validInfo, async (req, res) => {
 
 router.get('/is-authenticated', authorization, async (req, res) => {
   try {
-    res.json(true);
+    const user = await pool.query('SELECT * FROM users WHERE user_id = $1', [
+      req.user,
+    ]);
+
+    res.json(buildAuthResponse(user.rows[0]));
   } catch (error) {
     console.error(error);
     res.status(500).send('SERVER ERROR');

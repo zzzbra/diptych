@@ -7,8 +7,6 @@ export interface Todo {
   description: string;
 }
 
-export type TodosResponse = Todo[];
-
 export interface LoginParameters {
   email: string;
   password: string;

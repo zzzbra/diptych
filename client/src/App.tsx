@@ -5,7 +5,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Dashboard from './routes/Dashboard';
 import StudySession from './routes/StudySession';
@@ -14,25 +14,34 @@ import Register from './routes/Register';
 
 import PageContentWrapper from './components/PageContentWrapper';
 import { useAuth } from './features/auth/hooks';
-// import { getToken } from './features/auth/utils';
-// import { setCredentials } from './features/auth/auth.slice';
-// import { useIsAuthenticatedQuery } from './app/services/auth';
+import { clearToken, getToken } from './features/auth/utils';
+import { setCredentials } from './features/auth/auth.slice';
+import { useIsAuthenticatedQuery } from './app/services/auth';
 
 function App() {
   const auth = useAuth();
-  const { isAuthenticated } = auth;
-  // const dispatch = useDispatch();
-  // const shouldRefetch = !auth?.isAuthenticated && !!getToken();
 
-  // const { data: authData } = useIsAuthenticatedQuery(undefined, {
-  //   skip: shouldRefetch,
-  // });
+  const dispatch = useDispatch();
+  const shouldRefetch = !auth?.isAuthenticated && !!getToken();
+  console.log({ auth }, 'local token: ', getToken(), { shouldRefetch });
 
-  // if (shouldRefetch && authData) {
-  //   dispatch(setCredentials(authData));
-  // }
+  const {
+    data: authData,
+    isError,
+    error,
+  } = useIsAuthenticatedQuery(undefined, {
+    skip: !shouldRefetch,
+  });
 
-  // const { isAuthenticated } = auth || authData || {};
+  if (isError && error?.message === 'jwt expired') {
+    clearToken();
+  }
+  if (shouldRefetch && authData) {
+    // TODO create global loader component and fire it here
+    dispatch(setCredentials(authData));
+  }
+
+  const { isAuthenticated = false } = auth || authData || {};
 
   return (
     <Router>

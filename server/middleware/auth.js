@@ -16,7 +16,8 @@ module.exports = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error(error.message);
-    return res.status(500).json('Unauthorized');
+    const { message } = error;
+    console.error(message);
+    return res.status(500).json(message);
   }
 };

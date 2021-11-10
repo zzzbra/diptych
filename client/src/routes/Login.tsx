@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import { useLoginMutation } from '../app/services/auth';
 import { setCredentials } from '../features/auth/auth.slice';
 
 import Button from '../components/Button';
+import { setToken } from '../features/auth/utils';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ const Login = () => {
 
   const [login, { error, isError, isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
-  const { push } = useHistory();
+  const history = useHistory();
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
@@ -25,9 +26,10 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const user = await login(formData).unwrap();
-      dispatch(setCredentials(user));
-      push('/dashboard');
+      const auth = await login(formData).unwrap();
+      dispatch(setCredentials(auth));
+      setToken(auth.token);
+      history.push('/dashboard');
     } catch (error: any) {
       console.error(error.message);
     }

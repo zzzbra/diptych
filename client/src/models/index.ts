@@ -36,7 +36,3 @@ export interface ApiErrorResponse {
   status?: any; // number | string ?
   data?: any;
 }
-
-export interface IsAuthenticatedResponse {
-  isAuthenticated: boolean;
-}

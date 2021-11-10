@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-// import authAPI from '../features/auth/auth.slice';
 import { useRegistrationMutation } from '../app/services/auth';
 import Button from '../components/Button';
-// import { useCheckIsAuthenticated } from '../features/auth/auth.slice';
+import { setCredentials } from '../features/auth/auth.slice';
 
 const Register = () => {
-  const [register, { isLoading, error }] = useRegistrationMutation();
-  console.log({ isLoading }, 'error: ', error);
-  // const isAuthenticated = useCheckIsAuthenticated();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [register, { isLoading, isError, error }] = useRegistrationMutation();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -34,26 +35,19 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const authResponse = await register(formData);
-      console.log('set this to global state: ', { authResponse });
-
-      // const response = await authAPI.post(
-      //   '/register',
-      //   { ...formData },
-      //   {
-      //     headers: { 'Content-Type': 'application/json' },
-      //   },
-      // );
-      // const data = await register(formData).unwrap();
-
-      // get token & redirect on success
-      // const token = data.token;
-      // localStorage.setItem('token', token);
-      // setIsAuthenticated(true);
+      const user = await register(formData).unwrap();
+      dispatch(setCredentials(user));
+      history.push('/dashboard');
     } catch (error: any) {
       console.error(error.message);
     }
   };
+
+  if (isError) return <div>{JSON.stringify(error, null, 2)}</div>;
+
+  if (isLoading) {
+    <div>Loading...</div>;
+  }
 
   return (
     <>

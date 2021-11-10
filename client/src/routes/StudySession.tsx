@@ -1,7 +1,7 @@
 import React from 'react';
 
 const StudySession = () => {
-  return <div>This is what learning looks like.</div>;
+  return <>This is what learning looks like.</>;
 };
 
 export default StudySession;

@@ -1,11 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { AcademicCapIcon } from '@heroicons/react/outline';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import Button from './Button';
 import { useCheckIsAuthenticated } from '../features/auth/auth.slice';
+import { logOut } from '../features/auth/auth.slice';
+import { clearToken } from '../features/auth/utils';
 
 const Navigation = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const isAuthenticated = useCheckIsAuthenticated();
 
@@ -19,10 +23,9 @@ const Navigation = () => {
         {isAuthenticated ? (
           <Button
             onClick={() => {
-              console.log('TODO');
-              // clearToken();
-              // TODO: include update ot global state with clearToken action
-              // setIsAuthenticated(false);
+              clearToken();
+              dispatch(logOut());
+              // history.push('/login');
             }}
           >
             Log Out

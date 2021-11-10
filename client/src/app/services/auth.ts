@@ -1,6 +1,5 @@
 import {
   AuthResponse,
-  IsAuthenticatedResponse,
   LoginParameters,
   RegistrationParameters,
 } from '../../models';
@@ -15,7 +14,7 @@ const authApi = baseApi.injectEndpoints({
         data: userRegistrationInfo,
       }),
     }),
-    isAuthenticated: build.query<IsAuthenticatedResponse, void>({
+    isAuthenticated: build.query<AuthResponse, void>({
       query: () => ({
         url: 'v1/auth/is-authenticated',
         method: 'get',

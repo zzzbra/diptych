@@ -1,4 +1,3 @@
-// import React, { useEffect, useState } from 'react';
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -6,21 +5,38 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+// import { useDispatch } from 'react-redux';
 
 import Dashboard from './routes/Dashboard';
 import StudySession from './routes/StudySession';
 import Login from './routes/Login';
 import Register from './routes/Register';
-import PageContentWrapper from './components/PageContentWrapper';
 
+import PageContentWrapper from './components/PageContentWrapper';
 import { useAuth } from './features/auth/hooks';
+// import { getToken } from './features/auth/utils';
+// import { setCredentials } from './features/auth/auth.slice';
+// import { useIsAuthenticatedQuery } from './app/services/auth';
 
 function App() {
-  const { isAuthenticated } = useAuth();
+  const auth = useAuth();
+  const { isAuthenticated } = auth;
+  // const dispatch = useDispatch();
+  // const shouldRefetch = !auth?.isAuthenticated && !!getToken();
+
+  // const { data: authData } = useIsAuthenticatedQuery(undefined, {
+  //   skip: shouldRefetch,
+  // });
+
+  // if (shouldRefetch && authData) {
+  //   dispatch(setCredentials(authData));
+  // }
+
+  // const { isAuthenticated } = auth || authData || {};
 
   return (
-    <PageContentWrapper>
-      <Router>
+    <Router>
+      <PageContentWrapper>
         <Switch>
           <Route
             exact
@@ -78,8 +94,8 @@ function App() {
             }
           />
         </Switch>
-      </Router>
-    </PageContentWrapper>
+      </PageContentWrapper>
+    </Router>
   );
 }
 

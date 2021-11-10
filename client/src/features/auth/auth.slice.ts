@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
-import { RootState } from './../../app/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserProfile } from '../../models';
+import { RootState } from './../../app/store';
+import { AuthResponse, UserProfile } from '../../models';
 
 type AuthState = {
   user: UserProfile | null;
@@ -19,18 +19,21 @@ const authSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      {
-        payload: { user, token },
-      }: PayloadAction<{ user: UserProfile; token: string }>,
+      { payload: { user, token } }: PayloadAction<AuthResponse>,
     ) => {
       state.user = user;
       state.token = token;
       state.isAuthenticated = true;
     },
+    logOut: (state) => {
+      state.user = null;
+      state.token = null;
+      state.isAuthenticated = false;
+    },
   },
 });
 
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 

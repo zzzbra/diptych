@@ -31,8 +31,3 @@ export interface AuthResponse {
   user: UserProfile;
   token: string;
 }
-
-export interface ApiErrorResponse {
-  status?: any; // number | string ?
-  data?: any;
-}

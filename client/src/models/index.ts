@@ -1,8 +1,8 @@
 // move into {name}.interface.ts
 
 // API response
-export interface Todo {
-  todoId: string;
+export interface Course {
+  courseId: string;
   userId: string;
   description: string;
 }

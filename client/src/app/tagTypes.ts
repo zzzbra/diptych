@@ -1,5 +1,5 @@
-export const TODO_TAG_TYPE = 'ToDo';
+export const COURSE_TAG_TYPE = 'course';
 
-const tagTypes = [TODO_TAG_TYPE];
+const tagTypes = [COURSE_TAG_TYPE];
 
 export default tagTypes;

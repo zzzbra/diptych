@@ -1,23 +1,23 @@
 import React from 'react';
-import EditTodo from './EditTodo';
+import EditCourse from './EditCourse';
 import Button from './Button';
 import {
-  useDeleteTodoMutation,
-  useUpdateTodoMutation,
-  useGetTodosQuery,
-} from '../app/services/todo';
+  useDeleteCourseMutation,
+  useUpdateCourseMutation,
+  useGetCoursesQuery,
+} from '../app/services/courses';
 
-const ListTodos = () => {
+const ListCourses = () => {
   const {
-    data: todos = [],
+    data: courses = [],
     error,
     isError,
     isLoading,
     isFetching,
-  } = useGetTodosQuery();
+  } = useGetCoursesQuery();
 
-  const [updateTodo] = useUpdateTodoMutation();
-  const [deleteTodo] = useDeleteTodoMutation();
+  const [updateCourse] = useUpdateCourseMutation();
+  const [deleteCourse] = useDeleteCourseMutation();
 
   if (isError) {
     console.log(error);
@@ -30,25 +30,25 @@ const ListTodos = () => {
 
   return (
     <ul className="flex flex-col">
-      {todos.map(({ todoId, description }) => (
+      {courses.map(({ courseId, description }) => (
         <li
-          key={todoId}
+          key={courseId}
           className="flex flex-row flex-no-wrap justify-between items-baseline mb-2 border-b-1 border-gray-100"
         >
           <span className="pr-2">{description}</span>
           <span className="flex flex-row flex-nowrap items-center">
-            <EditTodo
+            <EditCourse
               {...{
                 previousDescription: description,
-                updateTodo: (description) =>
+                updateCourse: (description) =>
                   // capturing the todoId in a closure
-                  updateTodo({ description, id: todoId }),
+                  updateCourse({ description, id: courseId }),
               }}
             />
             <Button
               className="ml-4"
               color="red"
-              onClick={() => deleteTodo({ id: todoId })}
+              onClick={() => deleteCourse({ id: courseId })}
             >
               Delete
             </Button>
@@ -59,4 +59,4 @@ const ListTodos = () => {
   );
 };
 
-export default ListTodos;
+export default ListCourses;

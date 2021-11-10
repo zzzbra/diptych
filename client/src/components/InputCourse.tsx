@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Input from './Input';
 import Button from './Button';
-import { useAddNewTodoMutation } from '../app/services/todo';
+import { useAddNewCourseMutation } from '../app/services/courses';
 
-const InputTodo = () => {
+const InputCourse = () => {
   const [description, setDescription] = useState('');
-  const [addNewTodo, { isLoading }] = useAddNewTodoMutation();
+  const [addNewCourse, { isLoading }] = useAddNewCourseMutation();
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) =>
     setDescription(e.currentTarget.value);
@@ -13,7 +13,7 @@ const InputTodo = () => {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await addNewTodo({ description });
+      await addNewCourse({ description });
       setDescription('');
     } catch (error: any) {
       console.error(error.message);
@@ -26,10 +26,9 @@ const InputTodo = () => {
     <form onSubmit={handleFormSubmit}>
       <div className="mb-6">
         <Input
-          id="todo-input"
-          label="Enter your next to-do below"
+          id="course-input"
+          label="Enter the Title of a new course you are offering"
           onChange={handleInputChange}
-          placeholder="What Good shall I do today?"
           value={description}
         />
       </div>
@@ -38,4 +37,4 @@ const InputTodo = () => {
   );
 };
 
-export default InputTodo;
+export default InputCourse;

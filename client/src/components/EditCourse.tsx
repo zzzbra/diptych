@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 
-interface EditTodoArgs {
-  previousDescription: string,
-  updateTodo: (newTodo: string) => void
+interface EditCourseArgs {
+  previousDescription: string;
+  updateCourse: (newCourse: string) => void;
 }
-const EditTodo = ({ previousDescription, updateTodo }: EditTodoArgs) => {
+const EditCourse = ({ previousDescription, updateCourse }: EditCourseArgs) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [updatedDescription, setUpdatedDescription] = useState(
-    previousDescription,
-  );
+  const [updatedDescription, setUpdatedDescription] =
+    useState(previousDescription);
 
   useEffect(() => {
     if (isModalOpen) setUpdatedDescription(previousDescription);
@@ -28,10 +27,10 @@ const EditTodo = ({ previousDescription, updateTodo }: EditTodoArgs) => {
         setOpen={setIsModalOpen}
         updatedDescription={updatedDescription}
         setUpdatedDescription={setUpdatedDescription}
-        updateTodo={updateTodo}
+        updateTodo={updateCourse}
       />
     </>
   );
 };
 
-export default EditTodo;
+export default EditCourse;

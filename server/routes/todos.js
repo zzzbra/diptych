@@ -1,10 +1,17 @@
 const router = require('express').Router();
-const pool = require('../db');
+const mapKeys = require('lodash/mapKeys');
+const camelCase = require('lodash/camelCase');
 
+const pool = require('../db');
 const authorization = require('../middleware/auth');
+
+const camelCaseKeys = (todoFromDb) =>
+  mapKeys(todoFromDb, (_, key) => camelCase(key));
 
 // create a todo
 router.post('', authorization, async (req, res) => {
+  console.log({ req });
+  console.log('req.body: ', req.body);
   try {
     const { description } = req.body;
     const newTodo = await pool.query(
@@ -12,7 +19,7 @@ router.post('', authorization, async (req, res) => {
       [req.user, description],
     );
 
-    res.json(newTodo.rows[0]);
+    res.json(camelCaseKeys(newTodo.rows[0]));
   } catch (err) {
     console.error(err.message);
   }
@@ -25,7 +32,10 @@ router.get('', authorization, async (req, res) => {
       'SELECT * FROM todos WHERE user_id = $1',
       [req.user],
     );
-    res.json(allTodos.rows);
+
+    const responseBody = allTodos.rows.map((row) => camelCaseKeys(row));
+
+    res.json(responseBody);
   } catch (err) {
     console.error(err.message);
   }
@@ -40,7 +50,7 @@ router.get('/:todo_id', authorization, async (req, res) => {
       [todo_id, req.user],
     );
 
-    res.json(todo.rows[0]);
+    res.json(camelCaseKeys(todo.rows[0]));
   } catch (err) {
     console.error(err.message);
   }
@@ -56,7 +66,7 @@ router.put('/:todo_id', authorization, async (req, res) => {
       [description, todo_id, req.user],
     );
 
-    res.json(updatedTodo.rows);
+    res.json(updatedTodo.rows.map((row) => camelCaseKeys(row)));
   } catch (err) {
     console.error(err.message);
   }
@@ -66,11 +76,12 @@ router.put('/:todo_id', authorization, async (req, res) => {
 router.delete('/:todo_id', authorization, async (req, res) => {
   try {
     const { todo_id } = req.params;
-    await pool.query('DELETE FROM todos WHERE todo_id = $1 AND user_id = $2', [
-      todo_id,
-      req.user,
-    ]);
-    res.json('Todo was deleted');
+    const updatedTodos = await pool.query(
+      'DELETE FROM todos WHERE todo_id = $1 AND user_id = $2 RETURNING *',
+      [todo_id, req.user],
+    );
+
+    res.json(updatedTodos.rows.map((row) => camelCaseKeys(row)));
   } catch (err) {
     console.error(err.message);
   }

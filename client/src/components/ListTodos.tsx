@@ -1,21 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import EditTodo from './EditTodo';
 import Button from './Button';
-import { getTodos, deleteTodo, updateTodo } from '../apis/todos';
-import { Todo } from '../models';
+import {
+  useDeleteTodoMutation,
+  useUpdateTodoMutation,
+  useGetTodosQuery,
+} from '../app/services/todo';
 
 const ListTodos = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const {
+    data: todos = [],
+    error,
+    isError,
+    isLoading,
+    isFetching,
+  } = useGetTodosQuery();
 
-  useEffect(() => {
-    getTodos(setTodos);
-  }, []);
+  const [updateTodo] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation();
+
+  if (isError) {
+    console.log(error);
+    return <h1>Error!</h1>;
+  }
+
+  if (isLoading) return <h1>Loading...</h1>;
+
+  if (isFetching) return <h1>Fetching...</h1>;
 
   return (
     <ul className="flex flex-col">
-      {todos.map(({ todo_id, description }) => (
+      {todos.map(({ todoId, description }) => (
         <li
-          key={todo_id}
+          key={todoId}
           className="flex flex-row flex-no-wrap justify-between items-baseline mb-2 border-b-1 border-gray-100"
         >
           <span className="pr-2">{description}</span>
@@ -24,14 +41,14 @@ const ListTodos = () => {
               {...{
                 previousDescription: description,
                 updateTodo: (description) =>
-                  // capturing the todo_id in a closure
-                  updateTodo({ description, id: todo_id }),
+                  // capturing the todoId in a closure
+                  updateTodo({ description, id: todoId }),
               }}
             />
             <Button
               className="ml-4"
               color="red"
-              onClick={() => deleteTodo(todo_id)}
+              onClick={() => deleteTodo({ id: todoId })}
             >
               Delete
             </Button>

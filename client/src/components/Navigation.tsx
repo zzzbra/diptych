@@ -2,12 +2,12 @@ import React from 'react';
 import { AcademicCapIcon } from '@heroicons/react/outline';
 import { useHistory } from 'react-router';
 
-import { TopLevelComponentProps } from '../models';
-import { clearToken } from '../utils/auth';
 import Button from './Button';
+import { useCheckIsAuthenticated } from '../features/auth/auth.slice';
 
-const Navigation = ({ isAuthenticated, setIsAuthenticated }: TopLevelComponentProps) => {
+const Navigation = () => {
   const history = useHistory();
+  const isAuthenticated = useCheckIsAuthenticated();
 
   return (
     <nav className="py-5 border-b-2">
@@ -19,9 +19,10 @@ const Navigation = ({ isAuthenticated, setIsAuthenticated }: TopLevelComponentPr
         {isAuthenticated ? (
           <Button
             onClick={() => {
-              clearToken();
+              console.log('TODO');
+              // clearToken();
               // TODO: include update ot global state with clearToken action
-              setIsAuthenticated(false);
+              // setIsAuthenticated(false);
             }}
           >
             Log Out

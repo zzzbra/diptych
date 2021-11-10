@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 
-import authAPI from '../apis/auth';
-import { TopLevelComponentProps } from '../models';
+import { useLoginMutation } from '../app/services/auth';
+import { setCredentials } from '../features/auth/auth.slice';
 
 import Button from '../components/Button';
 
-const Login = ({ setIsAuthenticated }: TopLevelComponentProps) => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  const [login, { error, isError, isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const { push } = useHistory();
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
@@ -19,22 +25,19 @@ const Login = ({ setIsAuthenticated }: TopLevelComponentProps) => {
     e.preventDefault();
 
     try {
-      const response = await authAPI.post(
-        '/login',
-        { ...formData },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
-
-      // get token & redirect on success
-      const token = response.data.token;
-      localStorage.setItem('token', token);
-      setIsAuthenticated(true);
+      const user = await login(formData).unwrap();
+      dispatch(setCredentials(user));
+      push('/dashboard');
     } catch (error: any) {
       console.error(error.message);
     }
   };
+
+  if (isLoading) return <h1>Loading</h1>;
+
+  if (isError) {
+    return <h1>{JSON.stringify(error, null, 2)}</h1>;
+  }
 
   return (
     <>

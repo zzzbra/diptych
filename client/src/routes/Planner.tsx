@@ -1,19 +1,15 @@
-// Teacher Dashboard
 import React from 'react';
 
-import { UserProfile } from '../models';
 import InputTodo from '../components/InputTodo';
 import ListTodos from '../components/ListTodos';
+import { useAuth } from '../features/auth/hooks';
 
-interface PlannerProps {
-  userProfileData: UserProfile,
-}
+const Planner = () => {
+  const { user } = useAuth();
 
-const Planner = ({ userProfileData }: PlannerProps) => {
-  const { user_name } = userProfileData;
   return (
     <>
-      <h2 className="text-l mb-3">Greetings, {user_name}!</h2>
+      <h2 className="text-l mb-3">Greetings, {user?.userName}!</h2>
       <h1 className="text-3xl mb-6">My Decks</h1>
       <InputTodo />
       <div className="mt-10">

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { getToken } from '../utils/auth';
-import { UserProfile } from '../models';
+import { getToken } from '../auth/utils';
+import { UserProfile } from '../../models';
 
 // TODO: set up FE env variables
 // const protocol = process.env.SERVER_PROTOCOL || 'http';
@@ -32,10 +32,8 @@ export async function getUserProfileData(): Promise<UserProfile | undefined> {
     //     return serverError.response.data;
     //   }
     // }
-  
-    console.error(error.message);
-    return {};
 
+    console.error(error.message);
     // return { error: "Something went wrong " }
   }
 }

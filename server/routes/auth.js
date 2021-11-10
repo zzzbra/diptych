@@ -9,6 +9,27 @@ const authorization = require('../middleware/auth');
 
 const LOGIN_FAILURE_RESPONSE_MESSAGE = 'Password or Email is incorrect';
 
+const buildAuthResponse = (userRowFromDatabase) => {
+  const {
+    user_id: userId,
+    user_name: userName,
+    user_email: userEmail,
+    user_is_teacher: userIsTeacher,
+  } = userRowFromDatabase;
+
+  const token = jwtGenerator(userId);
+
+  return {
+    user: {
+      userId,
+      userName,
+      userEmail,
+      userIsTeacher,
+    },
+    token,
+  };
+};
+
 router.post('/register', validInfo, async (req, res) => {
   try {
     // 1. descructure the req.body()
@@ -37,8 +58,9 @@ router.post('/register', validInfo, async (req, res) => {
     );
 
     // 5. generating our jwt token
-    const token = jwtGenerator(newUser.rows[0].user_id);
-    res.json(token);
+    const responseBody = buildAuthResponse(newUser.rows[0]);
+
+    res.json(responseBody);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('SERVER ERROR');
@@ -69,17 +91,21 @@ router.post('/login', validInfo, async (req, res) => {
       return res.status(401).json(LOGIN_FAILURE_RESPONSE_MESSAGE);
     }
 
-    const token = jwtGenerator(user.rows[0].user_id);
-    res.json({ token });
+    const responseBody = buildAuthResponse(user.rows[0]);
+    res.json(responseBody);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('SERVER ERROR');
   }
 });
 
-router.get('/is-authorized', authorization, async (req, res) => {
+router.get('/is-authenticated', authorization, async (req, res) => {
   try {
-    res.json(true);
+    const user = await pool.query('SELECT * FROM users WHERE user_id = $1', [
+      req.user,
+    ]);
+
+    res.json(buildAuthResponse(user.rows[0]));
   } catch (error) {
     console.error(error);
     res.status(500).send('SERVER ERROR');

@@ -6,9 +6,10 @@ interface GetLessonsArgs {
   courseId: string;
 }
 
-// interface GetLessonArgs {
-//   id: string;
-// }
+interface GetLessonArgs {
+  courseId: string;
+  lessonId: string;
+}
 
 interface AddNewLessonArgs {
   courseId: string;
@@ -21,15 +22,17 @@ export const defaultAddNewLessonArgs = {
   description: '',
 };
 
-// interface UpdateLessonArgs {
-//   id: string;
-//   title: string;
-//   description: string;
-// }
+interface UpdateLessonArgs {
+  courseId: string;
+  lessonId: string;
+  title: string;
+  description: string;
+}
 
-// interface DeleteLessonArgs {
-//   id: string;
-// }
+interface DeleteLessonArgs {
+  courseId: string;
+  lessonId: string;
+}
 
 const lessonsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -42,15 +45,15 @@ const lessonsApi = baseApi.injectEndpoints({
       },
       providesTags: [COURSE_TAG_TYPE, LESSON_TAG_TYPE],
     }),
-    // getCourse: build.query<Course, GetCourseArgs>({
-    //   query: ({ id }) => {
-    //     return {
-    //       url: `v1/courses/${id}`,
-    //       method: 'get',
-    //     };
-    //   },
-    //   providesTags: [COURSE_TAG_TYPE],
-    // }),
+    getLesson: build.query<Lesson, GetLessonArgs>({
+      query: ({ courseId, lessonId }) => {
+        return {
+          url: `v1/courses/${courseId}/lessong/${lessonId}`,
+          method: 'get',
+        };
+      },
+      providesTags: [COURSE_TAG_TYPE],
+    }),
     addNewLesson: build.mutation<Lesson, AddNewLessonArgs>({
       query: (data) => ({
         url: `v1/courses/${data.courseId}/lessons`,
@@ -59,21 +62,21 @@ const lessonsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [COURSE_TAG_TYPE, LESSON_TAG_TYPE],
     }),
-    // updateCourse: build.mutation<Course, UpdateCourseArgs>({
-    //   query: ({ id, description }) => ({
-    //     url: `v1/courses/${id}`,
-    //     method: 'put',
-    //     data: { description },
-    //   }),
-    //   invalidatesTags: [COURSE_TAG_TYPE],
-    // }),
-    // deleteCourse: build.mutation<Course[], DeleteCourseArgs>({
-    //   query: ({ id }) => ({
-    //     url: `v1/courses/${id}`,
-    //     method: 'delete',
-    //   }),
-    //   invalidatesTags: [COURSE_TAG_TYPE],
-    // }),
+    updateLesson: build.mutation<Lesson, UpdateLessonArgs>({
+      query: ({ courseId, lessonId, title, description }) => ({
+        url: `v1/courses/${courseId}/lessons/${lessonId}`,
+        method: 'put',
+        data: { title, description },
+      }),
+      invalidatesTags: [COURSE_TAG_TYPE],
+    }),
+    deleteLesson: build.mutation<Lesson[], DeleteLessonArgs>({
+      query: ({ courseId, lessonId }) => ({
+        url: `v1/courses/${courseId}/lessons/${lessonId}`,
+        method: 'delete',
+      }),
+      invalidatesTags: [COURSE_TAG_TYPE],
+    }),
   }),
 });
 

@@ -86,15 +86,12 @@ router.delete('/:course_id', authorization, async (req, res) => {
 
 // create a lesson
 router.post('/:course_id/lessons', authorization, async (req, res) => {
-  console.log('creating a new lesson...');
   try {
     const { course_id, title, description } = snakeCaseKeys(req.body);
     const newLesson = await pool.query(
       'INSERT INTO lessons (course_id, title, description) VALUES ($1, $2, $3) RETURNING *',
       [course_id, title, description],
     );
-    console.log('added lesson: ', camelCaseKeys(newLesson.rows[0]));
-
     res.json(camelCaseKeys(newLesson.rows[0]));
   } catch (err) {
     console.error(err.message);
@@ -103,19 +100,71 @@ router.post('/:course_id/lessons', authorization, async (req, res) => {
 
 // get all lessons in a given course
 router.get('/:course_id/lessons', authorization, async (req, res) => {
-  console.log('get all lessons, req.body: ', req.body);
   const { course_id } = req.params;
   try {
     const allLessons = await pool.query(
       'SELECT * FROM lessons WHERE course_id = $1',
       [course_id],
     );
-    console.log(`allLessons where course_id is ${course_id}: `, allLessons);
-
     res.json(allLessons.rows.map((row) => camelCaseKeys(row)));
   } catch (err) {
     console.error(err.message);
   }
 });
+
+// get a lesson in a course
+router.get(
+  '/:course_id/lessons/:lesson_id',
+  authorization,
+  async (req, res) => {
+    const { course_id, lesson_id } = req.params;
+    try {
+      const lesson = await pool.query(
+        'SELECT * FROM lessons WHERE course_id = $1 AND lesson_id = $2',
+        [course_id, lesson_id],
+      );
+      res.json(camelCaseKeys(lesson.rows[0]));
+    } catch (err) {
+      console.error(err.message);
+    }
+  },
+);
+
+// update a lesson
+router.put(
+  '/:course_id/lessons/:lesson_id',
+  authorization,
+  async (req, res) => {
+    try {
+      const { course_id, lesson_id } = req.params;
+      const { title, description } = req.body;
+      const updatedCourse = await pool.query(
+        'UPDATE lessons SET (title, description) = ($1, $2) WHERE course_id = $3 AND lesson_id = $4 RETURNING *',
+        [title, description, course_id, lesson_id],
+      );
+      res.json(updatedCourse.rows.map((row) => camelCaseKeys(row)));
+    } catch (err) {
+      console.error(err.message);
+    }
+  },
+);
+
+// delete a course
+router.delete(
+  '/:course_id/lessons/:lesson_id',
+  authorization,
+  async (req, res) => {
+    try {
+      const { course_id, lesson_id } = req.params;
+      const updatedCourses = await pool.query(
+        'DELETE FROM lessons WHERE course_id = $1 AND lesson_id = $2 RETURNING *',
+        [course_id, lesson_id],
+      );
+      res.json(updatedCourses.rows.map((row) => camelCaseKeys(row)));
+    } catch (err) {
+      console.error(err.message);
+    }
+  },
+);
 
 module.exports = router;

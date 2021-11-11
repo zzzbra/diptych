@@ -87,7 +87,7 @@ const CourseOverview = (props: any) => {
       <h2>Lessons</h2>
       <ul>
         {lessons.map((lesson) => (
-          <li>{lesson.title}</li>
+          <li key={lesson.lessonId}>{lesson.title}</li>
         ))}
       </ul>
     </div>

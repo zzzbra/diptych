@@ -1,12 +1,9 @@
 const router = require('express').Router();
-const mapKeys = require('lodash/mapKeys');
-const camelCase = require('lodash/camelCase');
 
 const pool = require('../db');
 const authorization = require('../middleware/auth');
 
-const camelCaseKeys = (keyFromDb) =>
-  mapKeys(keyFromDb, (_, key) => camelCase(key));
+const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
 
 // create a course
 router.post('', authorization, async (req, res) => {
@@ -80,6 +77,42 @@ router.delete('/:course_id', authorization, async (req, res) => {
     );
 
     res.json(updatedCourses.rows.map((row) => camelCaseKeys(row)));
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// -----------------------------------------------------------------------------
+
+// create a lesson
+router.post('/:course_id/lessons', authorization, async (req, res) => {
+  console.log('creating a new lesson...');
+  try {
+    const { course_id, title, description } = snakeCaseKeys(req.body);
+    const newLesson = await pool.query(
+      'INSERT INTO lessons (course_id, title, description) VALUES ($1, $2, $3) RETURNING *',
+      [course_id, title, description],
+    );
+    console.log('added lesson: ', camelCaseKeys(newLesson.rows[0]));
+
+    res.json(camelCaseKeys(newLesson.rows[0]));
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// get all lessons in a given course
+router.get('/:course_id/lessons', authorization, async (req, res) => {
+  console.log('get all lessons, req.body: ', req.body);
+  const { course_id } = req.params;
+  try {
+    const allLessons = await pool.query(
+      'SELECT * FROM lessons WHERE course_id = $1',
+      [course_id],
+    );
+    console.log(`allLessons where course_id is ${course_id}: `, allLessons);
+
+    res.json(allLessons.rows.map((row) => camelCaseKeys(row)));
   } catch (err) {
     console.error(err.message);
   }

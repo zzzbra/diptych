@@ -17,13 +17,13 @@ import { useAuth } from './features/auth/hooks';
 import { clearToken, getToken } from './features/auth/utils';
 import { setCredentials } from './features/auth/auth.slice';
 import { useIsAuthenticatedQuery } from './app/services/auth';
+import CourseOverview from './routes/CourseOverview';
 
 function App() {
   const auth = useAuth();
 
   const dispatch = useDispatch();
   const shouldRefetch = !auth?.isAuthenticated && !!getToken();
-  console.log({ auth }, 'local token: ', getToken(), { shouldRefetch });
 
   const {
     data: authData,
@@ -36,8 +36,9 @@ function App() {
   if (isError && error?.message === 'jwt expired') {
     clearToken();
   }
+
   if (shouldRefetch && authData) {
-    // TODO create global loader component and fire it here
+    // FIXME this causes error on redirect
     dispatch(setCredentials(authData));
   }
 
@@ -83,13 +84,24 @@ function App() {
           <Route
             exact
             path="/dashboard"
-            component={(props: any) =>
-              isAuthenticated ? (
+            component={(props: any) => {
+              return isAuthenticated ? (
                 <Dashboard {...props} />
               ) : (
                 <Redirect to="/login" />
-              )
-            }
+              );
+            }}
+          />
+          <Route
+            exact
+            path="/course/:courseId" // TODO: add redirect for null params to this view
+            component={(props: any) => {
+              return isAuthenticated ? (
+                <CourseOverview {...props} />
+              ) : (
+                <Redirect to="/login" />
+              );
+            }}
           />
           <Route
             exact

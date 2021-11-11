@@ -7,6 +7,13 @@ export interface Course {
   description: string;
 }
 
+export interface Lesson {
+  lessonId: string;
+  courseId: string;
+  title: string;
+  description: string;
+}
+
 export interface LoginParameters {
   email: string;
   password: string;

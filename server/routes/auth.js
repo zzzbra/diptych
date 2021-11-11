@@ -12,7 +12,7 @@ const { encryptPassword } = require('../utils/crypto');
 
 const LOGIN_FAILURE_RESPONSE_MESSAGE = 'Password or Email is incorrect';
 
-const buildAuthResponse = (userRowFromDatabase) => {
+const buildAuthResponse = (userRowFromDatabase = {}) => {
   const {
     user_id: userId,
     user_name: userName,

@@ -1,31 +1,30 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { AcademicCapIcon } from '@heroicons/react/outline';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import Button from './Button';
 import { useCheckIsAuthenticated } from '../features/auth/auth.slice';
 import { logOut } from '../features/auth/auth.slice';
-import { clearToken } from '../features/auth/utils';
+import { clearToken, getToken } from '../features/auth/utils';
 
 const Navigation = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const isAuthenticated = useCheckIsAuthenticated();
+  const isAuthenticated = useCheckIsAuthenticated() || !!getToken();
 
   return (
     <nav className="py-5 border-b-2">
       <div className="max-w-2xl mx-auto flex justify-between">
-        <span className="flex items-center">
+        <Link to="/dashboard" className="flex items-center">
           <AcademicCapIcon className="w-10" />
           <span className="ml-2">MOOC-SRS</span>
-        </span>
+        </Link>
         {isAuthenticated ? (
           <Button
             onClick={() => {
               clearToken();
               dispatch(logOut());
-              // history.push('/login');
             }}
           >
             Log Out

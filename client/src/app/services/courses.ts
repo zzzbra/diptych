@@ -1,8 +1,5 @@
-import { COURSE_TAG_TYPE } from '../tagTypes';
-// import axios from 'axios';
-
 import baseApi from './baseApi';
-// import { getToken } from '../../features/auth/utils';
+import { COURSE_TAG_TYPE } from '../tagTypes';
 import { Course } from '../../models';
 
 interface GetCourseArgs {

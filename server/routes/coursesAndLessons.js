@@ -23,10 +23,7 @@ router.post('', authorization, async (req, res) => {
 // get all courses
 router.get('', authorization, async (req, res) => {
   try {
-    const allCourses = await pool.query(
-      'SELECT * FROM courses WHERE user_id = $1',
-      [req.user],
-    );
+    const allCourses = await pool.query('SELECT * FROM courses');
 
     const responseBody = allCourses.rows.map((row) => camelCaseKeys(row));
 

@@ -1,5 +1,7 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import {
   defaultAddNewLessonArgs,
@@ -53,13 +55,14 @@ const CourseOverview = (props: any) => {
   if (isError) {
     console.log({ error });
   }
-  console.log({ formState }, { lessons });
-  return (
+  return isLoading || isFetching ? (
+    <div>Loading</div>
+  ) : (
     <div>
-      <h1>Course Title</h1>
+      <h1 className="pb-4">Course Title</h1>
 
       {user?.userIsTeacher ? (
-        <form className="py-8" onSubmit={handleSubmit}>
+        <form className="pb-8" onSubmit={handleSubmit}>
           <div className="mb-12">
             <div className="mb-6">
               <Input
@@ -84,10 +87,15 @@ const CourseOverview = (props: any) => {
         </form>
       ) : null}
 
-      <h2>Lessons</h2>
+      <h2 className="pb-4">Lessons</h2>
       <ul>
-        {lessons.map((lesson) => (
-          <li key={lesson.lessonId}>{lesson.title}</li>
+        {lessons.map((lesson, key) => (
+          <li
+            className={classNames('rounded p-2 border-2', { 'mt-2': !!key })}
+            key={lesson.lessonId}
+          >
+            <Link to={`/lessons/${lesson.lessonId}`}>{lesson.title}</Link>
+          </li>
         ))}
       </ul>
     </div>

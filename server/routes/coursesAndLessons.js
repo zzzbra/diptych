@@ -17,6 +17,7 @@ router.post('', authorization, async (req, res) => {
     res.json(camelCaseKeys(newCourse.rows[0]));
   } catch (err) {
     console.error(err.message);
+    res.status(500).json(error.message);
   }
 });
 
@@ -24,12 +25,12 @@ router.post('', authorization, async (req, res) => {
 router.get('', authorization, async (req, res) => {
   try {
     const allCourses = await pool.query('SELECT * FROM courses');
-
     const responseBody = allCourses.rows.map((row) => camelCaseKeys(row));
 
     res.json(responseBody);
   } catch (err) {
     console.error(err.message);
+    res.status(500).json(error.message);
   }
 });
 
@@ -45,6 +46,7 @@ router.get('/:course_id', authorization, async (req, res) => {
     res.json(camelCaseKeys(course.rows[0]));
   } catch (err) {
     console.error(err.message);
+    res.status(500).json(error.message);
   }
 });
 
@@ -61,6 +63,7 @@ router.put('/:course_id', authorization, async (req, res) => {
     res.json(updatedCourse.rows.map((row) => camelCaseKeys(row)));
   } catch (err) {
     console.error(err.message);
+    res.status(500).json(error.message);
   }
 });
 
@@ -76,6 +79,7 @@ router.delete('/:course_id', authorization, async (req, res) => {
     res.json(updatedCourses.rows.map((row) => camelCaseKeys(row)));
   } catch (err) {
     console.error(err.message);
+    res.status(500).json(error.message);
   }
 });
 
@@ -92,6 +96,7 @@ router.post('/:course_id/lessons', authorization, async (req, res) => {
     res.json(camelCaseKeys(newLesson.rows[0]));
   } catch (err) {
     console.error(err.message);
+    res.status(500).json(error.message);
   }
 });
 
@@ -106,6 +111,7 @@ router.get('/:course_id/lessons', authorization, async (req, res) => {
     res.json(allLessons.rows.map((row) => camelCaseKeys(row)));
   } catch (err) {
     console.error(err.message);
+    res.status(500).json(error.message);
   }
 });
 
@@ -123,6 +129,7 @@ router.get(
       res.json(camelCaseKeys(lesson.rows[0]));
     } catch (err) {
       console.error(err.message);
+      res.status(500).json(error.message);
     }
   },
 );
@@ -142,6 +149,7 @@ router.put(
       res.json(updatedCourse.rows.map((row) => camelCaseKeys(row)));
     } catch (err) {
       console.error(err.message);
+      res.status(500).json(error.message);
     }
   },
 );
@@ -160,6 +168,7 @@ router.delete(
       res.json(updatedCourses.rows.map((row) => camelCaseKeys(row)));
     } catch (err) {
       console.error(err.message);
+      res.status(500).json(error.message);
     }
   },
 );

@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './globals.css';
+@import './utilities.css';
+
+@layer utilities {
+  .container {
+    @apply max-w-4xl mx-auto px-8;
+  }
+}

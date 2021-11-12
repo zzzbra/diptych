@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const auth = require('./routes/auth');
 const profile = require('./routes/profile');
 const coursesAndLessons = require('./routes/coursesAndLessons');
+const enrollments = require('./routes/enrollments');
 
 const PORT = process.env.SERVER_PORT;
 
@@ -22,6 +23,7 @@ app.use('/api/v1/auth', auth);
 // stuff and the user identity stuff into separate tables
 app.use('/api/v1/profile', profile);
 app.use('/api/v1/courses', coursesAndLessons);
+app.use('/api/v1/enrollments', enrollments);
 
 // Lift off
 app.listen(PORT, () => {

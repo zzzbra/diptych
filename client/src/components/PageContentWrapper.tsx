@@ -6,7 +6,7 @@ const PageContentWrapper = ({ children, ...props }: any) => {
   return (
     <>
       <Navigation {...props} />
-      <main className="max-w-2xl mx-auto py-10">{children}</main>
+      <main className="container py-10">{children}</main>
     </>
   );
 };

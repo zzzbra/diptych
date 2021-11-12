@@ -37,7 +37,7 @@ const ListCourses = () => {
           className="flex flex-row flex-no-wrap justify-between items-baseline mb-2 border-b-1 border-gray-100"
         >
           <Link
-            to={`/course/${courseId}`}
+            to={`/courses/${courseId}`}
             className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 pr-2"
           >
             {description}

@@ -4,9 +4,18 @@ import React from 'react';
 import { useGetCoursesQuery } from '../app/services/courses';
 import Button from '../components/Button';
 import { useAuth } from '../features/auth/hooks';
+import { useAddNewEnrollmentMutation } from '../app/services/enrollments';
 
 const Classroom = () => {
   const { user } = useAuth();
+  const [
+    addNewEnrollment,
+    {
+      error: enrollmentError,
+      isError: isEnrollmentError,
+      isLoading: isEnrollmentLoading,
+    },
+  ] = useAddNewEnrollmentMutation();
   const {
     data: courses,
     error,
@@ -14,21 +23,14 @@ const Classroom = () => {
     isFetching,
     isLoading,
   } = useGetCoursesQuery();
-  console.log({ courses });
 
-  const enrollInCourse = (courseId: string) => {
-    console.log(
-      `TODO: add backed support for enrolling student with ID ${user?.userId} in course id ${courseId}`,
-    );
-  };
-
-  if (isError) {
-    console.log({ error });
+  if (isError || isEnrollmentError) {
+    console.log({ error }, { enrollmentError });
   }
 
-  return isFetching || isLoading ? (
-    <div>Loading</div>
-  ) : (
+  if (isFetching || isLoading || isEnrollmentLoading) return <div>Loading</div>;
+
+  return (
     <div>
       <span className="pb-2">Pick from one of the following courses:</span>
       <ul>
@@ -38,9 +40,12 @@ const Classroom = () => {
               'flex flex-row flex-no-wrap justify-between items-center mb-2 border-2 rounded p-4 border-gray-100',
               { 'mt-2': !!key, 'mt-4': !key },
             )}
+            key={course.courseId}
           >
             <span>{course.description}</span>
-            <Button onClick={() => enrollInCourse(course.courseId)}>
+            <Button
+              onClick={() => addNewEnrollment({ courseId: course.courseId })}
+            >
               Enroll
             </Button>
           </li>

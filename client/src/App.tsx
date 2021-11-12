@@ -94,7 +94,7 @@ function App() {
           />
           <Route
             exact
-            path="/course/:courseId" // TODO: add redirect for null params to this view
+            path="/courses/:courseId" // TODO: add redirect for null params to this view
             component={(props: any) => {
               return isAuthenticated ? (
                 <CourseOverview {...props} />

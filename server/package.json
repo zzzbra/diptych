@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon -r dotenv/config index.js dotenv_config_path=.env.local --trace-warnings",
     "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:latest dotenv_config_path=.env.local --knexfile db/knexfile.js",
+    "rollback": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:rollback dotenv_config_path=.env.local --knexfile db/knexfile.js",
+    "seed": "node -r dotenv/config ./node_modules/knex/bin/cli.js seed:run users dotenv_config_path=.env.local --knexfile db/knexfile.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +20,7 @@
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
+    "knex": "^0.95.14",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "pg": "^8.7.1"

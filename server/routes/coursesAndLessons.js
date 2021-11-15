@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const pool = require('../db');
+const db = require('../db');
 const authorization = require('../middleware/auth');
 
 const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
@@ -9,12 +9,20 @@ const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
 router.post('', authorization, async (req, res) => {
   try {
     const { description } = req.body;
-    const newCourse = await pool.query(
-      'INSERT INTO courses (user_id, description) VALUES ($1, $2) RETURNING *',
-      [req.user, description],
+    // const newCourse = await pool.query(
+    //   'INSERT INTO courses (user_id, description) VALUES ($1, $2) RETURNING *',
+    //   [req.user, description],
+    // );
+    const [newCourse] = db('courses').insert(
+      {
+        user_id: req.user,
+        description,
+      },
+      ['*'],
     );
+    console.log({ newCourse });
 
-    res.json(camelCaseKeys(newCourse.rows[0]));
+    res.json(camelCaseKeys(newCourse));
   } catch (err) {
     console.error(err.message);
     res.status(500).json(error.message);

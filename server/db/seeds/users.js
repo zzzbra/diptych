@@ -15,7 +15,6 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex('users').insert([
         {
-          user_id: 1,
           user_name: 'Mariko',
           user_email: 'mariko@gmail.com',
           user_is_teacher: true,
@@ -23,7 +22,6 @@ exports.seed = function (knex) {
           user_password: teacherPassword,
         },
         {
-          user_id: 2,
           user_name: 'Zach',
           user_email: 'zach@gmail.com',
           user_is_teacher: false,

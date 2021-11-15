@@ -7,6 +7,10 @@ const jwtGenerator = require('../utils/jwtGenerator');
 const validInfo = require('../middleware/validInfo');
 const authorization = require('../middleware/auth');
 
+// const knexConfig = require('../db/knexfile');
+// console.log('knexConfig:', knexConfig);
+// const knex = require('knex')(knexConfig[process.env.NODE_ENV]);
+
 const LOGIN_FAILURE_RESPONSE_MESSAGE = 'Password or Email is incorrect';
 
 const buildAuthResponse = (userRowFromDatabase) => {
@@ -45,16 +49,13 @@ router.post('/register', validInfo, async (req, res) => {
       return res.status(401).send('User already exists');
     }
 
-    // 3. Bcrypt user password
-    const saltRound = 10;
-    const salt = await bcrypt.genSalt(saltRound);
-
-    const bcryptPassword = await bcrypt.hash(password, salt);
+    // 3. Bcrypt user passwor
+    const encryptedPassword = await encryptPassword(password);
 
     // 4. enter the new user inside our database
     const newUser = await pool.query(
       'INSERT INTO users(user_name, user_email, user_password, user_is_teacher) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name, email, bcryptPassword, isTeacher],
+      [name, email, encryptedPassword, isTeacher],
     );
 
     // 5. generating our jwt token

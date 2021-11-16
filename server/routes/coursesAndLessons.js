@@ -9,18 +9,13 @@ const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
 router.post('', authorization, async (req, res) => {
   try {
     const { description } = req.body;
-    // const newCourse = await pool.query(
-    //   'INSERT INTO courses (user_id, description) VALUES ($1, $2) RETURNING *',
-    //   [req.user, description],
-    // );
-    const [newCourse] = db('courses').insert(
+    const [newCourse] = await db('courses').insert(
       {
         user_id: req.user,
         description,
       },
       ['*'],
     );
-    console.log({ newCourse });
 
     res.json(camelCaseKeys(newCourse));
   } catch (err) {
@@ -32,8 +27,8 @@ router.post('', authorization, async (req, res) => {
 // get all courses
 router.get('', authorization, async (req, res) => {
   try {
-    const allCourses = await pool.query('SELECT * FROM courses');
-    const responseBody = allCourses.rows.map((row) => camelCaseKeys(row));
+    const allCourses = await db('courses');
+    const responseBody = allCourses.map((row) => camelCaseKeys(row));
 
     res.json(responseBody);
   } catch (err) {
@@ -46,12 +41,12 @@ router.get('', authorization, async (req, res) => {
 router.get('/:course_id', authorization, async (req, res) => {
   try {
     const { course_id } = req.params;
-    const course = await pool.query(
-      'SELECT * FROM courses WHERE course_id = $1 AND user_id = $2',
-      [course_id, req.user],
-    );
+    const [course] = await db('courses').where({
+      course_id,
+      user_id: req.user,
+    });
 
-    res.json(camelCaseKeys(course.rows[0]));
+    res.json(camelCaseKeys(course));
   } catch (err) {
     console.error(err.message);
     res.status(500).json(error.message);
@@ -63,12 +58,14 @@ router.put('/:course_id', authorization, async (req, res) => {
   try {
     const { course_id } = req.params;
     const { description } = req.body;
-    const updatedCourse = await pool.query(
-      'UPDATE courses SET description = $1 WHERE course_id = $2 AND user_id = $3 RETURNING *',
-      [description, course_id, req.user],
-    );
+    const [updatedCourse] = await db('courses')
+      .where({
+        course_id,
+        user_id: req.user,
+      })
+      .update({ description }, ['*']);
 
-    res.json(updatedCourse.rows.map((row) => camelCaseKeys(row)));
+    res.json(camelCaseKeys(updatedCourse));
   } catch (err) {
     console.error(err.message);
     res.status(500).json(error.message);
@@ -79,14 +76,16 @@ router.put('/:course_id', authorization, async (req, res) => {
 router.delete('/:course_id', authorization, async (req, res) => {
   try {
     const { course_id } = req.params;
-    const updatedCourses = await pool.query(
-      'DELETE FROM courses WHERE course_id = $1 AND user_id = $2 RETURNING *',
-      [course_id, req.user],
-    );
+    const updatedCourses = await db('courses')
+      .where({
+        course_id,
+        user_id: req.user,
+      })
+      .delete(['*']);
 
-    res.json(updatedCourses.rows.map((row) => camelCaseKeys(row)));
-  } catch (err) {
-    console.error(err.message);
+    res.json(updatedCourses.map((course) => camelCaseKeys(course)));
+  } catch (error) {
+    console.error(error.message);
     res.status(500).json(error.message);
   }
 });
@@ -97,11 +96,15 @@ router.delete('/:course_id', authorization, async (req, res) => {
 router.post('/:course_id/lessons', authorization, async (req, res) => {
   try {
     const { course_id, title, description } = snakeCaseKeys(req.body);
-    const newLesson = await pool.query(
-      'INSERT INTO lessons (course_id, title, description) VALUES ($1, $2, $3) RETURNING *',
-      [course_id, title, description],
+    const [newLesson] = await db('lessons').insert(
+      {
+        course_id,
+        title,
+        description,
+      },
+      ['*'],
     );
-    res.json(camelCaseKeys(newLesson.rows[0]));
+    res.json(camelCaseKeys(newLesson));
   } catch (err) {
     console.error(err.message);
     res.status(500).json(error.message);
@@ -112,13 +115,10 @@ router.post('/:course_id/lessons', authorization, async (req, res) => {
 router.get('/:course_id/lessons', authorization, async (req, res) => {
   const { course_id } = req.params;
   try {
-    const allLessons = await pool.query(
-      'SELECT * FROM lessons WHERE course_id = $1',
-      [course_id],
-    );
-    res.json(allLessons.rows.map((row) => camelCaseKeys(row)));
-  } catch (err) {
-    console.error(err.message);
+    const allLessons = await db('lessons').where({ course_id });
+    res.json(allLessons.map((lesson) => camelCaseKeys(lesson)));
+  } catch (error) {
+    console.error(error.message);
     res.status(500).json(error.message);
   }
 });
@@ -130,13 +130,10 @@ router.get(
   async (req, res) => {
     const { course_id, lesson_id } = req.params;
     try {
-      const lesson = await pool.query(
-        'SELECT * FROM lessons WHERE course_id = $1 AND lesson_id = $2',
-        [course_id, lesson_id],
-      );
-      res.json(camelCaseKeys(lesson.rows[0]));
-    } catch (err) {
-      console.error(err.message);
+      const lesson = await db('lessons').where({ course_id, lesson_id });
+      res.json(camelCaseKeys(lesson));
+    } catch (error) {
+      console.error(error.message);
       res.status(500).json(error.message);
     }
   },
@@ -150,13 +147,12 @@ router.put(
     try {
       const { course_id, lesson_id } = req.params;
       const { title, description } = req.body;
-      const updatedCourse = await pool.query(
-        'UPDATE lessons SET (title, description) = ($1, $2) WHERE course_id = $3 AND lesson_id = $4 RETURNING *',
-        [title, description, course_id, lesson_id],
-      );
-      res.json(updatedCourse.rows.map((row) => camelCaseKeys(row)));
-    } catch (err) {
-      console.error(err.message);
+      const updatedLesson = await db('lessons')
+        .where({ course_id, lesson_id })
+        .update({ title, description }, ['*']);
+      res.json(camelCaseKeys(updatedLesson));
+    } catch (error) {
+      console.error(error.message);
       res.status(500).json(error.message);
     }
   },
@@ -169,13 +165,12 @@ router.delete(
   async (req, res) => {
     try {
       const { course_id, lesson_id } = req.params;
-      const updatedCourses = await pool.query(
-        'DELETE FROM lessons WHERE course_id = $1 AND lesson_id = $2 RETURNING *',
-        [course_id, lesson_id],
-      );
-      res.json(updatedCourses.rows.map((row) => camelCaseKeys(row)));
-    } catch (err) {
-      console.error(err.message);
+      const remainingCourses = await db('lessons')
+        .where({ course_id, lesson_id })
+        .delete(['*']);
+      res.json(camelCaseKeys(remainingCourses));
+    } catch (error) {
+      console.error(error.message);
       res.status(500).json(error.message);
     }
   },

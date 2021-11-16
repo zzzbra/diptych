@@ -29,7 +29,7 @@ interface UpdateLessonArgs {
   description: string;
 }
 
-interface DeleteLessonArgs {
+export interface DeleteLessonArgs {
   courseId: string;
   lessonId: string;
 }
@@ -82,8 +82,8 @@ const lessonsApi = baseApi.injectEndpoints({
 
 export const {
   useGetLessonsQuery,
-  // useGetCourseQuery,
+  useGetLessonQuery,
   useAddNewLessonMutation,
   // useUpdateCourseMutation,
-  // useDeleteCourseMutation,
+  useDeleteLessonMutation,
 } = lessonsApi;

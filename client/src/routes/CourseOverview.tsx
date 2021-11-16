@@ -6,6 +6,8 @@ import {
   defaultAddNewLessonArgs,
   useAddNewLessonMutation,
   useGetLessonsQuery,
+  useDeleteLessonMutation,
+  DeleteLessonArgs,
 } from '../app/services/lessons';
 import Button from '../components/Button';
 import Link from '../components/Link';
@@ -32,6 +34,7 @@ const CourseOverview = (props: any) => {
     isLoading,
   } = useGetLessonsQuery({ courseId });
   const [addNewLesson] = useAddNewLessonMutation();
+  const [deleteLesson] = useDeleteLessonMutation();
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) =>
     setFormState({
@@ -50,6 +53,12 @@ const CourseOverview = (props: any) => {
       console.error(error.message);
     }
   };
+
+  const handleEditLesson = () => {
+    window.alert("You can't do that right now.");
+  };
+  const handleDeleteLesson = ({ courseId, lessonId }: DeleteLessonArgs) =>
+    deleteLesson({ courseId, lessonId });
 
   if (isError) {
     console.log({ error });
@@ -90,10 +99,32 @@ const CourseOverview = (props: any) => {
       <ul>
         {lessons.map((lesson, key) => (
           <li
-            className={classNames('rounded p-2 border-2', { 'mt-2': !!key })}
+            className={classNames('rounded p-6 border-2', { 'mt-2': !!key })}
             key={lesson.lessonId}
           >
-            <Link to={`/lessons/${lesson.lessonId}`}>{lesson.title}</Link>
+            <span className="flex justify-between align-baseline">
+              <span>
+                <Link to={`/lessons/${lesson.lessonId}`}>{lesson.title}</Link>
+                <p className="mt-4 pr-4">{lesson.description}</p>
+              </span>
+              {user?.userIsTeacher ? (
+                <span>
+                  <Button onClick={handleEditLesson}>Edit</Button>
+                  <Button
+                    color="red"
+                    onClick={() =>
+                      handleDeleteLesson({
+                        courseId: lesson.courseId,
+                        lessonId: lesson.lessonId,
+                      })
+                    }
+                    className="ml-2"
+                  >
+                    Delete
+                  </Button>
+                </span>
+              ) : null}
+            </span>
           </li>
         ))}
       </ul>

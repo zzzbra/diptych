@@ -1,9 +1,16 @@
 // move into {name}.interface.ts
 
 // API response
-export interface Todo {
-  todoId: string;
+export interface Course {
+  courseId: string;
   userId: string;
+  description: string;
+}
+
+export interface Lesson {
+  lessonId: string;
+  courseId: string;
+  title: string;
   description: string;
 }
 
@@ -30,4 +37,8 @@ export interface UserProfile {
 export interface AuthResponse {
   user: UserProfile;
   token: string;
+}
+export interface LessonOverviewArgs {
+  courseId: string;
+  lessonId: string;
 }

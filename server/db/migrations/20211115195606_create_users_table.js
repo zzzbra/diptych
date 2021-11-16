@@ -6,7 +6,7 @@ exports.up = async (knex) => {
     t.string('user_email', 255).notNullable();
     t.string('user_password', 255).notNullable();
     t.boolean('user_is_teacher', false).notNullable();
-    t.timestamps();
+    t.timestamps(true, true);
   });
 };
 

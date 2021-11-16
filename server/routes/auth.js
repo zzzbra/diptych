@@ -2,17 +2,16 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
+const db = require('../db');
 const jwtGenerator = require('../utils/jwtGenerator');
 const validInfo = require('../middleware/validInfo');
 const authorization = require('../middleware/auth');
 
-const knexConfig = require('../db/knexfile');
-const knex = require('knex')(knexConfig[process.env.NODE_ENV]);
 const { encryptPassword } = require('../utils/crypto');
 
 const LOGIN_FAILURE_RESPONSE_MESSAGE = 'Password or Email is incorrect';
 
-const buildAuthResponse = (userRowFromDatabase) => {
+const buildAuthResponse = (userRowFromDatabase = {}) => {
   const {
     user_id: userId,
     user_name: userName,
@@ -39,7 +38,7 @@ router.post('/register', validInfo, async (req, res) => {
     const { name, email, password, isTeacher } = req.body;
 
     // 2. check if user exists --> throw error if not
-    const users = await knex('users').where({ user_email: email }).select();
+    const users = await db('users').where({ user_email: email }).select();
 
     console.log('register: ', users);
 
@@ -52,7 +51,7 @@ router.post('/register', validInfo, async (req, res) => {
     const encryptedPassword = await encryptPassword(password);
 
     // 4. enter the new user inside our database
-    const [user] = await knex('users').insert(
+    const [user] = await db('users').insert(
       {
         user_name: name,
         user_email: email,
@@ -76,7 +75,7 @@ router.post('/login', validInfo, async (req, res) => {
   try {
     // Check if user doesn't exist
     const { email, password } = req.body;
-    const users = await knex('users').where({ user_email: email }).select();
+    const users = await db('users').where({ user_email: email }).select();
 
     if (users.length === 0) {
       console.info('No such user registered.');
@@ -103,7 +102,7 @@ router.post('/login', validInfo, async (req, res) => {
 
 router.get('/is-authenticated', authorization, async (req, res) => {
   try {
-    const [user] = await knex('users').where({ user_id: req.user }).select();
+    const [user] = await db('users').where({ user_id: req.user }).select();
 
     res.json(buildAuthResponse(user));
   } catch (error) {

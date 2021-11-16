@@ -1,9 +1,4 @@
-// const path = require("path");
-// require('dotenv').config({ path: path.join(__dirname, ) });
 require('dotenv').config();
-
-// console.log('process.env', process.env);
-// console.log('PGDATABASE', process.env.PGDATABASE);
 
 module.exports = {
   development: {

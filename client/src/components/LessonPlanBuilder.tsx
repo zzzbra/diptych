@@ -3,13 +3,20 @@ import { LessonOverviewArgs } from 'models';
 
 const LessonPlanBuilder = ({ courseId, lessonId }: LessonOverviewArgs) => {
   console.log(courseId, lessonId);
+
+  // const cards = [
+  //   {
+  //     cardId: '1'
+  //   }
+  // ];
+
   return (
     <div>
-      <ul>
+      <ol>
         <li>view existing cards</li>
         <li>add new cards </li>
         <li>rearrange order of cards</li>
-      </ul>
+      </ol>
     </div>
   );
 };

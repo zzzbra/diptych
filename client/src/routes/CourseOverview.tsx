@@ -104,7 +104,11 @@ const CourseOverview = (props: any) => {
           >
             <span className="flex justify-between align-baseline">
               <span>
-                <Link to={`/lessons/${lesson.lessonId}`}>{lesson.title}</Link>
+                <Link
+                  to={`/courses/${lesson.courseId}/lessons/${lesson.lessonId}`}
+                >
+                  {lesson.title}
+                </Link>
                 <p className="mt-4 pr-4">{lesson.description}</p>
               </span>
               {user?.userIsTeacher ? (
@@ -112,12 +116,7 @@ const CourseOverview = (props: any) => {
                   <Button onClick={handleEditLesson}>Edit</Button>
                   <Button
                     color="red"
-                    onClick={() =>
-                      handleDeleteLesson({
-                        courseId: lesson.courseId,
-                        lessonId: lesson.lessonId,
-                      })
-                    }
+                    onClick={() => handleDeleteLesson}
                     className="ml-2"
                   >
                     Delete

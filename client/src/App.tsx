@@ -11,6 +11,7 @@ import Dashboard from './routes/Dashboard';
 import StudySession from './routes/StudySession';
 import Login from './routes/Login';
 import Register from './routes/Register';
+import Lesson from './routes/Lesson';
 
 import PageContentWrapper from './components/PageContentWrapper';
 import { useAuth } from './features/auth/hooks';
@@ -98,6 +99,17 @@ function App() {
             component={(props: any) => {
               return isAuthenticated ? (
                 <CourseOverview {...props} />
+              ) : (
+                <Redirect to="/login" />
+              );
+            }}
+          />
+          <Route
+            exact
+            path="/courses/:courseId/lessons/:lessonId" // TODO: add redirect for null params to this view
+            component={(props: any) => {
+              return isAuthenticated ? (
+                <Lesson {...props} />
               ) : (
                 <Redirect to="/login" />
               );

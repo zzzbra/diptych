@@ -38,3 +38,7 @@ export interface AuthResponse {
   user: UserProfile;
   token: string;
 }
+export interface LessonOverviewArgs {
+  courseId: string;
+  lessonId: string;
+}

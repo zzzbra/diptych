@@ -26,6 +26,7 @@ exports.seed = async function (knex) {
 
   // Courses
   const CRYPTO_CLASS_DESC = 'Crypto in Node.js';
+  const MATH_CLASS_DESC = 'Discrete Mathematics';
   const [{ user_id: teacherId }] = await knex('users')
     .select('user_id')
     .where({ user_is_teacher: true });
@@ -35,6 +36,10 @@ exports.seed = async function (knex) {
     {
       user_id: teacherId,
       description: CRYPTO_CLASS_DESC,
+    },
+    {
+      user_id: teacherId,
+      description: MATH_CLASS_DESC,
     },
   ]);
 

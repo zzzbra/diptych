@@ -48,7 +48,7 @@ const lessonsApi = baseApi.injectEndpoints({
     getLesson: build.query<Lesson, GetLessonArgs>({
       query: ({ courseId, lessonId }) => {
         return {
-          url: `v1/courses/${courseId}/lessong/${lessonId}`,
+          url: `v1/courses/${courseId}/lessons/${lessonId}`,
           method: 'get',
         };
       },

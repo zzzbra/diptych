@@ -130,7 +130,8 @@ router.get(
   async (req, res) => {
     const { course_id, lesson_id } = req.params;
     try {
-      const lesson = await db('lessons').where({ course_id, lesson_id });
+      const [lesson] = await db('lessons').where({ course_id, lesson_id });
+
       res.json(camelCaseKeys(lesson));
     } catch (error) {
       console.error(error.message);

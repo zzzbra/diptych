@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:migrate": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:latest dotenv_config_path=.env.local --knexfile db/knexfile.js",
     "db:rollback": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:rollback dotenv_config_path=.env.local --knexfile db/knexfile.js",
-    "db:seed:run:users": "node -r dotenv/config ./node_modules/knex/bin/cli.js seed:run users dotenv_config_path=.env.local --knexfile db/knexfile.js"
+    "db:seed:run:users": "node -r dotenv/config ./node_modules/knex/bin/cli.js seed:run users dotenv_config_path=.env.local --knexfile db/knexfile.js",
+    "db:rebuild": "NODE_ENV=development npm run db:rollback && NODE_ENV=development npm run db:migrate && NODE_ENV=development npm run db:seed:run:users"
   },
   "author": "",
   "license": "ISC",

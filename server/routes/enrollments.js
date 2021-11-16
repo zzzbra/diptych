@@ -11,7 +11,7 @@ router.post('/enroll', authorization, async (req, res) => {
   try {
     const [newEnrollment] = await db('enrollments').insert(
       {
-        user_id: req.user,
+        student_id: req.user,
         course_id,
       },
       ['*'],
@@ -24,8 +24,15 @@ router.post('/enroll', authorization, async (req, res) => {
   }
 });
 
-router.post('/withdraw', authorization, async (req, res) => {
+router.delete('/withdraw/:courseId', authorization, async (req, res) => {
+  console.log('req.params: ', req.params);
+  const { course_id } = snakeCaseKeys(req.params);
   try {
+    const enrollments = await db('enrollments')
+      .where({ course_id })
+      .delete(['*']);
+
+    res.json(enrollments.map((enrollment) => enrollment.course_id));
   } catch (error) {
     console.log(error.message);
     res.json(error.message);
@@ -34,6 +41,13 @@ router.post('/withdraw', authorization, async (req, res) => {
 
 router.get('', authorization, async (req, res) => {
   try {
+    const enrollments = await db('enrollments')
+      .where({ student_id: req.user })
+      .select('course_id');
+
+    // Return just array of the courseIds?
+    res.json(enrollments.map(({ course_id }) => course_id));
+    // res.json(enrollments.map((enrollment) => camelCaseKeys(enrollment)));
   } catch (error) {
     console.log(error.message);
     res.json(error.message);

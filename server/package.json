@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config index.js dotenv_config_path=.env.local --trace-warnings",
+    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js dotenv_config_path=.env.local --trace-warnings",
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:migrate": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:latest dotenv_config_path=.env.local --knexfile db/knexfile.js",

@@ -1,12 +1,12 @@
 import React from 'react';
 import EditCourse from './EditCourse';
 import Button from './Button';
+import Link from './Link';
 import {
   useDeleteCourseMutation,
   useUpdateCourseMutation,
   useGetCoursesQuery,
 } from '../app/services/courses';
-import { Link } from 'react-router-dom';
 
 const ListCourses = () => {
   const {
@@ -36,12 +36,7 @@ const ListCourses = () => {
           key={courseId}
           className="flex flex-row flex-no-wrap justify-between items-baseline mb-2 border-b-1 border-gray-100"
         >
-          <Link
-            to={`/courses/${courseId}`}
-            className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 pr-2"
-          >
-            {description}
-          </Link>
+          <Link to={`/courses/${courseId}`}>{description}</Link>
           <span className="flex flex-row flex-nowrap items-center">
             <EditCourse
               {...{

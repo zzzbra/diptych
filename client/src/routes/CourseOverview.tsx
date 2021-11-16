@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import {
   defaultAddNewLessonArgs,
@@ -9,9 +8,9 @@ import {
   useGetLessonsQuery,
 } from '../app/services/lessons';
 import Button from '../components/Button';
+import Link from '../components/Link';
 import Input from '../components/Input';
 import { useAuth } from '../features/auth/hooks';
-import { Lesson } from '../models';
 
 interface CourseOverviewProps {
   courseId: string;

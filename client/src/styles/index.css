@@ -2,11 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './globals.css';
-@import './utilities.css';
+@layer base {
+  h1 {
+    @apply text-4xl;
+  }
 
-@layer utilities {
-  .container {
-    @apply max-w-4xl mx-auto px-8;
+  h2 {
+    @apply text-2xl;
   }
 }
+
+@import './utilities.css';

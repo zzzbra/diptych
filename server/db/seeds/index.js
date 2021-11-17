@@ -82,4 +82,26 @@ exports.seed = async function (knex) {
       course_id: cryptoCourseId,
     },
   ]);
+
+  // create cards
+  const [{ lesson_id: lessonOneId }] = await knex('lessons').where({
+    course_id: cryptoCourseId,
+  });
+
+  const LESSON_ONE_CARDS = [
+    {
+      front:
+        'What is a Hash? The word hash, funny enough, has etymological roots, meaning to "chop & mix".',
+    },
+    {
+      front: 'This is the second card',
+    },
+  ];
+
+  await knex('cards').insert(
+    LESSON_ONE_CARDS.map((uniqFields) => ({
+      ...uniqFields,
+      lesson_id: lessonOneId,
+    })),
+  );
 };

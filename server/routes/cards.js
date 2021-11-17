@@ -5,12 +5,6 @@ const authorization = require('../middleware/auth');
 
 const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
 
-/**
- * GET /cards
- * GET /cards?course=:course_id
- * GET /cards/:card_id
- */
-
 // create a course
 router.post('', authorization, async (req, res) => {
   try {

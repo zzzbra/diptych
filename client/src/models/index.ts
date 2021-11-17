@@ -42,3 +42,11 @@ export interface LessonOverviewArgs {
   courseId: string;
   lessonId: string;
 }
+
+export interface Card {
+  front: string;
+  back: string;
+  lessonId: string;
+  cardId: string;
+  isReviewCard: boolean;
+}

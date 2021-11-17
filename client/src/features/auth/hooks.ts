@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+
 import { selectCurrentUserAuth } from './auth.slice';
 
 export const useAuth = () => {

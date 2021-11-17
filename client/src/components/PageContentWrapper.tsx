@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Navigation from './Navigation';
+import Navigation from 'components/Navigation';
 
 const PageContentWrapper = ({ children, ...props }: any) => {
   return (

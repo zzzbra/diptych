@@ -3,11 +3,10 @@ import { useDispatch } from 'react-redux';
 import { AcademicCapIcon } from '@heroicons/react/outline';
 import { Link, useHistory } from 'react-router-dom';
 
-import Button from './Button';
-import { useCheckIsAuthenticated } from '../features/auth/auth.slice';
-import { logOut } from '../features/auth/auth.slice';
-import { clearToken } from '../features/auth/utils';
-import { useAuth } from '../features/auth/hooks';
+import Button from 'components/Button';
+import { logOut } from 'features/auth/auth.slice';
+import { clearToken } from 'features/auth/utils';
+import { useAuth } from 'features/auth/hooks';
 
 const Navigation = () => {
   const { user, isAuthenticated } = useAuth();

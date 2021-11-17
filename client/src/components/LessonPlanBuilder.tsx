@@ -1,5 +1,5 @@
 import React from 'react';
-import { LessonOverviewArgs } from '../models';
+import { LessonOverviewArgs } from 'models';
 
 const LessonPlanBuilder = ({ courseId, lessonId }: LessonOverviewArgs) => {
   console.log(courseId, lessonId);

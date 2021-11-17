@@ -1,13 +1,14 @@
 import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import Input from './Input';
+
+import Input from 'components/Input';
 
 interface ModalProps {
-  open: boolean,
-  setOpen: (state: boolean) => void,
-  updatedDescription: string,
-  setUpdatedDescription: (u: string) => void,
-  updateTodo: (newTodo: string) => void,
+  open: boolean;
+  setOpen: (state: boolean) => void;
+  updatedDescription: string;
+  setUpdatedDescription: (u: string) => void;
+  updateTodo: (newTodo: string) => void;
 }
 
 export default function Modal({

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import Input from './Input';
-import Button from './Button';
-import { useAddNewCourseMutation } from '../services/courses';
+
+import Input from 'components/Input';
+import Button from 'components/Button';
+import { useAddNewCourseMutation } from 'services/courses';
 
 const InputCourse = () => {
   const [description, setDescription] = useState('');

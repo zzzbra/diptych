@@ -17,7 +17,7 @@ import PageContentWrapper from './components/PageContentWrapper';
 import { useAuth } from './features/auth/hooks';
 import { clearToken, getToken } from './features/auth/utils';
 import { setCredentials } from './features/auth/auth.slice';
-import { useIsAuthenticatedQuery } from './app/services/auth';
+import { useIsAuthenticatedQuery } from './services/auth';
 import CourseOverview from './routes/CourseOverview';
 
 function App() {

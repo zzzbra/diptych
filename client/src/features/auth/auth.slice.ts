@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './../../app/store';
+import { RootState } from './../../store';
 import { AuthResponse, UserProfile } from '../../models';
 
 type AuthState = {

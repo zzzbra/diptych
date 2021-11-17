@@ -8,7 +8,7 @@ import {
   useGetLessonsQuery,
   useDeleteLessonMutation,
   DeleteLessonArgs,
-} from '../app/services/lessons';
+} from '../services/lessons';
 import Button from '../components/Button';
 import Link from '../components/Link';
 import Input from '../components/Input';

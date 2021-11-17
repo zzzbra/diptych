@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { useGetLessonQuery } from '../app/services/lessons';
+import { useGetLessonQuery } from '../services/lessons';
 import LessonPlanBuilder from '../components/LessonPlanBuilder';
 import { LessonOverviewArgs } from '../models';
 

@@ -6,7 +6,7 @@ import {
   useDeleteCourseMutation,
   useUpdateCourseMutation,
   useGetCoursesQuery,
-} from '../app/services/courses';
+} from '../services/courses';
 
 const ListCourses = () => {
   const {

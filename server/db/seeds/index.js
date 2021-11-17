@@ -10,15 +10,14 @@ exports.seed = async function (knex) {
   // Inserts seed entries
   await knex('users').insert([
     {
-      user_name: 'Mariko',
-      user_email: 'mariko@gmail.com',
+      user_name: 'Teacher',
+      user_email: 'teacher@web.com',
       user_is_teacher: true,
-      // TODO: use pgcrypto to create encrypted password
       user_password: teacherPassword,
     },
     {
-      user_name: 'Zach',
-      user_email: 'zach@gmail.com',
+      user_name: 'Student',
+      user_email: 'student@web.com',
       user_is_teacher: false,
       user_password: studentPassword,
     },

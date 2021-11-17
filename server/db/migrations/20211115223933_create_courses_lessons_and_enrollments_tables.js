@@ -24,10 +24,33 @@ exports.up = async function (knex) {
     t.foreign('student_id').references('user_id').inTable('users');
     t.timestamps(true, true);
   });
+
+  await knex.schema.createTable('cards', (t) => {
+    t.increments('card_id').notNullable();
+    t.integer('lesson_id');
+    t.foreign('lesson_id').references('lesson_id').inTable('lessons');
+    t.boolean('is_review_card').defaultTo(false);
+    t.string('front').notNullable();
+    t.string('back');
+    t.timestamps(true, true);
+  });
+
+  await knex.schema.createTable('reviews', (t) => {
+    t.increments('review_id').notNullable();
+    t.uuid('student_id');
+    t.foreign('student_id').references('user_id').inTable('users');
+    t.integer('card_id');
+    t.foreign('card_id').references('card_id').inTable('cards');
+    t.integer('consecutive_recalls').defaultTo(0);
+    t.timestamp('due_date');
+    t.timestamps(true, true);
+  });
 };
 
 exports.down = function (knex) {
   return knex.schema
+    .dropTable('reviews')
+    .dropTable('cards')
     .dropTable('enrollments')
     .dropTable('lessons')
     .dropTable('courses');

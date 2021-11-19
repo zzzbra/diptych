@@ -1,12 +1,13 @@
 import React from 'react';
-import EditCourse from './EditCourse';
-import Button from './Button';
-import Link from './Link';
+
+import Button from 'components/Button';
+import Link from 'components/Link';
 import {
   useDeleteCourseMutation,
   useUpdateCourseMutation,
   useGetCoursesQuery,
-} from '../app/services/courses';
+} from 'services/courses';
+import EditCourse from './EditCourse';
 
 const ListCourses = () => {
   const {

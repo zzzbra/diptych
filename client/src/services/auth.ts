@@ -2,7 +2,7 @@ import {
   AuthResponse,
   LoginParameters,
   RegistrationParameters,
-} from '../../models';
+} from '../models';
 import baseApi from './baseApi';
 
 const authApi = baseApi.injectEndpoints({

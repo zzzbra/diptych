@@ -7,7 +7,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import tagTypes from '../tagTypes';
-import { getToken } from '../../features/auth/utils';
+import { getToken } from '../features/auth/utils';
 
 // TODO: set up FE env variables
 const protocol = 'http';

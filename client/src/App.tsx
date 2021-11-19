@@ -5,45 +5,50 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 
-import Dashboard from './routes/Dashboard';
-import StudySession from './routes/StudySession';
-import Login from './routes/Login';
-import Register from './routes/Register';
-import Lesson from './routes/Lesson';
+// import { PrivateRoute } from 'views/PrivateRoute';
+import Dashboard from 'views/Dashboard/index';
+// import StudySession from 'views/StudySession';
+import Login from 'views/Login';
+import Signup from 'views/Signup';
+import TeacherRegistrar from 'views/Registrar/TeacherView';
+import StudentRegistrar from 'views/Registrar/StudentView';
+// import Lesson from 'views/Lesson';
+// import CourseOverview from 'views/CourseOverview';
 
-import PageContentWrapper from './components/PageContentWrapper';
-import { useAuth } from './features/auth/hooks';
-import { clearToken, getToken } from './features/auth/utils';
-import { setCredentials } from './features/auth/auth.slice';
-import { useIsAuthenticatedQuery } from './app/services/auth';
-import CourseOverview from './routes/CourseOverview';
+import PageContentWrapper from 'components/PageContentWrapper';
+
+import { useAuth } from 'features/auth/hooks';
+// import { clearToken, getToken } from 'features/auth/utils';
+// import { setCredentials } from 'features/auth/auth.slice';
+// import { useIsAuthenticatedQuery } from 'services/auth';
 
 function App() {
   const auth = useAuth();
 
-  const dispatch = useDispatch();
-  const shouldRefetch = !auth?.isAuthenticated && !!getToken();
+  // const dispatch = useDispatch();
+  // const shouldRefetch = !auth?.isAuthenticated && !!getToken();
 
-  const {
-    data: authData,
-    isError,
-    error,
-  } = useIsAuthenticatedQuery(undefined, {
-    skip: !shouldRefetch,
-  });
+  // const {
+  //   data: authData,
+  //   isError,
+  //   error,
+  // } = useIsAuthenticatedQuery(undefined, {
+  //   skip: !shouldRefetch,
+  // });
 
-  if (isError && error?.message === 'jwt expired') {
-    clearToken();
-  }
+  // if (isError && error?.message === 'jwt expired') {
+  //   clearToken();
+  // }
 
-  if (shouldRefetch && authData) {
-    // FIXME this causes error on redirect
-    dispatch(setCredentials(authData));
-  }
+  // if (shouldRefetch && authData) {
+  //   // FIXME this causes error on redirect
+  //   dispatch(setCredentials(authData));
+  // }
 
-  const { isAuthenticated = false } = auth || authData || {};
+  // const { isAuthenticated = false } = auth || authData || {};
+  const { isAuthenticated = false, user } = auth;
 
   return (
     <Router>
@@ -73,10 +78,10 @@ function App() {
           />
           <Route
             exact
-            path="/register"
+            path="/signup"
             component={(props: any) =>
               !isAuthenticated ? (
-                <Register {...props} />
+                <Signup {...props} />
               ) : (
                 <Redirect to="/dashboard" />
               )
@@ -95,36 +100,18 @@ function App() {
           />
           <Route
             exact
-            path="/courses/:courseId" // TODO: add redirect for null params to this view
+            path="/registrar"
             component={(props: any) => {
-              return isAuthenticated ? (
-                <CourseOverview {...props} />
+              if (!isAuthenticated) {
+                return <Redirect to="/login" />;
+              }
+
+              return user?.userIsTeacher ? (
+                <TeacherRegistrar {...props} />
               ) : (
-                <Redirect to="/login" />
+                <StudentRegistrar {...props} />
               );
             }}
-          />
-          <Route
-            exact
-            path="/courses/:courseId/lessons/:lessonId" // TODO: add redirect for null params to this view
-            component={(props: any) => {
-              return isAuthenticated ? (
-                <Lesson {...props} />
-              ) : (
-                <Redirect to="/login" />
-              );
-            }}
-          />
-          <Route
-            exact
-            path="/study-session"
-            component={(props: any) =>
-              isAuthenticated ? (
-                <StudySession {...props} />
-              ) : (
-                <Redirect to="/login" />
-              )
-            }
           />
         </Switch>
       </PageContentWrapper>

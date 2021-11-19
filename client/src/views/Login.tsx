@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { useLoginMutation } from '../app/services/auth';
+import { useLoginMutation } from '../services/auth';
 import { setCredentials } from '../features/auth/auth.slice';
 
 import Button from '../components/Button';
@@ -89,7 +89,7 @@ const Login = () => {
           </Button>
           <a
             className="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
-            href="/register"
+            href="/signup"
           >
             Don't have an account? Sign up.
           </a>

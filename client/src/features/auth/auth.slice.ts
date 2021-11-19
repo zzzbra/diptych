@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './../../app/store';
-import { AuthResponse, UserProfile } from '../../models';
+
+import { RootState } from 'store';
+import { AuthResponse, UserProfile } from 'models';
 
 type AuthState = {
   user: UserProfile | null;
@@ -35,9 +36,8 @@ const authSlice = createSlice({
 
 export const { setCredentials, logOut } = authSlice.actions;
 
-export default authSlice.reducer;
-
 export const selectCurrentUserAuth = (state: RootState) => state.auth;
-
 export const useCheckIsAuthenticated = () =>
   useSelector((state: RootState) => state.auth.isAuthenticated);
+
+export default authSlice.reducer;

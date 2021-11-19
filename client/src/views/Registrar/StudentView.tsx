@@ -1,17 +1,17 @@
 // Student dashboard
 import classNames from 'classnames';
 import React from 'react';
-import { useGetCoursesQuery } from '../app/services/courses';
-import Button from '../components/Button';
+
+import { useGetCoursesQuery } from 'services/courses';
+import Button from 'components/Button';
 import {
   useEnrollMutation,
   useWithdrawMutation,
   useGetEnrollmentsQuery,
-} from '../app/services/enrollments';
+} from 'services/enrollments';
 
 const Classroom = () => {
   const { data: enrollments = [] } = useGetEnrollmentsQuery();
-  console.log({ enrollments });
   const [
     enroll,
     {

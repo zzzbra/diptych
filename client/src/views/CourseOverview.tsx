@@ -8,7 +8,7 @@ import {
   useGetLessonsQuery,
   useDeleteLessonMutation,
   DeleteLessonArgs,
-} from '../app/services/lessons';
+} from '../services/lessons';
 import Button from '../components/Button';
 import Link from '../components/Link';
 import Input from '../components/Input';
@@ -47,7 +47,6 @@ const CourseOverview = (props: any) => {
 
     try {
       await addNewLesson(formState);
-      console.log('calling setFormState');
       setFormState(formDefault);
     } catch (error: any) {
       console.error(error.message);

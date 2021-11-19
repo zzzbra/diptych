@@ -1,6 +1,6 @@
 import baseApi from './baseApi';
 import { COURSE_TAG_TYPE } from '../tagTypes';
-import { Course } from '../../models';
+import { Course } from '../models';
 
 interface GetCourseArgs {
   id: string;

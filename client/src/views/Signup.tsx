@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { useRegistrationMutation } from '../app/services/auth';
+import { useRegistrationMutation } from '../services/auth';
 import Button from '../components/Button';
 import { setCredentials } from '../features/auth/auth.slice';
 

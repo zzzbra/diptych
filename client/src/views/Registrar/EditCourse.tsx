@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import Modal from './Modal';
+import Modal from 'components/Modal';
+import Input from 'components/Input';
 
 interface EditCourseArgs {
   previousDescription: string;
   updateCourse: (newCourse: string) => void;
 }
+
 const EditCourse = ({ previousDescription, updateCourse }: EditCourseArgs) => {
+  // TODO: move these out into a global state handler
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [updatedDescription, setUpdatedDescription] =
     useState(previousDescription);
 
@@ -23,12 +27,21 @@ const EditCourse = ({ previousDescription, updateCourse }: EditCourseArgs) => {
         Edit
       </button>
       <Modal
-        open={isModalOpen}
-        setOpen={setIsModalOpen}
-        updatedDescription={updatedDescription}
-        setUpdatedDescription={setUpdatedDescription}
-        updateTodo={updateCourse}
-      />
+        confirmButtonText="Update"
+        onConfirmation={() => updateCourse(updatedDescription)}
+        dismissButtonText="Cancel"
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        title="Edit Course"
+      >
+        <Input
+          className="w-full"
+          id="edit-todo-input"
+          label="Make your changes below:"
+          onChange={(e) => setUpdatedDescription(e.currentTarget.value)}
+          value={updatedDescription}
+        />
+      </Modal>
     </>
   );
 };

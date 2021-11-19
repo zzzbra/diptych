@@ -6,6 +6,9 @@ import Input from 'components/Input';
 interface ModalProps {
   open: boolean;
   setOpen: (state: boolean) => void;
+  title?: string;
+  children?: any;
+  // Remove what's below
   updatedDescription: string;
   setUpdatedDescription: (u: string) => void;
   updateTodo: (newTodo: string) => void;
@@ -14,6 +17,9 @@ interface ModalProps {
 export default function Modal({
   open,
   setOpen,
+  title,
+  children,
+  // extract these into form
   updatedDescription,
   setUpdatedDescription,
   updateTodo,
@@ -65,7 +71,7 @@ export default function Modal({
                       as="h3"
                       className="text-lg leading-6 font-medium text-gray-900"
                     >
-                      Edit To Do
+                      {title}
                     </Dialog.Title>
                     <div className="mt-4">
                       <Input

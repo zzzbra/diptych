@@ -1,6 +1,5 @@
 import React from 'react';
 
-import EditCourse from 'components/EditCourse';
 import Button from 'components/Button';
 import Link from 'components/Link';
 import {
@@ -8,6 +7,7 @@ import {
   useUpdateCourseMutation,
   useGetCoursesQuery,
 } from 'services/courses';
+import EditCourse from './EditCourse';
 
 const ListCourses = () => {
   const {

@@ -28,7 +28,7 @@ router.post('', authorization, async (req, res) => {
 router.get('', authorization, async (req, res) => {
   try {
     const allCourses = await db('courses');
-    const responseBody = allCourses.map((row) => camelCaseKeys(row));
+    const responseBody = allCourses.map((course) => camelCaseKeys(course));
 
     res.json(responseBody);
   } catch (err) {

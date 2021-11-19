@@ -25,6 +25,8 @@ const EditCourse = ({ previousDescription, updateCourse }: EditCourseArgs) => {
       <Modal
         open={isModalOpen}
         setOpen={setIsModalOpen}
+        title="Edit Course"
+        // these become props on the child component
         updatedDescription={updatedDescription}
         setUpdatedDescription={setUpdatedDescription}
         updateTodo={updateCourse}

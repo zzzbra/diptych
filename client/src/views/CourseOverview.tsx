@@ -47,7 +47,6 @@ const CourseOverview = (props: any) => {
 
     try {
       await addNewLesson(formState);
-      console.log('calling setFormState');
       setFormState(formDefault);
     } catch (error: any) {
       console.error(error.message);

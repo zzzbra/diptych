@@ -89,7 +89,7 @@ const Login = () => {
           </Button>
           <a
             className="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker"
-            href="/register"
+            href="/signup"
           >
             Don't have an account? Sign up.
           </a>

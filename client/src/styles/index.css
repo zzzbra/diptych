@@ -14,6 +14,10 @@
   h3 {
     @apply text-xl pb-4;
   }
+
+  p {
+    @apply text-lg pb-2;
+  }
 }
 
 @import './utilities.css';

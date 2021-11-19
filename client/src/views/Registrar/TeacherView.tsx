@@ -10,7 +10,7 @@ const Planner = () => {
   return (
     <>
       <h2 className="text-l mb-3">Greetings, Mr./Ms. {user?.userName}!</h2>
-      <h1 className="text-3xl mb-6">Courses I Teach</h1>
+      <h1 className="text-3xl mb-6">Courses You Teach</h1>
       <ListCourses />
       <div className="pt-10">
         <h2 className="pb-4">Add new courses to curriculum</h2>

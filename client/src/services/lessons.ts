@@ -39,16 +39,25 @@ const lessonsApi = baseApi.injectEndpoints({
     getLessons: build.query<Lesson[], GetLessonsArgs>({
       query: (data) => {
         return {
-          url: `v1/courses/${data.courseId}/lessons`,
+          url: 'v1/lessons',
+          method: 'get',
+        };
+      },
+      providesTags: [LESSON_TAG_TYPE],
+    }),
+    getLessonsInCourse: build.query<Lesson[], GetLessonsArgs>({
+      query: (data) => {
+        return {
+          url: `v1/lessons?courseId=${data.courseId}`,
           method: 'get',
         };
       },
       providesTags: [COURSE_TAG_TYPE, LESSON_TAG_TYPE],
     }),
     getLesson: build.query<Lesson, GetLessonArgs>({
-      query: ({ courseId, lessonId }) => {
+      query: ({ lessonId }) => {
         return {
-          url: `v1/courses/${courseId}/lessons/${lessonId}`,
+          url: `v1/${lessonId}`,
           method: 'get',
         };
       },
@@ -56,23 +65,23 @@ const lessonsApi = baseApi.injectEndpoints({
     }),
     addNewLesson: build.mutation<Lesson, AddNewLessonArgs>({
       query: (data) => ({
-        url: `v1/courses/${data.courseId}/lessons`,
+        url: `v1/lessons`,
         method: 'post',
         data,
       }),
       invalidatesTags: [COURSE_TAG_TYPE, LESSON_TAG_TYPE],
     }),
     updateLesson: build.mutation<Lesson, UpdateLessonArgs>({
-      query: ({ courseId, lessonId, title, description }) => ({
-        url: `v1/courses/${courseId}/lessons/${lessonId}`,
+      query: ({ lessonId, title, description }) => ({
+        url: `v1/lessons/${lessonId}`,
         method: 'put',
         data: { title, description },
       }),
       invalidatesTags: [COURSE_TAG_TYPE],
     }),
     deleteLesson: build.mutation<Lesson[], DeleteLessonArgs>({
-      query: ({ courseId, lessonId }) => ({
-        url: `v1/courses/${courseId}/lessons/${lessonId}`,
+      query: ({ lessonId }) => ({
+        url: `v1/lessons/${lessonId}`,
         method: 'delete',
       }),
       invalidatesTags: [COURSE_TAG_TYPE],
@@ -82,6 +91,7 @@ const lessonsApi = baseApi.injectEndpoints({
 
 export const {
   useGetLessonsQuery,
+  useGetLessonsInCourseQuery,
   useGetLessonQuery,
   useAddNewLessonMutation,
   // useUpdateCourseMutation,

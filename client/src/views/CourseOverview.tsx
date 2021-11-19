@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import {
   defaultAddNewLessonArgs,
   useAddNewLessonMutation,
-  useGetLessonsQuery,
+  useGetLessonsInCourseQuery,
   useDeleteLessonMutation,
   DeleteLessonArgs,
 } from '../services/lessons';
@@ -32,7 +32,7 @@ const CourseOverview = (props: any) => {
     isError,
     isFetching,
     isLoading,
-  } = useGetLessonsQuery({ courseId });
+  } = useGetLessonsInCourseQuery({ courseId });
   const [addNewLesson] = useAddNewLessonMutation();
   const [deleteLesson] = useDeleteLessonMutation();
 

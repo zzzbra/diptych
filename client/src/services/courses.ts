@@ -2,6 +2,10 @@ import baseApi from './baseApi';
 import { COURSE_TAG_TYPE } from '../tagTypes';
 import { Course } from '../models';
 
+interface GetCoursesOfferedByTeacherArgs {
+  userId: string;
+}
+
 interface GetCourseArgs {
   id: string;
 }
@@ -21,6 +25,16 @@ interface DeleteCourseArgs {
 
 const coursesApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    getCoursesOfferedByTeacher: build.query<
+      Course[],
+      GetCoursesOfferedByTeacherArgs
+    >({
+      query: ({ userId }) => ({
+        url: `v1/courses?userId=${userId}`,
+        method: 'get',
+      }),
+      providesTags: [COURSE_TAG_TYPE],
+    }),
     getCourses: build.query<Course[], void>({
       query: () => ({
         url: 'v1/courses',
@@ -65,6 +79,7 @@ const coursesApi = baseApi.injectEndpoints({
 
 export const {
   useGetCoursesQuery,
+  useGetCoursesOfferedByTeacherQuery,
   useGetCourseQuery,
   useAddNewCourseMutation,
   useUpdateCourseMutation,

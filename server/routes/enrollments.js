@@ -25,7 +25,6 @@ router.post('/enroll', authorization, async (req, res) => {
 });
 
 router.delete('/withdraw/:courseId', authorization, async (req, res) => {
-  console.log('req.params: ', req.params);
   const { course_id } = snakeCaseKeys(req.params);
   try {
     const enrollments = await db('enrollments')

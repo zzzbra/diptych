@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { NoAuthOnlyRoute, PrivateRoute } from 'views/PrivateRoute';
+import { UnauthOnlyRoute, PrivateRoute } from 'views/PrivateRoute';
 import Dashboard from 'views/Dashboard/index';
 import Login from 'views/Login';
 import Signup from 'views/Signup';
@@ -24,13 +24,13 @@ function App() {
             <h1>Welcome!</h1>
           </Route>
 
-          <NoAuthOnlyRoute exact path="/login">
+          <UnauthOnlyRoute exact path="/login">
             <Login />
-          </NoAuthOnlyRoute>
+          </UnauthOnlyRoute>
 
-          <NoAuthOnlyRoute exact path="/signup">
+          <UnauthOnlyRoute exact path="/signup">
             <Signup />
-          </NoAuthOnlyRoute>
+          </UnauthOnlyRoute>
 
           <PrivateRoute exact path="/dashboard">
             <Dashboard />

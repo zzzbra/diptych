@@ -23,7 +23,7 @@ export function PrivateRoute({ children, ...rest }: RouteProps) {
   );
 }
 
-export function NoAuthOnlyRoute({ children, ...rest }: RouteProps) {
+export function UnauthOnlyRoute({ children, ...rest }: RouteProps) {
   const { isAuthenticated } = useAuth();
 
   return (

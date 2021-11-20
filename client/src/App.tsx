@@ -15,7 +15,9 @@ import { useAuth } from 'features/auth/hooks';
 
 function App() {
   const auth = useAuth();
+
   const { user } = auth;
+  console.log('App | auth: ', auth);
 
   return (
     <Router>
@@ -33,29 +35,13 @@ function App() {
             <Signup />
           </UnauthOnlyRoute>
 
-          <PrivateRoute
-            exact
-            path="/dashboard"
-            render={(props: any) =>
-              user?.userIsTeacher ? (
-                <TeacherDashboard {...props} />
-              ) : (
-                <StudentDashboard {...props} />
-              )
-            }
-          />
+          <PrivateRoute exact path="/dashboard">
+            {user?.userIsTeacher ? <TeacherDashboard /> : <StudentDashboard />}
+          </PrivateRoute>
 
-          <PrivateRoute
-            exact
-            path="/registrar"
-            render={(props: any) =>
-              user?.userIsTeacher ? (
-                <TeacherRegistrar {...props} />
-              ) : (
-                <StudentRegistrar {...props} />
-              )
-            }
-          />
+          <PrivateRoute exact path="/registrar">
+            {user?.userIsTeacher ? <TeacherRegistrar /> : <StudentRegistrar />}
+          </PrivateRoute>
 
           <Route path="*" component={() => <h1>Uh Oh! Page not found!!</h1>} />
         </Switch>

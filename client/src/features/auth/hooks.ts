@@ -1,10 +1,32 @@
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useGetUserQuery } from 'services/auth';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { selectCurrentUserAuth } from './auth.slice';
+import { getToken, clearToken } from './utils';
+import { setCredentials, selectCurrentUserAuth } from './auth.slice';
 
 export const useAuth = () => {
-  const auth = useSelector(selectCurrentUserAuth);
+  const authState = useSelector(selectCurrentUserAuth);
+  const shouldRefetch = !authState?.isAuthenticated && !!getToken();
 
-  return useMemo(() => auth, [auth]);
+  const {
+    data: authData,
+    isError,
+    error,
+  } = useGetUserQuery(undefined, {
+    skip: !shouldRefetch,
+  });
+
+  if (isError && error?.message === 'jwt expired') {
+    clearToken();
+  }
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (shouldRefetch && authData) {
+      dispatch(setCredentials(authData));
+    }
+  }, [dispatch, shouldRefetch, authData]);
+
+  return authState;
 };

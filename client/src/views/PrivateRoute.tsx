@@ -22,3 +22,24 @@ export function PrivateRoute({ children, ...rest }: RouteProps) {
     />
   );
 }
+
+export function NoAuthOnlyRoute({ children, ...rest }: RouteProps) {
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        !isAuthenticated ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/dashboard',
+            }}
+          />
+        )
+      }
+    />
+  );
+}

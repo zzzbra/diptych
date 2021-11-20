@@ -9,9 +9,7 @@ import { clearToken } from 'features/auth/utils';
 import { useAuth } from 'features/auth/hooks';
 
 const Navigation = () => {
-  console.log('before nav useAuth');
   const { user, isAuthenticated } = useAuth();
-  console.log('after nav useAuth');
   const dispatch = useDispatch();
   const history = useHistory();
 

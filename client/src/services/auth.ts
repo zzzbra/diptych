@@ -1,9 +1,5 @@
-import {
-  AuthResponse,
-  LoginParameters,
-  RegistrationParameters,
-} from '../models';
 import baseApi from './baseApi';
+import { AuthResponse, LoginParameters, RegistrationParameters } from 'models';
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -14,7 +10,7 @@ const authApi = baseApi.injectEndpoints({
         data: userRegistrationInfo,
       }),
     }),
-    isAuthenticated: build.query<AuthResponse, void>({
+    getUser: build.query<AuthResponse, void>({
       query: () => ({
         url: 'v1/auth/is-authenticated',
         method: 'get',
@@ -30,8 +26,5 @@ const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {
-  useLoginMutation,
-  useRegistrationMutation,
-  useIsAuthenticatedQuery,
-} = authApi;
+export const { useLoginMutation, useRegistrationMutation, useGetUserQuery } =
+  authApi;

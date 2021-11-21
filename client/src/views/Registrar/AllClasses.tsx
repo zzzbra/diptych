@@ -10,7 +10,8 @@ const AllClasses = () => {
       <table>
         <thead>
           <tr>
-            <th scope="cols">Course ID</th> <th scope="cols">Course Title</th>
+            <th scope="cols">Course ID</th>
+            <th scope="cols">Course Title</th>
           </tr>
         </thead>
         <tbody>

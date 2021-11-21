@@ -8,6 +8,8 @@ import Login from 'views/Login';
 import Signup from 'views/Signup';
 import TeacherRegistrar from 'views/Registrar/TeacherView';
 import StudentRegistrar from 'views/Registrar/StudentView';
+import LessonPlanner from 'views/Lesson/LessonPlanner';
+import Lesson from 'views/Lesson/Lesson';
 
 import PageContentWrapper from 'components/PageContentWrapper';
 
@@ -38,6 +40,10 @@ function App() {
 
           <PrivateRoute exact path="/registrar">
             {user?.userIsTeacher ? <TeacherRegistrar /> : <StudentRegistrar />}
+          </PrivateRoute>
+
+          <PrivateRoute exact path="/courses/:courseId">
+            {user?.userIsTeacher ? <LessonPlanner /> : <Lesson />}
           </PrivateRoute>
 
           <Route path="*" component={() => <h1>Uh Oh! Page not found!!</h1>} />

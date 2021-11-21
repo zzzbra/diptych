@@ -7,7 +7,7 @@ interface GetCoursesOfferedByTeacherArgs {
 }
 
 interface GetCourseArgs {
-  id: string;
+  courseId: string;
 }
 
 interface AddNewCourseArgs {
@@ -15,12 +15,12 @@ interface AddNewCourseArgs {
 }
 
 interface UpdateCourseArgs {
-  id: string;
+  courseId: string;
   description: string;
 }
 
 interface DeleteCourseArgs {
-  id: string;
+  courseId: string;
 }
 
 const coursesApi = baseApi.injectEndpoints({
@@ -43,9 +43,9 @@ const coursesApi = baseApi.injectEndpoints({
       providesTags: [COURSE_TAG_TYPE],
     }),
     getCourse: build.query<Course, GetCourseArgs>({
-      query: ({ id }) => {
+      query: ({ courseId }) => {
         return {
-          url: `v1/courses/${id}`,
+          url: `v1/courses/${courseId}`,
           method: 'get',
         };
       },
@@ -60,16 +60,16 @@ const coursesApi = baseApi.injectEndpoints({
       invalidatesTags: [COURSE_TAG_TYPE],
     }),
     updateCourse: build.mutation<Course, UpdateCourseArgs>({
-      query: ({ id, description }) => ({
-        url: `v1/courses/${id}`,
+      query: ({ courseId, description }) => ({
+        url: `v1/courses/${courseId}`,
         method: 'put',
         data: { description },
       }),
       invalidatesTags: [COURSE_TAG_TYPE],
     }),
     deleteCourse: build.mutation<Course[], DeleteCourseArgs>({
-      query: ({ id }) => ({
-        url: `v1/courses/${id}`,
+      query: ({ courseId }) => ({
+        url: `v1/courses/${courseId}`,
         method: 'delete',
       }),
       invalidatesTags: [COURSE_TAG_TYPE],

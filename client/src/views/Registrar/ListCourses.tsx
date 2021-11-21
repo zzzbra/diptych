@@ -44,13 +44,13 @@ const ListCourses = () => {
                 previousDescription: description,
                 updateCourse: (description) =>
                   // capturing the todoId in a closure
-                  updateCourse({ description, id: courseId }),
+                  updateCourse({ description, courseId }),
               }}
             />
             <Button
               className="ml-4"
               color="red"
-              onClick={() => deleteCourse({ id: courseId })}
+              onClick={() => deleteCourse({ courseId })}
             >
               Delete
             </Button>

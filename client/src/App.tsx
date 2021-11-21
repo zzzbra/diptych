@@ -14,10 +14,7 @@ import PageContentWrapper from 'components/PageContentWrapper';
 import { useAuth } from 'features/auth/hooks';
 
 function App() {
-  const auth = useAuth();
-
-  const { user } = auth;
-  console.log('App | auth: ', auth);
+  const { user } = useAuth();
 
   return (
     <Router>

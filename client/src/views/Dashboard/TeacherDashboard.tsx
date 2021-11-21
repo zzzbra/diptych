@@ -4,7 +4,6 @@ import React from 'react';
 import TeachersStudents from './TeachersStudents';
 
 const Dashboard = (props: any) => {
-  console.log('TeacherDashboard');
   return (
     <div className="py-8">
       <h1 className="pb-4">Welcome to MOOC-SRS</h1>

@@ -2,12 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router';
 
 import { useGetLessonQuery } from 'services/lessons';
-import Planner from 'components/Planner';
-import { useAuth } from 'features/auth/hooks';
 import { LessonOverviewArgs } from 'models';
 
 const Lesson = () => {
-  const { user } = useAuth();
   const { courseId, lessonId } = useParams<LessonOverviewArgs>();
   const {
     data: lesson,
@@ -32,11 +29,7 @@ const Lesson = () => {
         <h4>Course Description</h4>
         <p className="border mt-2 p-6 rounded">{description}</p>
       </div>
-      {user?.userIsTeacher ? (
-        <Planner {...{ courseId, lessonId }} />
-      ) : (
-        <>TODO</>
-      )}
+      <div>show students progress through lessons in course here</div>
     </div>
   );
 };

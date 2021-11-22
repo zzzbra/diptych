@@ -1,15 +1,17 @@
 import React from 'react';
 import { useGetCoursesQuery } from 'services/courses';
-import { useGetEnrollmentsQuery } from 'services/enrollments';
+import { useGetStudentsEnrollmentsQuery } from 'services/enrollments';
 import Link from 'components/Link';
+import { useAuth } from 'features/auth/hooks';
 
 const StudentsClasses = () => {
+  const { user } = useAuth();
   const {
     data: enrollments,
     isError,
     error,
     isFetching,
-  } = useGetEnrollmentsQuery();
+  } = useGetStudentsEnrollmentsQuery({ studentId: user?.userId || '' });
   const {
     data: courses,
     error: coursesError,
@@ -30,7 +32,9 @@ const StudentsClasses = () => {
   }
 
   const enrolledCourses =
-    courses?.filter(({ courseId }) => enrollments?.includes(courseId)) || [];
+    courses?.filter(({ courseId }) =>
+      enrollments?.map(({ courseId }) => courseId).includes(courseId),
+    ) || [];
 
   return (
     <div className="mb-12">

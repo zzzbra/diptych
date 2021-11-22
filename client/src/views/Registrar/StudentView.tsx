@@ -2,16 +2,20 @@
 import classNames from 'classnames';
 import React from 'react';
 
+import { useAuth } from 'features/auth/hooks';
 import { useGetCoursesQuery } from 'services/courses';
 import Button from 'components/Button';
 import {
   useEnrollMutation,
   useWithdrawMutation,
-  useGetEnrollmentsQuery,
+  useGetStudentsEnrollmentsQuery,
 } from 'services/enrollments';
 
 const Classroom = () => {
-  const { data: enrollments = [] } = useGetEnrollmentsQuery();
+  const { user } = useAuth();
+  const { data: enrollments = [] } = useGetStudentsEnrollmentsQuery({
+    studentId: user?.userId || '',
+  });
   const [
     enroll,
     {
@@ -35,11 +39,17 @@ const Classroom = () => {
 
   if (isFetching || isLoading || isEnrollmentLoading) return <div>Loading</div>;
 
+  const studentsEnrolledCourseIds = enrollments.map(({ courseId }) => courseId);
+
   const yourCourses =
-    courses?.filter(({ courseId }) => enrollments.includes(courseId)) || [];
+    courses?.filter(({ courseId }) =>
+      studentsEnrolledCourseIds.includes(courseId),
+    ) || [];
 
   const availableCourses =
-    courses?.filter(({ courseId }) => !enrollments.includes(courseId)) || [];
+    courses?.filter(
+      ({ courseId }) => !studentsEnrolledCourseIds.includes(courseId),
+    ) || [];
 
   return (
     <div>

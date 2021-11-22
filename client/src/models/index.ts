@@ -27,7 +27,7 @@ export interface RegistrationParameters {
   isTeacher: boolean;
 }
 
-export interface UserProfile {
+export interface User {
   userId: string;
   userName: string;
   userEmail: string;
@@ -35,7 +35,7 @@ export interface UserProfile {
 }
 
 export interface AuthResponse {
-  user: UserProfile;
+  user: User;
   token: string;
 }
 export interface LessonOverviewArgs {

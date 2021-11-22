@@ -7,7 +7,6 @@ interface GetLessonsArgs {
 }
 
 interface GetLessonArgs {
-  courseId: string;
   lessonId: string;
 }
 
@@ -57,7 +56,7 @@ const lessonsApi = baseApi.injectEndpoints({
     getLesson: build.query<Lesson, GetLessonArgs>({
       query: ({ lessonId }) => {
         return {
-          url: `v1/${lessonId}`,
+          url: `v1/lessons/${lessonId}`,
           method: 'get',
         };
       },

@@ -1,61 +1,138 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router';
 
-import { useGetLessonsInCourseQuery } from 'services/lessons';
-import Planner from 'components/Planner';
-import { useAuth } from 'features/auth/hooks';
-import { LessonOverviewArgs } from 'models';
-import { useGetCourseQuery } from 'services/courses';
-import Card from 'components/Card';
+import Button from 'components/Button';
+import { useGetLessonQuery } from 'services/lessons';
+import {
+  CardMutationArgs,
+  defaultNewCardArgs,
+  useAddNewCardMutation,
+  useDeleteCardMutation,
+  useGetCardsFromLessonQuery,
+  useUpdateCardMutation,
+} from 'services/cards';
 
-const Lesson = () => {
-  const { user } = useAuth();
-  const { courseId } = useParams<LessonOverviewArgs>();
-  const { data: course } = useGetCourseQuery({ courseId });
+import { mapSort } from 'utils/linkedList';
+
+// import Planner from 'components/Planner';
+import { Card as CardInterface, LessonOverviewArgs } from 'models';
+import Card from 'components/Card';
+import CardEditorModal from './CardEditorModal';
+
+const LessonPlanner = () => {
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [cardToUpdate, setCardToUpdate] =
+    useState<CardInterface>(defaultNewCardArgs);
+
+  const { lessonId } = useParams<LessonOverviewArgs>();
   const {
-    data: lessons = [],
-    isError,
-    isLoading,
-    isFetching,
+    data: lesson,
     error,
-  } = useGetLessonsInCourseQuery({ courseId });
+    isError,
+    isFetching,
+  } = useGetLessonQuery({ lessonId });
+  const {
+    data: cards,
+    error: cardsError,
+    isError: isCardsError,
+    isFetching: isCardsFetching,
+  } = useGetCardsFromLessonQuery({ lessonId });
+  const [updateCard] = useUpdateCardMutation();
+  const [addCard] = useAddNewCardMutation();
+  const [deleteCard] = useDeleteCardMutation();
+
+  if (isCardsError) {
+    return <div>{JSON.stringify(cardsError)}</div>;
+  }
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;
   }
 
-  const { description } = course || {};
+  const { title, description } = lesson || {};
 
-  return isFetching || isLoading ? (
+  return isFetching || isCardsFetching ? (
     <div>Loading</div>
   ) : (
     <div>
-      <h1>Course: {description}</h1>
+      <h1>Lesson Topic: {title}</h1>
       <div className="mt-4">
-        <h4>Course Description</h4>
-        <p>TODO: Provide Course description.</p>
+        <div className="border-b-2 pb-4">
+          <h3>Lesson Objectives:</h3>
+          <p>{description}</p>
+        </div>
 
-        <div className="py-8">
-          <h2>Curriculum</h2>
+        <div className="mt-4 py-8">
+          <h2>Lesson Script</h2>
           <ul>
-            {lessons?.map((lesson) => (
+            {mapSort(cards)?.map((card) => (
               <li>
+                <div className="py-2 flex justify-between items-baseline">
+                  Card ID: {card.cardId}
+                  <span>
+                    <Button
+                      onClick={() => {
+                        setIsUpdateModalOpen(true);
+                        setCardToUpdate(card);
+                      }}
+                    >
+                      Edit Card
+                    </Button>
+                    <Button
+                      onClick={() => deleteCard({ cardId: card.cardId })}
+                      color="red"
+                      className="ml-2"
+                    >
+                      Delete Card
+                    </Button>
+                  </span>
+                </div>
                 <Card>
-                  <div>{lesson.title}</div>
-                  <div>{lesson.description}</div>
-                  <p>
-                    TODO: reuse controls for courses here to edit and update
-                    lessons
-                  </p>
+                  <div>{card.front}</div>
+                  <div>{card.back}</div>
                 </Card>
               </li>
             ))}
           </ul>
         </div>
-        <p>TODO: Add controls for CRUD courses</p>
+        <div className="text-center">
+          <Button color="green" className="items-center inline-block">
+            <span className="inline-block">Create Card</span>
+          </Button>
+        </div>
       </div>
+      {/* TODO: refactor into global state manager for Modals using Redux*/}
+      {isUpdateModalOpen && (
+        <CardEditorModal
+          {...{
+            cardProperties: cardToUpdate,
+            onCardMutation: updateCard,
+            modalProps: {
+              title: 'Update Card',
+              confirmButtonText: 'Confirm',
+              dismissButtonText: 'Go back',
+              isOpen: isUpdateModalOpen,
+              setIsOpen: setIsUpdateModalOpen,
+            },
+          }}
+        />
+      )}
+      {isAddModalOpen && (
+        <CardEditorModal
+          {...{
+            cardProperties: defaultNewCardArgs,
+            onCardMutation: addCard,
+            modalProps: {
+              confirmButtonText: 'Confirm',
+              isOpen: isAddModalOpen,
+              setIsOpen: setIsAddModalOpen,
+            },
+          }}
+        />
+      )}
     </div>
   );
 };
 
-export default Lesson;
+export default LessonPlanner;

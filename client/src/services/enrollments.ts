@@ -16,10 +16,12 @@ interface WithdrawArgs {
 const enrollmentsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getEnrollments: build.query<string[], void>({
-      query: () => ({
-        url: 'v1/enrollments',
-        method: 'get',
-      }),
+      query: () => {
+        return {
+          url: 'v1/enrollments',
+          method: 'get',
+        };
+      },
       providesTags: [COURSE_TAG_TYPE],
     }),
     enroll: build.mutation<Enrollment, AddNewEnrollmentArgs>({
@@ -32,7 +34,6 @@ const enrollmentsApi = baseApi.injectEndpoints({
     }),
     withdraw: build.mutation<Enrollment[], WithdrawArgs>({
       query: ({ courseId }) => {
-        console.log('mut: ', courseId);
         return {
           url: `v1/enrollments/withdraw/${courseId}`,
           method: 'delete',

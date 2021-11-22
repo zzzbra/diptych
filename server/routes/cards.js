@@ -33,11 +33,10 @@ router.post('', authorization, async (req, res) => {
 // get all cards
 router.get('', authorization, async (req, res) => {
   const { lesson_id = '' } = snakeCaseKeys(req.query);
-  console.log('QUERY: ', snakeCaseKeys(req.query));
   try {
     const allCards = !!lesson_id
-      ? await db('cards')
-      : await db('cards').select().where({ lesson_id });
+      ? await db('cards').select().where({ lesson_id })
+      : await db('cards');
     const responseBody = allCards.map((card) => camelCaseKeys(card));
     res.json(responseBody);
   } catch (error) {

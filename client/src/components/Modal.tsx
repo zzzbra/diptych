@@ -1,7 +1,7 @@
 import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-interface ModalProps {
+export interface ModalProps {
   title?: string;
   children?: any;
   onConfirmation: () => void;
@@ -9,7 +9,7 @@ interface ModalProps {
   onDismissal?: () => void;
   dismissButtonText?: string;
   isOpen: boolean;
-  setIsOpen: (state: any) => void;
+  setIsOpen: (state: boolean) => void;
 }
 
 export default function Modal({

@@ -1,37 +1,10 @@
 import React from 'react';
-import { useGetCardsQuery } from 'services/cards';
+import { useGetCardsFromLessonQuery } from 'services/cards';
 import { LessonOverviewArgs } from 'models';
 import Card from 'components/Card';
 
 const Planner = ({ courseId, lessonId }: LessonOverviewArgs) => {
-  console.log(courseId, lessonId);
-  const { data: cards = [] } = useGetCardsQuery({ lessonId });
-
-  /**
-   * cards belong to a lesson  some are presentational and others are question
-   * cards; when a student is going through a lesson they are shown both;
-   *
-   * every card waits on their response before advancing to the next card
-   *
-   * when a student is done with a lesson, they click a CTA that takes them back
-   * to their dashboard and adds all the question type cards to their 'deck'
-   *
-   * their deck is a join table between students and cards that additionally
-   * tracks metrics around how well the students is learning the information in
-   * the card
-   *
-   * each existing card should have an edit and delete button that only teachers
-   * can see
-   *
-   * a teacher should be able to add a new card and specify the index (we'll do
-   * this instead of having a propert linked list)
-   * */
-
-  // const cards = [
-  //   {
-  //     cardId: '1'
-  //   }
-  // ];
+  const { data: cards = [] } = useGetCardsFromLessonQuery({ lessonId });
 
   return (
     <div>

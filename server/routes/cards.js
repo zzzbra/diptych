@@ -14,7 +14,6 @@ router.post('', authorization, async (req, res) => {
       lesson_id,
       is_question_card = false,
     } = snakeCaseKeys(req.body);
-    console.log('add new card body: ', req.body);
     const [newCard] = await db('cards').insert(
       {
         front,

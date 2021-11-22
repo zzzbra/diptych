@@ -29,7 +29,6 @@ interface UpdateLessonArgs {
 }
 
 export interface DeleteLessonArgs {
-  courseId: string;
   lessonId: string;
 }
 
@@ -93,6 +92,6 @@ export const {
   useGetLessonsInCourseQuery,
   useGetLessonQuery,
   useAddNewLessonMutation,
-  // useUpdateCourseMutation,
+  useUpdateLessonMutation,
   useDeleteLessonMutation,
 } = lessonsApi;

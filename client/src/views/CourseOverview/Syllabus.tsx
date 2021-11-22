@@ -1,18 +1,9 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router';
 
-import {
-  defaultAddNewLessonArgs,
-  useAddNewLessonMutation,
-  useGetLessonsInCourseQuery,
-  useDeleteLessonMutation,
-  DeleteLessonArgs,
-} from 'services/lessons';
-import Button from 'components/Button';
+import { useGetLessonsInCourseQuery } from 'services/lessons';
 import Link from 'components/Link';
-import Input from 'components/Input';
-import { useAuth } from 'features/auth/hooks';
 
 interface CourseOverviewProps {
   courseId: string;
@@ -20,12 +11,6 @@ interface CourseOverviewProps {
 
 const CourseOverview = (props: any) => {
   const { courseId } = useParams<CourseOverviewProps>();
-  const formDefault = {
-    courseId,
-    ...defaultAddNewLessonArgs,
-  };
-  const { user } = useAuth();
-  const [formState, setFormState] = useState(formDefault);
   const {
     data: lessons = [],
     error,
@@ -33,31 +18,6 @@ const CourseOverview = (props: any) => {
     isFetching,
     isLoading,
   } = useGetLessonsInCourseQuery({ courseId });
-  const [addNewLesson] = useAddNewLessonMutation();
-  const [deleteLesson] = useDeleteLessonMutation();
-
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) =>
-    setFormState({
-      ...formState,
-      [e.currentTarget.name]: e.currentTarget.value,
-    });
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      await addNewLesson(formState);
-      setFormState(formDefault);
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  };
-
-  const handleEditLesson = () => {
-    window.alert("You can't do that right now.");
-  };
-  const handleDeleteLesson = ({ courseId, lessonId }: DeleteLessonArgs) =>
-    deleteLesson({ courseId, lessonId });
 
   if (isError) {
     console.log({ error });
@@ -67,33 +27,6 @@ const CourseOverview = (props: any) => {
   ) : (
     <div>
       <h1 className="pb-4">Course Title</h1>
-
-      {user?.userIsTeacher ? (
-        <form className="pb-8" onSubmit={handleSubmit}>
-          <div className="mb-12">
-            <div className="mb-6">
-              <Input
-                id="course-input"
-                label="Enter the Title of a new lesson"
-                name="title"
-                onChange={handleInputChange}
-                value={formState.title}
-              />
-            </div>
-            <div className="mb-6">
-              <Input
-                id="course-input"
-                label="Enter a brief description of this lesson"
-                name="description"
-                onChange={handleInputChange}
-                value={formState.description}
-              />
-            </div>
-          </div>
-          <Button type="submit">Add</Button>
-        </form>
-      ) : null}
-
       <h2 className="pb-4">Lessons</h2>
       <ul>
         {lessons.map((lesson, key) => (
@@ -110,18 +43,6 @@ const CourseOverview = (props: any) => {
                 </Link>
                 <p className="mt-4 pr-4">{lesson.description}</p>
               </span>
-              {user?.userIsTeacher ? (
-                <span>
-                  <Button onClick={handleEditLesson}>Edit</Button>
-                  <Button
-                    color="red"
-                    onClick={() => handleDeleteLesson}
-                    className="ml-2"
-                  >
-                    Delete
-                  </Button>
-                </span>
-              ) : null}
             </span>
           </li>
         ))}

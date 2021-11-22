@@ -8,17 +8,17 @@ import {
   useGetLessonsInCourseQuery,
   useDeleteLessonMutation,
   DeleteLessonArgs,
-} from '../services/lessons';
-import Button from '../components/Button';
-import Link from '../components/Link';
-import Input from '../components/Input';
-import { useAuth } from '../features/auth/hooks';
+} from 'services/lessons';
+import Button from 'components/Button';
+import Link from 'components/Link';
+import Input from 'components/Input';
+import { useAuth } from 'features/auth/hooks';
 
 interface CourseOverviewProps {
   courseId: string;
 }
 
-const CourseOverview = (props: any) => {
+const CoursePlanner = (props: any) => {
   const { courseId } = useParams<CourseOverviewProps>();
   const formDefault = {
     courseId,
@@ -103,11 +103,7 @@ const CourseOverview = (props: any) => {
           >
             <span className="flex justify-between align-baseline">
               <span>
-                <Link
-                  to={`/courses/${lesson.courseId}/lessons/${lesson.lessonId}`}
-                >
-                  {lesson.title}
-                </Link>
+                <Link to={`/lessons/${lesson.lessonId}`}>{lesson.title}</Link>
                 <p className="mt-4 pr-4">{lesson.description}</p>
               </span>
               {user?.userIsTeacher ? (
@@ -130,4 +126,4 @@ const CourseOverview = (props: any) => {
   );
 };
 
-export default CourseOverview;
+export default CoursePlanner;

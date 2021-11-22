@@ -12,7 +12,7 @@ const Lesson = () => {
     isLoading,
     isFetching,
     error,
-  } = useGetLessonQuery({ courseId, lessonId });
+  } = useGetLessonQuery({ lessonId });
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;

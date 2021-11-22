@@ -11,28 +11,23 @@ interface GetCardArgs {
   // lessonId: string;
 }
 
-interface AddNewCardArgs {
+export interface CardMutationArgs {
   cardId: string;
   lessonId: string;
   front: string;
   back?: string;
   isCardReviewable?: boolean;
+  prevCardId?: string;
 }
 
 export const defaultNewCardArgs = {
   cardId: '',
   lessonId: '',
   front: '',
-  isCardReviewable: false,
+  back: undefined,
+  isQuestionCard: false,
+  prevCardId: undefined,
 };
-
-interface UpdateCardArgs {
-  cardId: string;
-  lessonId: string;
-  front: string;
-  back?: string;
-  isCardReviewable?: boolean;
-}
 
 export interface DeleteCardArgs {
   cardId: string;
@@ -41,7 +36,16 @@ export interface DeleteCardArgs {
 
 const cardsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getCards: build.query<Card[], GetCardsArgs>({
+    getCards: build.query<Card[], void>({
+      query: () => {
+        return {
+          url: 'v1/cards',
+          method: 'get',
+        };
+      },
+      providesTags: [CARD_TAG_TYPE, LESSON_TAG_TYPE],
+    }),
+    getCardsFromLesson: build.query<Card[], GetCardsArgs>({
       query: (data) => {
         return {
           url: `v1/cards?lessonId=${data.lessonId}`,
@@ -59,7 +63,7 @@ const cardsApi = baseApi.injectEndpoints({
       },
       providesTags: [CARD_TAG_TYPE],
     }),
-    addNewCard: build.mutation<Card, AddNewCardArgs>({
+    addNewCard: build.mutation<Card, CardMutationArgs>({
       query: (data) => ({
         url: 'v1/cards',
         method: 'post',
@@ -67,14 +71,14 @@ const cardsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [CARD_TAG_TYPE, LESSON_TAG_TYPE],
     }),
-    updateCard: build.mutation<Card, UpdateCardArgs>({
+    updateCard: build.mutation<Card, CardMutationArgs>({
       query: ({
         cardId,
         lessonId,
         front,
         back,
         isCardReviewable,
-      }: UpdateCardArgs = defaultNewCardArgs) => ({
+      }: CardMutationArgs = defaultNewCardArgs) => ({
         url: `v1/cards/${cardId}`,
         method: 'put',
         data: { front, lessonId, back, isCardReviewable },
@@ -93,6 +97,7 @@ const cardsApi = baseApi.injectEndpoints({
 
 export const {
   useGetCardsQuery,
+  useGetCardsFromLessonQuery,
   useGetCardQuery,
   useAddNewCardMutation,
   useUpdateCardMutation,

@@ -89,11 +89,34 @@ exports.seed = async function (knex) {
 
   const LESSON_ONE_CARDS = [
     {
+      card_id: 1,
       front:
-        'What is a Hash? The word hash, funny enough, has etymological roots, meaning to "chop & mix".',
+        'What is a Hash? The etyomology of the word hash has culinary roots, meaning to "chop & mix".',
     },
     {
-      front: 'This is the second card',
+      card_id: 2,
+      prev_card_id: 1,
+      front:
+        'This is still fairly accurate. You take an input of a variable length, and then pass it off to a hashing algorithm, and it returns a fixed length value of what looks like meaningless garbage.',
+    },
+    {
+      card_id: 3,
+      prev_card_id: 2,
+      front:
+        'The important things to keep in mind is that a hashing function, given the same input, will always produce the same output. It needs to be fast to run a hashing function, and **infeasible** to reverse-engineer what the original message was.',
+    },
+    {
+      card_id: 4,
+      prev_card_id: 3,
+      front:
+        'This is useful because it allows developers to store data without having to know what that data is. A common example is storing passwords in a database. ',
+    },
+    {
+      card_id: 5,
+      is_question_card: true,
+      front: 'What what kind of output does a hash function produce?',
+      back: 'Given input of variable length, a hash function produces output of fixed length.',
+      prev_card_id: 4,
     },
   ];
 

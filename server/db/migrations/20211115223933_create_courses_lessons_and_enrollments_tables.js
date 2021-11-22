@@ -27,9 +27,11 @@ exports.up = async function (knex) {
 
   await knex.schema.createTable('cards', (t) => {
     t.increments('card_id').notNullable();
+    t.integer('prev_card_id');
+    t.foreign('prev_card_id');
     t.integer('lesson_id');
     t.foreign('lesson_id').references('lesson_id').inTable('lessons');
-    t.boolean('is_review_card').defaultTo(false);
+    t.boolean('is_question_card').defaultTo(false);
     t.string('front').notNullable();
     t.string('back');
     t.timestamps(true, true);
@@ -41,7 +43,7 @@ exports.up = async function (knex) {
     t.foreign('student_id').references('user_id').inTable('users');
     t.integer('card_id');
     t.foreign('card_id').references('card_id').inTable('cards');
-    t.integer('consecutive_recalls').defaultTo(0);
+    t.integer('rating').defaultTo(0);
     t.timestamp('due_date');
     t.timestamps(true, true);
   });

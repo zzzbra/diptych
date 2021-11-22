@@ -40,8 +40,6 @@ router.post('/register', validInfo, async (req, res) => {
     // 2. check if user exists --> throw error if not
     const users = await db('users').where({ user_email: email }).select();
 
-    console.log('register: ', users);
-
     if (users.length !== 0) {
       // Not very secure to communicate that this account exists...
       return res.status(401).send('User already exists');

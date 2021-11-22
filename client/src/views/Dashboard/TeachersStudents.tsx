@@ -14,8 +14,6 @@ const TeachersStudents = () => {
   });
   const { data: enrollments } = useGetEnrollmentsQuery();
 
-  console.log({ user }, { courses }, { teachersCourses }, { enrollments });
-
   return (
     <div>
       <h2>My Students</h2>

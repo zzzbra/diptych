@@ -44,9 +44,10 @@ export interface LessonOverviewArgs {
 }
 
 export interface Card {
-  front: string;
-  back: string;
-  lessonId: string;
   cardId: string;
-  isReviewCard: boolean;
+  lessonId: string;
+  prevCardId?: string;
+  front: string;
+  back?: string;
+  isQuestionCard: boolean;
 }

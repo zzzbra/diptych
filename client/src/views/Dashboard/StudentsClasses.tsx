@@ -4,8 +4,30 @@ import { useGetEnrollmentsQuery } from 'services/enrollments';
 import Link from 'components/Link';
 
 const StudentsClasses = () => {
-  const { data: enrollments } = useGetEnrollmentsQuery();
-  const { data: courses } = useGetCoursesQuery();
+  const {
+    data: enrollments,
+    isError,
+    error,
+    isFetching,
+  } = useGetEnrollmentsQuery();
+  const {
+    data: courses,
+    error: coursesError,
+    isError: isCoursesError,
+    isFetching: isCoursesFetching,
+  } = useGetCoursesQuery();
+
+  if (isError) {
+    return <div>{JSON.stringify(error, null, 2)}</div>;
+  }
+
+  if (isCoursesError) {
+    return <div>{JSON.stringify(coursesError, null, 2)}</div>;
+  }
+
+  if (isFetching || isCoursesFetching) {
+    <h1>Loading...</h1>;
+  }
 
   const enrolledCourses =
     courses?.filter(({ courseId }) => enrollments?.includes(courseId)) || [];
@@ -20,9 +42,7 @@ const StudentsClasses = () => {
             className="p-2 mb-2 border-2 flex justify-between"
           >
             <span>{course.description}</span>
-            <Link to={`/study-session?courseId=${course.courseId}`}>
-              View course
-            </Link>
+            <Link to={`/courses/${course.courseId}`}>View course</Link>
           </li>
         ))}
       </ul>

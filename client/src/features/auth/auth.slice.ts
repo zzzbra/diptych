@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from 'store';
-import { AuthResponse, UserProfile } from 'models';
+import { AuthResponse, User } from 'models';
 
 type AuthState = {
-  user: UserProfile | null;
+  user: User | null;
   token: string | null;
   isAuthenticated: boolean;
 };

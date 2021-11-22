@@ -1,5 +1,10 @@
 import baseApi from './baseApi';
-import { AuthResponse, LoginParameters, RegistrationParameters } from 'models';
+import {
+  AuthResponse,
+  LoginParameters,
+  RegistrationParameters,
+  User,
+} from 'models';
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -10,21 +15,34 @@ const authApi = baseApi.injectEndpoints({
         data: userRegistrationInfo,
       }),
     }),
+    login: build.mutation<AuthResponse, LoginParameters>({
+      query: (userCredentials) => {
+        console.log(userCredentials);
+        return {
+          url: 'v1/auth/login',
+          method: 'post',
+          data: userCredentials,
+        };
+      },
+    }),
     getUser: build.query<AuthResponse, void>({
       query: () => ({
         url: 'v1/auth/is-authenticated',
         method: 'get',
       }),
     }),
-    login: build.mutation<AuthResponse, LoginParameters>({
-      query: (userCredentials) => ({
-        url: 'v1/auth/login',
-        method: 'post',
-        data: userCredentials,
+    getStudents: build.query<User[], void>({
+      query: () => ({
+        url: 'v1/auth/get-students',
+        method: 'get',
       }),
     }),
   }),
 });
 
-export const { useLoginMutation, useRegistrationMutation, useGetUserQuery } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegistrationMutation,
+  useGetUserQuery,
+  useGetStudentsQuery,
+} = authApi;

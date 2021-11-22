@@ -39,14 +39,12 @@ router.delete('/withdraw/:courseId', authorization, async (req, res) => {
 });
 
 router.get('', authorization, async (req, res) => {
+  const { student_id = '' } = snakeCaseKeys(req.query);
   try {
-    const enrollments = await db('enrollments')
-      .where({ student_id: req.user })
-      .select('course_id');
-
-    // Return just array of the courseIds?
-    res.json(enrollments.map(({ course_id }) => course_id));
-    // res.json(enrollments.map((enrollment) => camelCaseKeys(enrollment)));
+    const enrollments = !!student_id
+      ? await db('enrollments').where({ student_id }).select()
+      : await db('enrollments').select();
+    res.json(enrollments.map((enrollment) => camelCaseKeys(enrollment)));
   } catch (error) {
     console.log(error.message);
     res.json(error.message);

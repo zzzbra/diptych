@@ -26,7 +26,9 @@ function App() {
       <PageContentWrapper>
         <Switch>
           <Route exact path="/">
-            <h1>Welcome!</h1>
+            <h2>Welcome!</h2>
+            <h1>This is MOOC-SRS</h1>
+            <p>Get ready to learn better than ever.</p>
           </Route>
 
           <UnauthOnlyRoute exact path="/login">

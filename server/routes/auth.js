@@ -1,35 +1,23 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 require('dotenv').config();
+const omit = require('lodash/omit');
 
 const db = require('../db');
 const jwtGenerator = require('../utils/jwtGenerator');
 const validInfo = require('../middleware/validInfo');
 const authorization = require('../middleware/auth');
-
+const { camelCaseKeys } = require('../utils/formatting');
 const { encryptPassword } = require('../utils/crypto');
 
 const LOGIN_FAILURE_RESPONSE_MESSAGE = 'Password or Email is incorrect';
 
-const buildAuthResponse = (userRowFromDatabase = {}) => {
-  const {
-    user_id: userId,
-    user_name: userName,
-    user_email: userEmail,
-    user_is_teacher: userIsTeacher,
-  } = userRowFromDatabase;
-
+const buildAuthResponse = (userFromDb = {}) => {
+  const user = camelCaseKeys(omit(userFromDb, 'user_password'));
+  const { userId } = user;
   const token = jwtGenerator(userId);
 
-  return {
-    user: {
-      userId,
-      userName,
-      userEmail,
-      userIsTeacher,
-    },
-    token,
-  };
+  return { user, token };
 };
 
 router.post('/register', validInfo, async (req, res) => {
@@ -103,6 +91,20 @@ router.get('/is-authenticated', authorization, async (req, res) => {
     const [user] = await db('users').where({ user_id: req.user }).select();
 
     res.json(buildAuthResponse(user));
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('SERVER ERROR');
+  }
+});
+
+// TODO: create teacherAuthorization MW
+router.get('/get-students', authorization, async (req, res) => {
+  try {
+    const students = await db('users')
+      .where({ user_is_teacher: false })
+      .select();
+
+    res.json(students.map((s) => camelCaseKeys(omit(s, 'user_password'))));
   } catch (error) {
     console.error(error);
     res.status(500).send('SERVER ERROR');

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getToken } from '../auth/utils';
-import { UserProfile } from '../../models';
+import { User } from '../../models';
 
 // TODO: set up FE env variables
 // const protocol = process.env.SERVER_PROTOCOL || 'http';
@@ -14,10 +14,10 @@ const profileAPI = axios.create({
   baseURL: `${protocol}://${host}:${port}/api/v1/profile`,
 });
 
-export async function getUserProfileData(): Promise<UserProfile | undefined> {
+export async function getUserData(): Promise<User | undefined> {
   const token = getToken();
   try {
-    const { data } = await profileAPI.get<UserProfile>(``, {
+    const { data } = await profileAPI.get<User>(``, {
       headers: {
         token,
       },

@@ -6,6 +6,10 @@ interface Enrollment {
   studentId: string;
 }
 
+interface GetStudentsEnrollmentsArgs {
+  studentId: string;
+}
+
 interface AddNewEnrollmentArgs {
   courseId: string;
 }
@@ -15,10 +19,22 @@ interface WithdrawArgs {
 
 const enrollmentsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getEnrollments: build.query<string[], void>({
+    getEnrollments: build.query<Enrollment[], void>({
       query: () => {
         return {
           url: 'v1/enrollments',
+          method: 'get',
+        };
+      },
+      providesTags: [COURSE_TAG_TYPE],
+    }),
+    getStudentsEnrollments: build.query<
+      Enrollment[],
+      GetStudentsEnrollmentsArgs
+    >({
+      query: (data) => {
+        return {
+          url: `v1/enrollments?studentId=${data.studentId}`,
           method: 'get',
         };
       },
@@ -46,6 +62,7 @@ const enrollmentsApi = baseApi.injectEndpoints({
 
 export const {
   useGetEnrollmentsQuery,
+  useGetStudentsEnrollmentsQuery,
   useEnrollMutation,
   useWithdrawMutation,
 } = enrollmentsApi;

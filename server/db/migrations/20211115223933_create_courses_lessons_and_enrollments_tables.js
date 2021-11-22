@@ -8,7 +8,7 @@ exports.up = async function (knex) {
   });
 
   await knex.schema.createTable('lessons', (t) => {
-    t.increments('lesson_id');
+    t.increments('lesson_id').primary();
     t.integer('course_id');
     t.foreign('course_id').references('course_id').inTable('courses');
     t.string('title', 255).notNullable();
@@ -26,7 +26,7 @@ exports.up = async function (knex) {
   });
 
   await knex.schema.createTable('cards', (t) => {
-    t.increments('card_id').notNullable();
+    t.increments('card_id').primary();
     t.integer('prev_card_id');
     t.foreign('prev_card_id');
     t.integer('lesson_id');

@@ -19,6 +19,13 @@ export interface CardMutationArgs {
   isCardReviewable?: boolean;
   prevCardId?: string;
 }
+export interface AddCardMutationArgs {
+  lessonId: string;
+  front: string;
+  back?: string;
+  isCardReviewable?: boolean;
+  prevCardId?: string;
+}
 
 export const defaultNewCardArgs = {
   cardId: '',
@@ -63,7 +70,7 @@ const cardsApi = baseApi.injectEndpoints({
       },
       providesTags: [CARD_TAG_TYPE],
     }),
-    addNewCard: build.mutation<Card, CardMutationArgs>({
+    addNewCard: build.mutation<Card, AddCardMutationArgs>({
       query: (data) => ({
         url: 'v1/cards',
         method: 'post',

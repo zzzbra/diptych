@@ -5,21 +5,22 @@ const authorization = require('../middleware/auth');
 
 const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
 
-// create a course
+// create a card
 router.post('', authorization, async (req, res) => {
   try {
     const {
       front,
       back,
       lesson_id,
-      is_review_card = false,
+      is_question_card = false,
     } = snakeCaseKeys(req.body);
+    console.log('add new card body: ', req.body);
     const [newCard] = await db('cards').insert(
       {
         front,
         back,
         lesson_id,
-        is_review_card,
+        is_question_card,
       },
       ['*'],
     );

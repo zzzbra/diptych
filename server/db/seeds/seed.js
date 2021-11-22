@@ -126,4 +126,6 @@ exports.seed = async function (knex) {
       lesson_id: lessonOneId,
     })),
   );
+
+  await knex.raw("SELECT setval('cards_card_id_seq', max(card_id)) from cards");
 };

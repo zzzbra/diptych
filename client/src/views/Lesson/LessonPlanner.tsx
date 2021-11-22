@@ -67,7 +67,7 @@ const LessonPlanner = () => {
           <h2>Lesson Script</h2>
           <ul>
             {mapSort(cards)?.map((card) => (
-              <li>
+              <li key={card.cardId}>
                 <div className="py-2 flex justify-between items-baseline">
                   Card ID: {card.cardId}
                   <span>
@@ -97,7 +97,11 @@ const LessonPlanner = () => {
           </ul>
         </div>
         <div className="text-center">
-          <Button color="green" className="items-center inline-block">
+          <Button
+            color="green"
+            className="items-center inline-block"
+            onClick={() => setIsAddModalOpen(true)}
+          >
             <span className="inline-block">Create Card</span>
           </Button>
         </div>
@@ -111,7 +115,7 @@ const LessonPlanner = () => {
             modalProps: {
               title: 'Update Card',
               confirmButtonText: 'Confirm',
-              dismissButtonText: 'Go back',
+              dismissButtonText: 'Cancel',
               isOpen: isUpdateModalOpen,
               setIsOpen: setIsUpdateModalOpen,
             },
@@ -121,10 +125,15 @@ const LessonPlanner = () => {
       {isAddModalOpen && (
         <CardEditorModal
           {...{
-            cardProperties: defaultNewCardArgs,
+            cardProperties: {
+              ...defaultNewCardArgs,
+              lessonId,
+            },
             onCardMutation: addCard,
             modalProps: {
+              title: 'Add New Card',
               confirmButtonText: 'Confirm',
+              dismissButtonText: 'Cancel',
               isOpen: isAddModalOpen,
               setIsOpen: setIsAddModalOpen,
             },

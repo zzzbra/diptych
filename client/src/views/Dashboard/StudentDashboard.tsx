@@ -10,7 +10,6 @@ const Dashboard = (props: any) => {
       <StudentsClasses />
 
       <h2>TODO: show what reviews are ready</h2>
-      <h2>TODO: show when a lesson is ready</h2>
 
       <h3 className="py-4 border-t-2">More</h3>
       <Link to="/registrar">Add/Drop Classes</Link>

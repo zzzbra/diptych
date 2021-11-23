@@ -3,9 +3,11 @@ import { useParams } from 'react-router';
 
 import { useGetLessonQuery } from 'services/lessons';
 import { LessonOverviewArgs } from 'models';
+import { useGetCardsFromLessonQuery } from 'services/cards';
+import CardPlayer from './CardPlayer';
 
 const Lesson = () => {
-  const { courseId, lessonId } = useParams<LessonOverviewArgs>();
+  const { lessonId } = useParams<LessonOverviewArgs>();
   const {
     data: lesson,
     isError,
@@ -13,6 +15,7 @@ const Lesson = () => {
     isFetching,
     error,
   } = useGetLessonQuery({ lessonId });
+  const { data: cards = [] } = useGetCardsFromLessonQuery({ lessonId });
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;
@@ -26,10 +29,10 @@ const Lesson = () => {
     <div>
       <h1>Course: {title}</h1>
       <div className="mt-4">
-        <h4>Course Description</h4>
-        <p className="border mt-2 p-6 rounded">{description}</p>
+        <h4 className="pb-2">Lesson Overview</h4>
+        <p>{description}</p>
       </div>
-      <div>show students progress through lessons in course here</div>
+      <CardPlayer {...{ cards }} />
     </div>
   );
 };

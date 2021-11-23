@@ -17,7 +17,6 @@ const authApi = baseApi.injectEndpoints({
     }),
     login: build.mutation<AuthResponse, LoginParameters>({
       query: (userCredentials) => {
-        console.log(userCredentials);
         return {
           url: 'v1/auth/login',
           method: 'post',

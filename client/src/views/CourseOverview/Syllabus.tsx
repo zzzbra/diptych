@@ -36,11 +36,7 @@ const CourseOverview = (props: any) => {
           >
             <span className="flex justify-between align-baseline">
               <span>
-                <Link
-                  to={`/courses/${lesson.courseId}/lessons/${lesson.lessonId}`}
-                >
-                  {lesson.title}
-                </Link>
+                <Link to={`/lessons/${lesson.lessonId}`}>{lesson.title}</Link>
                 <p className="mt-4 pr-4">{lesson.description}</p>
               </span>
             </span>

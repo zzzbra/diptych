@@ -1,6 +1,5 @@
 // TODO: genericize and convert to TS
 // source: https://theodorejb.me/2015/05/20/linked-list-sorting/
-
 export function mapSort(linkedList = []) {
   const sortedList = [];
   const map = new Map();
@@ -26,4 +25,8 @@ export function mapSort(linkedList = []) {
   }
 
   return sortedList;
+}
+
+export function deepClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
 }

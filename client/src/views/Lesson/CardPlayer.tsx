@@ -19,13 +19,17 @@ interface LessonState {
 }
 
 const getInitialCardsState = (cards: Array<CardInterface>) => {
-  return cards.reduce((cards, card) => ({
-    ...cards,
-    [card.cardId]: {
-      isCardShowing: false,
-      isPendingAnswerReveal: !!card.isQuestionCard,
-    },
-  }));
+  return cards.reduce(
+    (cards, card) => ({
+      ...cards,
+      [card.cardId]: {
+        isCardShowing: false,
+        isPendingAnswerReveal: !!card.isQuestionCard,
+        isCurrentCard: false,
+      },
+    }),
+    {},
+  );
 };
 
 /**
@@ -37,6 +41,7 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
   const { push } = useHistory();
   const cards = mapSort(unsortedCards);
   const lessonLength = cards.length;
+
   const [cardsState, setCardsState] = useState<LessonState>(
     getInitialCardsState(cards),
   );

@@ -51,3 +51,25 @@ export interface Card {
   back?: string;
   isQuestionCard: boolean;
 }
+
+export interface DumbModalProps {
+  id: string;
+  onConfirmation: () => void;
+  confirmButtonText: string;
+  title?: string;
+  onDismissal?: () => void;
+  dismissButtonText?: string;
+  modalType?: string;
+}
+
+// Rename to ModalComponentProps
+export interface ModalProps {
+  title?: string;
+  children?: any;
+  onConfirmation: () => void;
+  confirmButtonText: string;
+  onDismissal?: () => void;
+  dismissButtonText?: string;
+  isOpen: boolean;
+  setIsOpen: (state: boolean) => void;
+}

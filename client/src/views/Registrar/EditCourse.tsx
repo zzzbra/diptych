@@ -1,22 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import Modal from 'components/Modal';
-import Input from 'components/Input';
+import React, { useState } from 'react';
+import EditCourseModal from './EditCourseModal';
+import { UpdateCourseArgs } from 'services/courses';
 
-interface EditCourseArgs {
-  previousDescription: string;
-  updateCourse: (newCourse: string) => void;
-}
-
-const EditCourse = ({ previousDescription, updateCourse }: EditCourseArgs) => {
-  // TODO: move these out into a global state handler
+const EditCourse = ({ description, courseId }: UpdateCourseArgs) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [updatedDescription, setUpdatedDescription] =
-    useState(previousDescription);
-
-  useEffect(() => {
-    if (isModalOpen) setUpdatedDescription(previousDescription);
-  }, [previousDescription, isModalOpen]);
 
   return (
     <>
@@ -26,22 +13,14 @@ const EditCourse = ({ previousDescription, updateCourse }: EditCourseArgs) => {
       >
         Edit
       </button>
-      <Modal
-        confirmButtonText="Update"
-        onConfirmation={() => updateCourse(updatedDescription)}
-        dismissButtonText="Cancel"
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        title="Edit Course"
-      >
-        <Input
-          className="w-full"
-          id="edit-todo-input"
-          label="Make your changes below:"
-          onChange={(e) => setUpdatedDescription(e.currentTarget.value)}
-          value={updatedDescription}
-        />
-      </Modal>
+      <EditCourseModal
+        {...{
+          isOpen: isModalOpen,
+          setIsOpen: setIsModalOpen,
+          courseId,
+          description,
+        }}
+      />
     </>
   );
 };

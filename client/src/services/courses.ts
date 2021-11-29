@@ -2,7 +2,7 @@ import baseApi from './baseApi';
 import { COURSE_TAG_TYPE } from '../tagTypes';
 import { Course } from '../models';
 
-interface GetCoursesOfferedByTeacherArgs {
+export interface GetCoursesOfferedByTeacherArgs {
   userId: string;
 }
 
@@ -10,16 +10,16 @@ interface GetCourseArgs {
   courseId: string;
 }
 
-interface AddNewCourseArgs {
+export interface AddNewCourseArgs {
   description: string;
 }
 
-interface UpdateCourseArgs {
+export interface UpdateCourseArgs {
   courseId: string;
   description: string;
 }
 
-interface DeleteCourseArgs {
+export interface DeleteCourseArgs {
   courseId: string;
 }
 

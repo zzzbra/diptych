@@ -2,11 +2,7 @@ import React from 'react';
 
 import Button from 'components/Button';
 import Link from 'components/Link';
-import {
-  useDeleteCourseMutation,
-  useUpdateCourseMutation,
-  useGetCoursesQuery,
-} from 'services/courses';
+import { useDeleteCourseMutation, useGetCoursesQuery } from 'services/courses';
 import EditCourse from './EditCourse';
 
 const ListCourses = () => {
@@ -18,7 +14,6 @@ const ListCourses = () => {
     isFetching,
   } = useGetCoursesQuery();
 
-  const [updateCourse] = useUpdateCourseMutation();
   const [deleteCourse] = useDeleteCourseMutation();
 
   if (isError) {
@@ -41,10 +36,8 @@ const ListCourses = () => {
           <span className="flex flex-row flex-nowrap items-center">
             <EditCourse
               {...{
-                previousDescription: description,
-                updateCourse: (description) =>
-                  // capturing the todoId in a closure
-                  updateCourse({ description, courseId }),
+                description,
+                courseId,
               }}
             />
             <Button

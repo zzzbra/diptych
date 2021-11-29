@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Modal, { ModalProps } from 'components/Modal';
+import Modal from 'components/Modal';
 import Input from 'components/Input';
 import { Card } from 'models';
 import { CardMutationArgs } from 'services/cards';
@@ -13,6 +13,7 @@ interface LimitedModalProps {
 
 interface CardEditorProps {
   cardProperties: Card;
+  // this needs to be set via prop
   onCardMutation: (cardProps: CardMutationArgs) => void;
   modalProps: LimitedModalProps;
 }

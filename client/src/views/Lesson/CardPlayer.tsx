@@ -97,10 +97,10 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
             )}
           </Card>
         ) : null;
-      })}
-      {currentCardIndex >= lessonLength ? (
+      })} */}
+      {/* {currentCardIndex >= lessonLength ? (
         <div>Congratulations, you've finished this lesson!</div>
-      ) : null}
+      ) : null} */}
       <Button color="purple" onClick={handleClick}>
         {getButtonText()}
       </Button>

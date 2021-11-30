@@ -9,11 +9,12 @@ const StudentReviewOverview = () => {
   const {
     data: reviews = [],
     isLoading,
+    isFetching,
     isError,
     error,
   } = useGetReviewsQuery();
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <Spinner />;
   }
 
@@ -21,18 +22,14 @@ const StudentReviewOverview = () => {
     return <h1>{JSON.stringify(error, null, 2)}</h1>;
   }
 
-  return (
+  return reviews.length > 0 ? (
+    <div className="pb-8">
+      <h2>You have reviews ready.</h2>
+      <Link to="study-session">Enter study session</Link>
+    </div>
+  ) : (
     <div>
-      {reviews.length > 0 ? (
-        <>
-          <h2>You have reviews ready.</h2>
-          <Link to="study-session">Enter study session</Link>
-        </>
-      ) : (
-        <>
-          <h2>You have no reviews ready at this time.</h2>
-        </>
-      )}
+      <h2>You have no reviews ready at this time.</h2>
     </div>
   );
 };

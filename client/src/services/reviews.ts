@@ -2,10 +2,6 @@ import baseApi from './baseApi';
 import { REVIEW_TAG_TYPE } from 'tagTypes';
 import { Review } from 'models';
 
-interface GetReviewsArgs {
-  studentId: string;
-}
-
 interface GetReviewArgs {
   reviewId: string;
 }
@@ -27,7 +23,7 @@ export interface DeleteReviewArgs {
 
 const reviewsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getReviews: build.query<Review[], GetReviewsArgs>({
+    getReviews: build.query<Review[], void>({
       query: () => {
         return {
           url: 'v1/reviews',

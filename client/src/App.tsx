@@ -15,11 +15,16 @@ import Lesson from 'views/Lesson/Lesson';
 import StudySession from 'views/StudySession';
 
 import PageContentWrapper from 'components/PageContentWrapper';
+import Spinner from 'components/Spinner';
 
 import { useAuth } from 'features/auth/hooks';
 
 function App() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Spinner isFullPage />;
+  }
 
   return (
     <Router>

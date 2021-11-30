@@ -18,6 +18,27 @@
   p {
     @apply text-lg pb-2;
   }
+
+  html, body, #root {
+    @apply min-h-full h-full flex flex-col;
+  }
+}
+
+/* Revisit with design */
+.loader {
+  border-top-color: blue;
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: spinner 1.5s linear infinite;
+}
+
+@-webkit-keyframes spinner {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @import './utilities.css';

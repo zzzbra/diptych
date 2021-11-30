@@ -13,6 +13,7 @@ export const useAuth = () => {
     data: authData,
     isError,
     error,
+    isLoading,
   } = useGetUserQuery(undefined, {
     skip: !shouldRefetch,
   });
@@ -28,5 +29,8 @@ export const useAuth = () => {
     }
   }, [dispatch, shouldRefetch, authData]);
 
-  return authState;
+  return {
+    isLoading: shouldRefetch || isLoading,
+    ...authState,
+  };
 };

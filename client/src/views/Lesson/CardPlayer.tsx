@@ -10,52 +10,59 @@ interface CardPlayerProps {
 }
 
 interface CardState {
+  cardId: string;
+  front: string;
+  back: string;
   isCardShowing: boolean;
   isPendingAnswerReveal: boolean;
 }
 
 interface LessonState {
-  [cardId: string]: CardState;
+  cardsInState: Array<CardState>;
+  currentCardIndex: number;
 }
 
 const getInitialCardsState = (cards: Array<CardInterface>) => {
-  return cards.reduce(
-    (cards, card) => ({
-      ...cards,
-      [card.cardId]: {
-        isCardShowing: false,
-        isPendingAnswerReveal: !!card.isQuestionCard,
-        isCurrentCard: false,
-      },
+  const cardsInState = mapSort(cards).map(
+    ({ isQuestionCard, ...cardFields }) => ({
+      isCardShowing: false,
+      isPendingAnswerReveal: !!isQuestionCard,
+      ...cardFields,
     }),
-    {},
   );
-};
 
-/**
- * state will be a hashmap, with each card ID the key and the properties stored
- * equal to each value of stateu
- */
+  return {
+    cardsInState,
+    currentCardIndex: -1,
+  };
+};
 
 const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
   const { push } = useHistory();
-  const cards = mapSort(unsortedCards);
-  const lessonLength = cards.length;
 
-  const [cardsState, setCardsState] = useState<LessonState>(
-    getInitialCardsState(cards),
+  const [cards, setCards] = useState<LessonState>(() =>
+    getInitialCardsState(unsortedCards),
   );
 
-  const { currentCardIndex, cards: cardsInState } = cardsState;
+  const lessonLength = unsortedCards.length;
+
+  const { currentCardIndex, cardsInState } = cards;
 
   const handleClick = () => {
-    if (cardsInState[currentCardIndex].isPendingAnswerReveal) {
-      window.alert('show answer, and make currentCard isPendingRevew as false');
-    } else if (currentCardIndex < lessonLength) {
-      let cardsUpdated = deepClone(cardsInState);
+    let cardsUpdated = deepClone(cardsInState);
 
-      setCardsState({
-        cards: cardsUpdated,
+    // Order matters here - convert to state machine
+    if (cardsInState[currentCardIndex]?.isPendingAnswerReveal) {
+      cardsUpdated[currentCardIndex].isPendingAnswerReveal = false;
+      setCards({
+        cardsInState: cardsUpdated,
+        currentCardIndex,
+      });
+    } else if (currentCardIndex < lessonLength - 1) {
+      cardsUpdated[currentCardIndex + 1].isCardShowing = true;
+
+      setCards({
+        cardsInState: cardsUpdated,
         currentCardIndex: currentCardIndex + 1,
       });
     } else {
@@ -63,16 +70,30 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
     }
   };
 
+  // Order matters here
+  const getButtonText = () => {
+    if (currentCardIndex < 0) {
+      return 'Begin';
+    } else if (cardsInState[currentCardIndex]?.isPendingAnswerReveal) {
+      return 'Show Answer';
+    } else if (currentCardIndex >= lessonLength - 1) {
+      return 'Return to course overview';
+    } else {
+      return 'Next';
+    }
+  };
+
   return (
     <div>
-      {cards.map((card, key) => {
-        return key <= currentCardIndex ? (
-          <Card>
-            <div>{card.front}</div>
-            {card.back && (
-              <>
-                <div className="mt-2 pt-2 border-t-2">{card.back}</div>
-              </>
+      {cardsInState.map((card) => {
+        const { cardId, front, back, isCardShowing, isPendingAnswerReveal } =
+          card;
+
+        return isCardShowing ? (
+          <Card key={cardId}>
+            <div>{front}</div>
+            {!!back && !isPendingAnswerReveal && (
+              <div className="mt-2 pt-2 border-t-2">{back}</div>
             )}
           </Card>
         ) : null;
@@ -81,7 +102,7 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
         <div>Congratulations, you've finished this lesson!</div>
       ) : null}
       <Button color="purple" onClick={handleClick}>
-        Next
+        {getButtonText()}
       </Button>
     </div>
   );

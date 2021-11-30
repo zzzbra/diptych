@@ -15,15 +15,25 @@ const Lesson = () => {
     isFetching,
     error,
   } = useGetLessonQuery({ lessonId });
-  const { data: cards = [] } = useGetCardsFromLessonQuery({ lessonId });
+  const {
+    data: cards = [],
+    isError: isCardsError,
+    isLoading: isCardsLoading,
+    isFetching: isCardsFetching,
+    error: cardsError,
+  } = useGetCardsFromLessonQuery({ lessonId });
 
   if (isError) {
     return <div>{JSON.stringify(error)}</div>;
   }
 
+  if (isCardsError) {
+    return <div>{JSON.stringify(cardsError)}</div>;
+  }
+
   const { title, description } = lesson || {};
 
-  return isFetching || isLoading ? (
+  return isFetching || isLoading || isCardsLoading || isCardsFetching ? (
     <div>Loading</div>
   ) : (
     <div>

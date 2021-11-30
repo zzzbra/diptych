@@ -19,8 +19,14 @@ router.post('', authorization, async (req, res) => {
     );
     res.json(camelCaseKeys(newReview));
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json(error.message);
+    // This is a good error
+    if (error.constraint === 'reviews_student_id_lesson_id_card_id_unique') {
+      console.error(error.message);
+      res.status(304).json('Review already exists.');
+    } else {
+      console.error(error.message);
+      res.status(500).json(error.message);
+    }
   }
 });
 

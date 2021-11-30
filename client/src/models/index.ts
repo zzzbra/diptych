@@ -51,3 +51,12 @@ export interface Card {
   back?: string;
   isQuestionCard: boolean;
 }
+
+export interface Review {
+  reviewId: string;
+  cardId: string;
+  lessonId: string;
+  userId: string;
+  dueDate: string;
+  rating: number;
+}

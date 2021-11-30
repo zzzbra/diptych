@@ -43,6 +43,8 @@ exports.up = async function (knex) {
     t.foreign('student_id').references('user_id').inTable('users');
     t.integer('card_id');
     t.foreign('card_id').references('card_id').inTable('cards');
+    t.integer('lesson_id');
+    t.foreign('lesson_id').references('lesson_id').inTable('lessons');
     t.integer('rating').defaultTo(0);
     t.timestamp('due_date');
     t.timestamps(true, true);

@@ -47,6 +47,7 @@ const reviewsApi = baseApi.injectEndpoints({
         method: 'post',
         data,
       }),
+      invalidatesTags: [REVIEW_TAG_TYPE],
     }),
     // addNewReviews: build.mutation<Review, AddReviewArgs>({
     //   query: (data) => ({

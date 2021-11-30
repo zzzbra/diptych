@@ -11,7 +11,7 @@ router.post('', authorization, async (req, res) => {
     const { card_id, lesson_id } = snakeCaseKeys(req.body);
     const [newReview] = await db('reviews').insert(
       {
-        student_id: req.user_id,
+        student_id: req.user,
         lesson_id,
         card_id,
       },

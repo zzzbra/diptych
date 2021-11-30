@@ -11,6 +11,7 @@ const courses = require('./routes/courses');
 const lessons = require('./routes/lessons');
 const enrollments = require('./routes/enrollments');
 const cards = require('./routes/cards');
+const reviews = require('./routes/reviews');
 
 const PORT = process.env.SERVER_PORT;
 
@@ -28,6 +29,7 @@ app.use('/api/v1/courses', courses);
 app.use('/api/v1/lessons', lessons);
 app.use('/api/v1/enrollments', enrollments);
 app.use('/api/v1/cards', cards);
+app.use('/api/v1/reviews', reviews);
 
 // Lift off
 app.listen(PORT, () => {

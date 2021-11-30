@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Card as CardInterface } from 'models';
-import Card from 'components/Card';
+import { useHistory, useParams } from 'react-router';
+
+import { LessonOverviewArgs, Card as CardInterface } from 'models';
 import { mapSort, deepClone } from 'utils/linkedList';
+import Card from 'components/Card';
 import Button from 'components/Button';
-import { useHistory } from 'react-router';
+import { useAddNewReviewMutation } from 'services/reviews';
 
 interface CardPlayerProps {
   cards: Array<CardInterface>;
@@ -38,19 +40,20 @@ const getInitialCardsState = (cards: Array<CardInterface>) => {
 };
 
 const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
+  const { lessonId } = useParams<LessonOverviewArgs>();
   const { push } = useHistory();
+  const [addNewReview] = useAddNewReviewMutation();
 
   const [cards, setCards] = useState<LessonState>(() =>
     getInitialCardsState(unsortedCards),
   );
+  const [reviewedCardIds, setReviewedCardIds] = useState<Array<string>>([]);
 
   const lessonLength = unsortedCards.length;
-
   const { currentCardIndex, cardsInState } = cards;
 
   const handleClick = () => {
     let cardsUpdated = deepClone(cardsInState);
-
     // Order matters here - convert to state machine
     if (cardsInState[currentCardIndex]?.isPendingAnswerReveal) {
       cardsUpdated[currentCardIndex].isPendingAnswerReveal = false;
@@ -58,14 +61,21 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
         cardsInState: cardsUpdated,
         currentCardIndex,
       });
+      setReviewedCardIds([
+        ...reviewedCardIds,
+        cardsInState[currentCardIndex].cardId,
+      ]);
     } else if (currentCardIndex < lessonLength - 1) {
       cardsUpdated[currentCardIndex + 1].isCardShowing = true;
-
       setCards({
         cardsInState: cardsUpdated,
         currentCardIndex: currentCardIndex + 1,
       });
     } else {
+      // create or update reviews for all reviews in this lesson
+      // POC: just send one review
+      const [cardId] = reviewedCardIds;
+      addNewReview({ cardId, lessonId });
       push('/dashboard');
     }
   };

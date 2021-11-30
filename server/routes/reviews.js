@@ -24,20 +24,19 @@ router.post('', authorization, async (req, res) => {
   }
 });
 
-// // get all cards
-// router.get('', authorization, async (req, res) => {
-//   const { lesson_id = '' } = snakeCaseKeys(req.query);
-//   try {
-//     const allCards = !!lesson_id
-//       ? await db('cards').select().where({ lesson_id })
-//       : await db('cards');
-//     const responseBody = allCards.map((card) => camelCaseKeys(card));
-//     res.json(responseBody);
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json(error.message);
-//   }
-// });
+// get all cards
+router.get('', authorization, async (req, res) => {
+  try {
+    const studentReviews = await db('reviews')
+      .select()
+      .where({ student_id: req.user });
+    const responseBody = studentReviews.map((review) => camelCaseKeys(review));
+    res.json(responseBody);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json(error.message);
+  }
+});
 
 // // get a card
 // router.get('/:card_id', authorization, async (req, res) => {

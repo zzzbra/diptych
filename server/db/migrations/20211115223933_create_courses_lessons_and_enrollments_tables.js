@@ -46,7 +46,7 @@ exports.up = async function (knex) {
     t.integer('lesson_id');
     t.foreign('lesson_id').references('lesson_id').inTable('lessons');
     t.integer('rating').defaultTo(0);
-    t.timestamp('due_date');
+    t.timestamp('due_date').defaultTo(knex.raw("now() + '1 day'"));
     t.timestamps(true, true);
   });
 };

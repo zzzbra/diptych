@@ -4,12 +4,7 @@ import Spinner from 'components/Spinner';
 import Link from 'components/Link';
 
 import { useGetReviewsQuery } from 'services/reviews';
-
-const isPastDue = (dueDate: string) => {
-  const dueDateTime = new Date(dueDate);
-  const now = new Date();
-  return dueDateTime <= now;
-};
+import { isPastDue } from 'utils/time';
 
 const StudentReviewOverview = () => {
   const {

@@ -4,6 +4,8 @@ import { useParams } from 'react-router';
 
 import { useGetLessonsInCourseQuery } from 'services/lessons';
 import Link from 'components/Link';
+import Spinner from 'components/Spinner';
+import ErrorMessage from 'components/ErrorMessage';
 
 interface CourseOverviewProps {
   courseId: string;
@@ -19,11 +21,10 @@ const CourseOverview = (props: any) => {
     isLoading,
   } = useGetLessonsInCourseQuery({ courseId });
 
-  if (isError) {
-    console.log({ error });
-  }
+  if (isError) return <ErrorMessage {...{ error }} />;
+
   return isLoading || isFetching ? (
-    <div>Loading</div>
+    <Spinner />
   ) : (
     <div>
       <h1 className="pb-4">Course Title</h1>

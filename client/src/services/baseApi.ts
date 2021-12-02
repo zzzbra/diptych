@@ -21,7 +21,6 @@ const axiosBaseQuery =
     MyAxiosErrorResponse
   > =>
   async ({ url, method, data, headers = {} }, { getState }) => {
-    console.log('in axiosBaseQuery fetching', url);
     // Assuming auth is always required for now...
     // Figure out a better approach here later, mybe
     // using prepareHeaders

@@ -14,6 +14,7 @@ import Link from 'components/Link';
 import Input from 'components/Input';
 import Modal from 'components/Modal';
 import { Lesson } from 'models';
+import ErrorMessage from 'components/ErrorMessage';
 
 interface CourseOverviewProps {
   courseId: string;
@@ -101,9 +102,7 @@ const CoursePlanner = (props: any) => {
   const [updateLesson] = useUpdateLessonMutation();
   const [deleteLesson] = useDeleteLessonMutation();
 
-  if (isError) {
-    console.log({ error });
-  }
+  if (isError) return <ErrorMessage {...{ error }} />;
 
   return isLoading || isFetching ? (
     <div>Loading</div>

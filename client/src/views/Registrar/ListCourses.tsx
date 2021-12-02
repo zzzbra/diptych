@@ -8,6 +8,8 @@ import {
   useGetCoursesQuery,
 } from 'services/courses';
 import EditCourse from './EditCourse';
+import Spinner from 'components/Spinner';
+import ErrorMessage from 'components/ErrorMessage';
 
 const ListCourses = () => {
   const {
@@ -21,14 +23,9 @@ const ListCourses = () => {
   const [updateCourse] = useUpdateCourseMutation();
   const [deleteCourse] = useDeleteCourseMutation();
 
-  if (isError) {
-    console.log(error);
-    return <h1>Error!</h1>;
-  }
+  if (isError) return <ErrorMessage {...{ error }} />;
 
-  if (isLoading) return <h1>Loading...</h1>;
-
-  if (isFetching) return <h1>Fetching...</h1>;
+  if (isLoading || isFetching) return <Spinner />;
 
   return (
     <ul className="flex flex-col">

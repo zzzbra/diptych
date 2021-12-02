@@ -23,7 +23,6 @@ const CardEditorModal = ({
   modalProps,
 }: CardEditorProps) => {
   const [formState, setFormState] = useState<CardMutationArgs>(cardProperties);
-  console.log('rendering', { formState });
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) =>
     setFormState({

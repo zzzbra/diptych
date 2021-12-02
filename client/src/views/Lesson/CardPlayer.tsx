@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router';
+import shuffle from 'lodash/shuffle';
 
 import { LessonOverviewArgs, Card as CardInterface } from 'models';
 import { mapSort, deepClone } from 'utils/linkedList';
@@ -7,8 +8,10 @@ import Card from 'components/Card';
 import Button from 'components/Button';
 import { useAddNewReviewsMutation, AddReviewsArgs } from 'services/reviews';
 
+type CardPlayerMode = 'lesson' | 'replay' | 'review';
 interface CardPlayerProps {
   cards: Array<CardInterface>;
+  mode: CardPlayerMode;
 }
 
 interface CardState {
@@ -24,8 +27,12 @@ interface LessonState {
   currentCardIndex: number;
 }
 
-const getInitialCardsState = (cards: Array<CardInterface>) => {
-  const cardsInState = mapSort(cards).map(
+const getInitialCardsState = (
+  cards: Array<CardInterface>,
+  mode: CardPlayerMode,
+) => {
+  const orderedCards = mode === 'review' ? shuffle(cards) : mapSort(cards);
+  const cardsInState = orderedCards.map(
     ({ isQuestionCard, ...cardFields }) => ({
       isCardShowing: false,
       isPendingAnswerReveal: !!isQuestionCard,
@@ -39,13 +46,18 @@ const getInitialCardsState = (cards: Array<CardInterface>) => {
   };
 };
 
-const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
-  const { lessonId } = useParams<LessonOverviewArgs>();
+const CardPlayer = ({
+  cards: unsortedCards,
+  mode = 'lesson',
+}: CardPlayerProps) => {
   const { push } = useHistory();
+
+  // extract to new hook
+  const { lessonId } = useParams<LessonOverviewArgs>();
   const [addNewReviews] = useAddNewReviewsMutation();
 
   const [cards, setCards] = useState<LessonState>(() =>
-    getInitialCardsState(unsortedCards),
+    getInitialCardsState(unsortedCards, mode),
   );
   const [reviews, setReviews] = useState<AddReviewsArgs>([]);
 
@@ -108,7 +120,7 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
           </Card>
         ) : null;
       })}
-      {currentCardIndex >= lessonLength ? (
+      {currentCardIndex >= lessonLength && mode === 'lesson' ? (
         <div>Congratulations, you've finished this lesson!</div>
       ) : null}
       <Button color="purple" onClick={handleClick}>

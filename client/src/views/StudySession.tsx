@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useGetReviewsQuery } from 'services/reviews';
 import Spinner from 'components/Spinner';
+import ErrorMessage from 'components/ErrorMessage';
 import { isPastDue } from 'utils/time';
 import { useGetSpecificCardsQuery } from 'services/cards';
 import { Review } from 'models';
@@ -32,15 +33,9 @@ const StudySession = () => {
     return <Spinner />;
   }
 
-  if (isError) {
-    return <h1>{JSON.stringify(error, null, 2)}</h1>;
+  if (isError || isCustomError) {
+    return <ErrorMessage {...{ error: error || customError }} />;
   }
-
-  if (isCustomError) {
-    return <h1>{JSON.stringify(customError, null, 2)}</h1>;
-  }
-
-  // console.log('cardsForReview: ', cardsForReview, { isLoading });
 
   return (
     <div>

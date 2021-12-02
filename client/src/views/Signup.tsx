@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { useRegistrationMutation } from '../services/auth';
 import Button from '../components/Button';
 import { setCredentials } from '../features/auth/auth.slice';
+import Spinner from 'components/Spinner';
+import ErrorMessage from 'components/ErrorMessage';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -43,11 +45,9 @@ const Register = () => {
     }
   };
 
-  if (isError) return <div>{JSON.stringify(error, null, 2)}</div>;
+  if (isError) return <ErrorMessage {...{ error }} />;
 
-  if (isLoading) {
-    <div>Loading...</div>;
-  }
+  if (isLoading) return <Spinner />;
 
   return (
     <>

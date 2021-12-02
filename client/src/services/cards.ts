@@ -68,42 +68,36 @@ const cardsApi = baseApi.injectEndpoints({
       },
       providesTags: [CARD_TAG_TYPE, LESSON_TAG_TYPE],
     }),
-    getSpecificCards: build.query<
-      Card[],
-      // { data: GetSpecificCardArgs; headers: any }
-      GetSpecificCardArgs
-    >({
+    getSpecificCards: build.query<Card[], GetSpecificCardArgs>({
       async queryFn(args, { getState }, _extraOptions) {
         const {
-          // data: { cardIds },
           // headers = {},
           cardIds,
         } = args;
-        // const state = getState();
-        // const token = get(state, 'auth.token') || getToken();
 
-        // if (token) {
-        //   headers.token = token;
-        // }
+        let headers: AxiosRequestConfig['headers'] = {};
+        const state = getState();
+        const token = get(state, 'auth.token') || getToken();
+
+        if (token) {
+          headers.token = token;
+        }
 
         try {
           const allResults = await Promise.all(
             cardIds.map(async (cardId) => {
-              const url = `v1/cards/${cardId}`;
-              console.log('in getSpecificCards queryFn about to fetch', url);
+              const path = `v1/cards/${cardId}`;
+              const url = baseUrl + path;
               const result = await axios({
-                url: url + baseUrl,
+                url,
                 method: 'get',
-                // headers,
+                headers,
               });
-
-              // if (result.error) throw result.error;
 
               return result.data;
             }),
           );
 
-          console.log('allResults:', allResults);
           return { data: allResults };
         } catch (error) {
           let err = error as any;
@@ -114,16 +108,6 @@ const cardsApi = baseApi.injectEndpoints({
             },
           };
         }
-        //-----------------
-
-        // const result2 = await fetchWithBQ({
-        //   url: 'v1/cards/1',
-        //   method: 'get',
-        // });
-
-        // return result2.data
-        //   ? { data: result2.data as any }
-        //   : { error: result2.error as any };
       },
       providesTags: [CARD_TAG_TYPE, LESSON_TAG_TYPE],
     }),

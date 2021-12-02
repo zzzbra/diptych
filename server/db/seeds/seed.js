@@ -118,6 +118,13 @@ exports.seed = async function (knex) {
       back: 'Given input of variable length, a hash function produces output of fixed length.',
       prev_card_id: 4,
     },
+    {
+      card_id: 6,
+      is_question_card: true,
+      front: 'Would you like to smell my finger?',
+      back: 'No thank you.',
+      prev_card_id: 5,
+    },
   ];
 
   await knex('cards').insert(

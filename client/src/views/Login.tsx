@@ -7,6 +7,8 @@ import { setCredentials } from '../features/auth/auth.slice';
 
 import Button from '../components/Button';
 import { setToken } from '../features/auth/utils';
+import Spinner from 'components/Spinner';
+import ErrorMessage from 'components/ErrorMessage';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -35,11 +37,9 @@ const Login = () => {
     }
   };
 
-  if (isLoading) return <h1>Loading</h1>;
+  if (isLoading) return <Spinner />;
 
-  if (isError) {
-    return <h1>{JSON.stringify(error, null, 2)}</h1>;
-  }
+  if (isError) return <ErrorMessage {...{ error }} />;
 
   return (
     <>

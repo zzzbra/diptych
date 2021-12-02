@@ -5,7 +5,7 @@ import { LessonOverviewArgs, Card as CardInterface } from 'models';
 import { mapSort, deepClone } from 'utils/linkedList';
 import Card from 'components/Card';
 import Button from 'components/Button';
-import { useAddNewReviewMutation } from 'services/reviews';
+import { useAddNewReviewsMutation, AddReviewsArgs } from 'services/reviews';
 
 interface CardPlayerProps {
   cards: Array<CardInterface>;
@@ -42,12 +42,12 @@ const getInitialCardsState = (cards: Array<CardInterface>) => {
 const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
   const { lessonId } = useParams<LessonOverviewArgs>();
   const { push } = useHistory();
-  const [addNewReview] = useAddNewReviewMutation();
+  const [addNewReviews] = useAddNewReviewsMutation();
 
   const [cards, setCards] = useState<LessonState>(() =>
     getInitialCardsState(unsortedCards),
   );
-  const [reviewedCardIds, setReviewedCardIds] = useState<Array<string>>([]);
+  const [reviews, setReviews] = useState<AddReviewsArgs>([]);
 
   const lessonLength = unsortedCards.length;
   const { currentCardIndex, cardsInState } = cards;
@@ -61,9 +61,12 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
         cardsInState: cardsUpdated,
         currentCardIndex,
       });
-      setReviewedCardIds([
-        ...reviewedCardIds,
-        cardsInState[currentCardIndex].cardId,
+      setReviews([
+        ...reviews,
+        {
+          cardId: cardsInState[currentCardIndex].cardId,
+          lessonId,
+        },
       ]);
     } else if (currentCardIndex < lessonLength - 1) {
       cardsUpdated[currentCardIndex + 1].isCardShowing = true;
@@ -72,10 +75,7 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
         currentCardIndex: currentCardIndex + 1,
       });
     } else {
-      // create or update reviews for all reviews in this lesson
-      // POC: just send one review
-      const [cardId] = reviewedCardIds;
-      addNewReview({ cardId, lessonId });
+      addNewReviews(reviews);
       push('/dashboard');
     }
   };

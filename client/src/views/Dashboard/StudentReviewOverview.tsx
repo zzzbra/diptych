@@ -5,6 +5,7 @@ import Link from 'components/Link';
 
 import { useGetReviewsQuery } from 'services/reviews';
 import { isPastDue } from 'utils/time';
+import ErrorMessage from 'components/ErrorMessage';
 
 const StudentReviewOverview = () => {
   const {
@@ -20,7 +21,7 @@ const StudentReviewOverview = () => {
   }
 
   if (isError) {
-    return <h1>{JSON.stringify(error, null, 2)}</h1>;
+    return <ErrorMessage {...{ error }} />;
   }
 
   return reviews.filter(({ dueDate }) => isPastDue(dueDate)).length > 0 ? (

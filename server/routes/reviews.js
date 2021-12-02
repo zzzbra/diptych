@@ -11,17 +11,13 @@ const DUMB_SRS_INTERVALS = [1, 3, 8, 20, 47];
 // create a review
 router.post('', authorization, async (req, res) => {
   try {
-    const { card_id, lesson_id } = snakeCaseKeys(req.body);
+    const reviews = req.body.map((review) => ({
+      ...snakeCaseKeys(review),
+      student_id: req.user,
+    }));
+    console.log('reviews:', reviews);
 
-    console.log('before db');
-    const [newReview] = await db('reviews').insert(
-      {
-        student_id: req.user,
-        lesson_id,
-        card_id,
-      },
-      ['*'],
-    );
+    const [newReview] = await db('reviews').insert(reviews, ['*']);
     res.json(camelCaseKeys(newReview));
   } catch (error) {
     // This is a good error

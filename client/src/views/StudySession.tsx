@@ -7,6 +7,9 @@ import { isPastDue } from 'utils/time';
 import { useGetSpecificCardsQuery } from 'services/cards';
 import { Review } from 'models';
 
+import CardPlayer from './Lesson/CardPlayer';
+import Card from 'components/Card';
+
 const getDueCards = (reviews: Review[]) =>
   reviews.filter(({ dueDate }) => isPastDue(dueDate));
 
@@ -41,9 +44,7 @@ const StudySession = () => {
     <div>
       <h1>Review Time</h1>
       <h2>Your cards:</h2>
-      {cardsForReview.map((card) => (
-        <div key={card.cardId}>{JSON.stringify(card, null, 2)}</div>
-      ))}
+      <CardPlayer cards={cardsForReview} mode="review" />
     </div>
   );
 };

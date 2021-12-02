@@ -10,6 +10,7 @@ import {
   useWithdrawMutation,
   useGetStudentsEnrollmentsQuery,
 } from 'services/enrollments';
+import ErrorMessage from 'components/ErrorMessage';
 
 const Classroom = () => {
   const { user } = useAuth();
@@ -33,9 +34,9 @@ const Classroom = () => {
     isLoading,
   } = useGetCoursesQuery();
 
-  if (isError || isEnrollmentError) {
-    console.log({ error }, { enrollmentError });
-  }
+  if (isError) return <ErrorMessage {...{ error }} />;
+  if (isEnrollmentError)
+    return <ErrorMessage {...{ error: enrollmentError }} />;
 
   if (isFetching || isLoading || isEnrollmentLoading) return <div>Loading</div>;
 

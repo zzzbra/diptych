@@ -42,7 +42,7 @@ const Lesson = () => {
         <h4 className="pb-2">Lesson Overview</h4>
         <p>{description}</p>
       </div>
-      <CardPlayer {...{ cards }} />
+      <CardPlayer {...{ cards, mode: 'lesson' }} />
     </div>
   );
 };

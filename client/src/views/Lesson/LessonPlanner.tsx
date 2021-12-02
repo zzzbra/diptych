@@ -4,7 +4,6 @@ import { useParams } from 'react-router';
 import Button from 'components/Button';
 import { useGetLessonQuery } from 'services/lessons';
 import {
-  CardMutationArgs,
   defaultNewCardArgs,
   useAddNewCardMutation,
   useDeleteCardMutation,
@@ -14,7 +13,6 @@ import {
 
 import { mapSort } from 'utils/linkedList';
 
-// import Planner from 'components/Planner';
 import { Card as CardInterface, LessonOverviewArgs } from 'models';
 import Card from 'components/Card';
 import CardEditorModal from './CardEditorModal';

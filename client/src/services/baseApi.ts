@@ -1,44 +1,29 @@
-import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import get from 'lodash/get';
-import {
-  createApi,
-  BaseQueryFn,
-  // fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react';
+import { createApi, BaseQueryFn } from '@reduxjs/toolkit/query/react';
 
+import { AxiosArgs, MyAxiosResponse, MyAxiosErrorResponse } from 'models';
 import tagTypes from '../tagTypes';
 import { getToken } from '../features/auth/utils';
 
-// TODO: set up FE env variables
-const protocol = 'http';
-const host = 'localhost';
-const port = '5000';
-const baseUrl = `${protocol}://${host}:${port}/api/`;
+export const baseUrl = `http://localhost:5000/api/`;
 
-// https://redux-toolkit.js.org/rtk-query/usage/customizing-queries
-type AxiosArgs = {
-  url: string;
-  method: AxiosRequestConfig['method'];
-  data?: AxiosRequestConfig['data'];
-  headers?: AxiosRequestConfig['headers'];
-};
-
-type MyAxiosResponse = {
-  data: any;
-};
-
-export interface MyAxiosErrorResponse {
-  code?: string;
-  message?: string;
+interface AxiosBaseQueryArgs {
+  baseUrl: string;
 }
 
 const axiosBaseQuery =
-  (
-    { baseUrl }: { baseUrl: string } = { baseUrl: '' },
-  ): BaseQueryFn<AxiosArgs, MyAxiosResponse, MyAxiosErrorResponse> =>
+  ({
+    baseUrl = '',
+  }: AxiosBaseQueryArgs): BaseQueryFn<
+    AxiosArgs,
+    MyAxiosResponse,
+    MyAxiosErrorResponse
+  > =>
   async ({ url, method, data, headers = {} }, { getState }) => {
+    console.log('in axiosBaseQuery fetching', url);
     // Assuming auth is always required for now...
-    // Figure out a better approach here later, maybe
+    // Figure out a better approach here later, mybe
     // using prepareHeaders
     const state = getState();
     const token = get(state, 'auth.token') || getToken();
@@ -51,8 +36,8 @@ const axiosBaseQuery =
       const result = await axios({ url: baseUrl + url, method, data, headers });
       return { data: result.data };
     } catch (error) {
+      // FIXME error doesn't appear to have these properties
       let err = error as AxiosError;
-      // needs to return Serialized error?
       return {
         error: {
           status: err.response?.status,

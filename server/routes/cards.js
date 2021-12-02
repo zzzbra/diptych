@@ -50,7 +50,11 @@ router.get('/:card_id', authorization, async (req, res) => {
   try {
     const { card_id } = req.params;
     const [card] = await db('cards').where({ card_id });
-    res.json(camelCaseKeys(card));
+    if (card === undefined) {
+      res.status(404).json('No such card');
+    } else {
+      res.json(camelCaseKeys(card));
+    }
   } catch (error) {
     console.error(error.message);
     res.status(500).json(error.message);

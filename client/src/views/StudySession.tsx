@@ -2,6 +2,12 @@ import React from 'react';
 
 import { useGetReviewsQuery } from 'services/reviews';
 import Spinner from 'components/Spinner';
+import { isPastDue } from 'utils/time';
+import { useGetSpecificCardsQuery } from 'services/cards';
+import { Review } from 'models';
+
+const getDueCards = (reviews: Review[]) =>
+  reviews.filter(({ dueDate }) => isPastDue(dueDate));
 
 const StudySession = () => {
   const {
@@ -11,7 +17,18 @@ const StudySession = () => {
     isLoading,
   } = useGetReviewsQuery();
 
-  if (isLoading) {
+  const dueReviews = getDueCards(studentReviews);
+
+  const dueCardIds = dueReviews.map(({ cardId }) => cardId);
+
+  const {
+    data: cardsForReview = [],
+    error: customError,
+    isError: isCustomError,
+    isLoading: isCustomLoading,
+  } = useGetSpecificCardsQuery({ cardIds: dueCardIds }, { skip: isLoading });
+
+  if (isLoading || isCustomLoading) {
     return <Spinner />;
   }
 
@@ -19,12 +36,18 @@ const StudySession = () => {
     return <h1>{JSON.stringify(error, null, 2)}</h1>;
   }
 
+  if (isCustomError) {
+    return <h1>{JSON.stringify(customError, null, 2)}</h1>;
+  }
+
+  // console.log('cardsForReview: ', cardsForReview, { isLoading });
+
   return (
     <div>
       <h1>Review Time</h1>
       <h2>Your cards:</h2>
-      {studentReviews.map((r) => (
-        <div>{JSON.stringify(r, null, 2)}</div>
+      {cardsForReview.map((card) => (
+        <div key={card.cardId}>{JSON.stringify(card, null, 2)}</div>
       ))}
     </div>
   );

@@ -1,6 +1,25 @@
-// move into {name}.interface.ts
+// TODO break up into {name}.interface.ts
+import { AxiosRequestConfig } from 'axios';
 
-// API response
+// Base API
+// https://redux-toolkit.js.org/rtk-query/usage/customizing-queries
+export interface AxiosArgs {
+  url: string;
+  method: AxiosRequestConfig['method'];
+  data?: AxiosRequestConfig['data'];
+  headers?: AxiosRequestConfig['headers'];
+}
+
+export interface MyAxiosResponse {
+  data: any;
+}
+
+export interface MyAxiosErrorResponse {
+  code?: string;
+  message?: string;
+}
+
+// API response (DAOs)
 export interface Course {
   courseId: string;
   userId: string;

@@ -72,12 +72,12 @@ const CardPlayer = ({ cards: unsortedCards }: CardPlayerProps) => {
 
   // Order matters here
   const getButtonText = () => {
-    if (currentCardIndex < 0) {
-      return 'Begin';
-    } else if (cardsInState[currentCardIndex]?.isPendingAnswerReveal) {
+    if (cardsInState[currentCardIndex]?.isPendingAnswerReveal) {
       return 'Show Answer';
     } else if (currentCardIndex >= lessonLength - 1) {
       return 'Return to course overview';
+    } else if (currentCardIndex < 0) {
+      return 'Begin';
     } else {
       return 'Next';
     }

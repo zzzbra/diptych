@@ -15,10 +15,9 @@ router.post('', authorization, async (req, res) => {
       ...snakeCaseKeys(review),
       student_id: req.user,
     }));
-    console.log('reviews:', reviews);
 
-    const [newReview] = await db('reviews').insert(reviews, ['*']);
-    res.json(camelCaseKeys(newReview));
+    const newReviews = await db('reviews').insert(reviews, ['*']);
+    res.json(camelCaseKeys(newReviews));
   } catch (error) {
     // This is a good error
     if (error.constraint === 'reviews_student_id_lesson_id_card_id_unique') {
@@ -73,6 +72,22 @@ router.put('/:review_id', authorization, async (req, res) => {
       ['*'],
     );
     res.json(camelCaseKeys(newReview));
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json(error.message);
+  }
+});
+
+// update multiple reviews - possible not RESTful
+router.put('', authorization, async (req, res) => {
+  try {
+    const reviews = req.body.map((review) => ({
+      ...snakeCaseKeys(review),
+      student_id: req.user,
+    }));
+
+    // const updatedReviews = await db('reviews').insert(reviews, ['*']);
+    // res.json(camelCaseKeys(updatedReviews));
   } catch (error) {
     console.error(error.message);
     res.status(500).json(error.message);

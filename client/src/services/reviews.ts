@@ -6,12 +6,6 @@ interface GetReviewArgs {
   reviewId: string;
 }
 
-export interface UpdateReviewArgs {
-  reviewId: string;
-  rating: number;
-  dueDate: string;
-}
-
 export interface AddReviewArgs {
   cardId: string;
   lessonId: string;
@@ -19,6 +13,13 @@ export interface AddReviewArgs {
 
 // https://stackoverflow.com/questions/25469244/how-can-i-define-an-interface-for-an-array-of-objects
 export interface AddReviewsArgs extends Array<AddReviewArgs> {}
+
+export interface UpdateReviewArgs {
+  reviewId: string;
+  rating: number;
+}
+
+export interface UpdateReviewsArgs extends Array<UpdateReviewArgs> {}
 
 export interface DeleteReviewArgs {
   reviewId: string;
@@ -60,10 +61,19 @@ const reviewsApi = baseApi.injectEndpoints({
       }),
     }),
     updateReview: build.mutation<Review, UpdateReviewArgs>({
-      query: ({ reviewId, rating, dueDate }: UpdateReviewArgs) => ({
+      query: ({ reviewId, rating }: UpdateReviewArgs) => ({
         url: `v1/review/${reviewId}`,
         method: 'put',
-        data: { rating, dueDate },
+        data: { rating },
+      }),
+      invalidatesTags: [REVIEW_TAG_TYPE],
+    }),
+    // not RESTful :/
+    updateReviews: build.mutation<Review, UpdateReviewsArgs>({
+      query: (data) => ({
+        url: 'v1/review',
+        method: 'put',
+        data: data,
       }),
       invalidatesTags: [REVIEW_TAG_TYPE],
     }),

@@ -2,10 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 // import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import baseApi from './services/baseApi';
 import authReducer from './features/auth/auth.slice';
+import studySessionReducer from './features/studySession/slice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    studySession: studySessionReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,

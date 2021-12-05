@@ -64,7 +64,7 @@ const LessonPlanner = () => {
         <div className="mt-4 py-8">
           <h2>Lesson Script</h2>
           <ul>
-            {mapSort(cards)?.map((card) => (
+            {mapSort(cards ?? [])?.map((card) => (
               <li key={card.cardId}>
                 <div className="py-2 flex justify-between items-baseline">
                   Card ID: {card.cardId}

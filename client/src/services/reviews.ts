@@ -1,4 +1,9 @@
+import axios, { AxiosRequestConfig } from 'axios';
+import get from 'lodash/get';
+
 import baseApi from './baseApi';
+import { baseUrl } from 'services/baseApi';
+import { getToken } from 'features/auth/utils';
 import { REVIEW_TAG_TYPE } from 'tagTypes';
 import { Review } from 'models';
 
@@ -69,12 +74,43 @@ const reviewsApi = baseApi.injectEndpoints({
       invalidatesTags: [REVIEW_TAG_TYPE],
     }),
     // not RESTful :/
-    updateReviews: build.mutation<Review, UpdateReviewsArgs>({
-      query: (data) => ({
-        url: 'v1/review',
-        method: 'put',
-        data: data,
-      }),
+    updateReviews: build.mutation<Review[], UpdateReviewsArgs>({
+      async queryFn(updatedReviews, { getState }, _extraOptions) {
+        let headers: AxiosRequestConfig['headers'] = {};
+        const state = getState();
+        const token = get(state, 'auth.token') || getToken();
+
+        if (token) {
+          headers.token = token;
+        }
+
+        try {
+          const allResults = await Promise.all(
+            updatedReviews.map(async ({ reviewId, rating }) => {
+              const path = `v1/reviews/${reviewId}`;
+              const url = baseUrl + path;
+              const result = await axios({
+                url,
+                method: 'put',
+                headers,
+                data: { rating },
+              });
+
+              return result.data;
+            }),
+          );
+
+          return { data: allResults };
+        } catch (error) {
+          let err = error as any;
+          return {
+            error: {
+              status: err.status,
+              message: err.data,
+            },
+          };
+        }
+      },
       invalidatesTags: [REVIEW_TAG_TYPE],
     }),
     deleteReview: build.mutation<Review[], DeleteReviewArgs>({
@@ -93,5 +129,6 @@ export const {
   useAddNewReviewMutation,
   useAddNewReviewsMutation,
   useUpdateReviewMutation,
+  useUpdateReviewsMutation,
   useDeleteReviewMutation,
 } = reviewsApi;

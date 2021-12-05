@@ -9,7 +9,7 @@ import Card from 'components/Card';
 import Button from 'components/Button';
 import {
   useAddNewReviewsMutation,
-  useUpdateReviewMutation,
+  useUpdateReviewsMutation,
   AddReviewsArgs,
 } from 'services/reviews';
 import { Card as CardType } from 'models';
@@ -37,13 +37,11 @@ const getInitialStudySessionState = ({
         isPendingBackReveal: isQuestionCard,
         isPendingRating: mode === 'REVIEW',
         isLastCard: index === allCards.length - 1,
-        // nextCardId: index < allCards.length - 1 ? allCards[index].cardId : null,
       };
     },
   );
 
   return {
-    // status: cards.length > 0 ? 'NOT_STARTED' : 'FINISHED',
     cards: cardsInitialState,
     currentCardIndex: 0,
     reviews,
@@ -60,7 +58,7 @@ const CardPlayer = ({
 
   // extract to new hook
   const [addNewReviews] = useAddNewReviewsMutation();
-  // const [updateReviews] = useUpdateReviewsMutation();
+  const [updateReviews] = useUpdateReviewsMutation();
 
   // replace with selector
   const [studySession, setStudySession] = useState<StudySessionState>(() =>
@@ -92,8 +90,13 @@ const CardPlayer = ({
       isLastCard &&
       mode === 'REVIEW'
     ) {
-      window.alert('TODO: update the DB with new review ratings');
-      // updateReviews(reviews);
+      // window.alert('TODO: update the DB with new review ratings');
+      updateReviews(
+        reviews.map(({ reviewId, rating }) => ({
+          rating,
+          reviewId: reviewId ?? '',
+        })),
+      );
       push('/dashboard');
     } else if (
       !isHidden &&

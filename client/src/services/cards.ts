@@ -1,9 +1,9 @@
-import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import get from 'lodash/get';
 
 import baseApi from './baseApi';
 import { CARD_TAG_TYPE, LESSON_TAG_TYPE } from 'tagTypes';
-import { Card, MyAxiosErrorResponse } from 'models';
+import { Card } from 'models';
 import { getToken } from 'features/auth/utils';
 import { baseUrl } from 'services/baseApi';
 
@@ -70,10 +70,7 @@ const cardsApi = baseApi.injectEndpoints({
     }),
     getSpecificCards: build.query<Card[], GetSpecificCardArgs>({
       async queryFn(args, { getState }, _extraOptions) {
-        const {
-          // headers = {},
-          cardIds,
-        } = args;
+        const { cardIds } = args;
 
         let headers: AxiosRequestConfig['headers'] = {};
         const state = getState();

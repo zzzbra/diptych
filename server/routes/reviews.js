@@ -6,11 +6,12 @@ const authorization = require('../middleware/auth');
 
 const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
 
-const DUMB_SRS_INTERVALS = [1, 3, 8, 20, 47];
+const DUMB_SRS_INTERVALS = [0, 1, 3, 8, 21];
 
 // create a review
 router.post('', authorization, async (req, res) => {
   try {
+    console.log('req.body: ', req.body);
     const reviews = req.body.map((review) => ({
       ...snakeCaseKeys(review),
       student_id: req.user,
@@ -59,18 +60,19 @@ router.get('/:review_id', authorization, async (req, res) => {
 // update a review
 router.put('/:review_id', authorization, async (req, res) => {
   try {
-    const { card_id, lesson_id, rating } = snakeCaseKeys(req.body);
+    const { review_id } = req.params;
+    const { rating } = snakeCaseKeys(req.body);
 
-    const [newReview] = await db('reviews').insert(
-      {
-        student_id: req.user,
-        lesson_id,
-        card_id,
-        rating,
-        due_date: db.raw(`now() + '${DUMB_SRS_INTERVALS[rating]} day'`),
-      },
-      ['*'],
-    );
+    console.log('days: ', DUMB_SRS_INTERVALS[rating]);
+    const [newReview] = await db('reviews')
+      .where({ review_id })
+      .update(
+        {
+          rating,
+          due_date: db.raw(`now() + '${DUMB_SRS_INTERVALS[rating]} day'`),
+        },
+        ['*'],
+      );
     res.json(camelCaseKeys(newReview));
   } catch (error) {
     console.error(error.message);
@@ -79,20 +81,21 @@ router.put('/:review_id', authorization, async (req, res) => {
 });
 
 // update multiple reviews - possible not RESTful
-router.put('', authorization, async (req, res) => {
-  try {
-    const reviews = req.body.map((review) => ({
-      ...snakeCaseKeys(review),
-      student_id: req.user,
-    }));
+// router.put('', authorization, async (req, res) => {
+//   try {
+//     console.log('req.body: ', req.body);
+//     const reviews = req.body.map((review) => ({
+//       ...snakeCaseKeys(review),
+//       student_id: req.user,
+//     }));
 
-    // const updatedReviews = await db('reviews').insert(reviews, ['*']);
-    // res.json(camelCaseKeys(updatedReviews));
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json(error.message);
-  }
-});
+//     // const updatedReviews = await db('reviews').insert(reviews, ['*']);
+//     // res.json(camelCaseKeys(updatedReviews));
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json(error.message);
+//   }
+// });
 
 // delete a review
 router.delete('/:review_id', authorization, async (req, res) => {

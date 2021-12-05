@@ -9,21 +9,6 @@ export interface CardPlayerProps {
   lessonId?: string;
 }
 
-// export type StudySessionStatus =
-//   | 'NOT_STARTED'
-//   | 'FINISHED'
-//   | 'PENDING_NEXT_CARD'
-//   | 'PENDING_BACK_REVEAL'
-//   | 'PENDING_RATING';
-
-// export type CardStateStatus =
-//   | 'INFO_CARD_HIDDEN' // button = "Begin"
-//   | 'INFO_CARD_COMPLETE' // button = "Next"
-//   | 'QUESTION_CARD_HIDDEN' // button = "Begin"
-//   | 'QUESTION_CARD_PENDING_BACK_REVEAL' // buton = 'Show'
-//   | 'QUESTION_CARD_PENDING_RATING' // buttons = 'yes', 'no'
-//   | 'QUESTION_CARD_COMPLETE'; // buton = 'Go Back'
-
 export interface CardState {
   cardId: string;
   front: string;
@@ -31,9 +16,7 @@ export interface CardState {
   isHidden: boolean;
   isPendingBackReveal: boolean;
   isPendingRating: boolean;
-  // isPendingNextCard: boolean;
   isLastCard: boolean;
-  // nextCardId: string | null;
 }
 
 export interface ReviewState {
@@ -49,5 +32,4 @@ export interface StudySessionState {
   currentCardIndex: number;
   cards: Array<CardState>;
   reviews: Array<ReviewState>;
-  // status: StudySessionStatus;
 }

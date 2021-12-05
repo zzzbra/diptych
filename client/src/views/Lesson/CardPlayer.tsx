@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { isPending, PayloadAction } from '@reduxjs/toolkit';
 import { useHistory, useParams } from 'react-router';
 import shuffle from 'lodash/shuffle';
 
@@ -24,17 +24,26 @@ const getInitialStudySessionState = ({
   mode = 'LESSON',
   reviews = [],
 }: CardPlayerProps): StudySessionState => {
-  console.log('reviews', reviews);
   const orderedCards = mode === 'REVIEW' ? shuffle(cards) : mapSort(cards);
   const cardsInitialState = orderedCards.map(
-    ({ isQuestionCard, ...cardFields }: CardType): CardState => ({
-      status: !!isQuestionCard ? 'QUESTION_CARD_HIDDEN' : 'INFO_CARD_HIDDEN',
-      ...cardFields,
-    }),
+    (
+      { isQuestionCard, ...cardFields }: CardType,
+      index: number,
+      allCards,
+    ): CardState => {
+      return {
+        ...cardFields,
+        isHidden: true,
+        isPendingBackReveal: isQuestionCard,
+        isPendingRating: mode === 'REVIEW',
+        isLastCard: index === allCards.length - 1,
+        // nextCardId: index < allCards.length - 1 ? allCards[index].cardId : null,
+      };
+    },
   );
 
   return {
-    status: cards.length > 0 ? 'NOT_STARTED' : 'FINISHED',
+    // status: cards.length > 0 ? 'NOT_STARTED' : 'FINISHED',
     cards: cardsInitialState,
     currentCardIndex: 0,
     reviews,
@@ -47,7 +56,6 @@ const CardPlayer = ({
   reviews: reviewsFromApi = [],
   lessonId = '',
 }: CardPlayerProps) => {
-  console.log('mode:', mode);
   const { push } = useHistory();
 
   // extract to new hook
@@ -63,121 +71,130 @@ const CardPlayer = ({
     }),
   );
 
-  const { currentCardIndex, cards = [], reviews, status } = studySession;
+  const { currentCardIndex, cards = [], reviews } = studySession;
   const lessonLength = cards.length;
 
   const handleClick = ({ recalled = false }) => {
     const cardsUpdated = deepClone(cards);
-    const currentCard = cardsUpdated[currentCardIndex];
-    const isLastCard = currentCardIndex === lessonLength;
+    const reviewsUpdated = deepClone(reviews);
+    const {
+      cardId,
+      isLastCard,
+      isPendingBackReveal,
+      isPendingRating,
+      isHidden,
+    } = cardsUpdated[currentCardIndex];
 
-    if (status === 'FINISHED') {
-      if (mode === 'REVIEW') {
-        window.alert('TODO: update the DB with new review ratings');
-        // updateReviews(reviews);
-      } else {
-        console.log('new reviews: ', reviews);
-        addNewReviews(reviews);
-      }
+    if (
+      !isHidden &&
+      !isPendingRating &&
+      !isPendingBackReveal &&
+      isLastCard &&
+      mode === 'REVIEW'
+    ) {
+      window.alert('TODO: update the DB with new review ratings');
+      // updateReviews(reviews);
       push('/dashboard');
-    // action that reveals card -- only happens now at start
-    } else if (status === 'NOT_STARTED') {
-      if (currentCard.status === 'INFO_CARD_HIDDEN') {
-        cardsUpdated[currentCardIndex].status = 'INFO_CARD_COMPLETE';
-      } else if (currentCard.status === 'QUESTION_CARD_HIDDEN') {
-        cardsUpdated[currentCardIndex].status = 'QUESTION_CARD_PENDING_BACK_REVEAL';
+    } else if (
+      !isHidden &&
+      !isPendingRating &&
+      !isPendingBackReveal &&
+      isLastCard &&
+      mode !== 'REVIEW'
+    ) {
+      console.log('new reviews: ', reviews);
+      addNewReviews(reviews);
+      push('/dashboard');
+    } else if (isHidden) {
+      // NOT_STARTED
+      cardsUpdated[currentCardIndex].isHidden = false;
+      setStudySession({
+        ...studySession,
+        cards: cardsUpdated,
+      });
+    } else if (isPendingBackReveal && !isPendingRating) {
+      // Lesson mode question card back reveal - add review here
+      cardsUpdated[currentCardIndex].isPendingBackReveal = false;
+      setStudySession({
+        ...studySession,
+        cards: cardsUpdated,
+        reviews: [...reviews, { lessonId, cardId, rating: 0 }],
+      });
+    } else if (!isHidden && isPendingBackReveal && isPendingRating) {
+      // Review mode question card back reveal - add revew in rating step
+      cardsUpdated[currentCardIndex].isPendingBackReveal = false;
+      setStudySession({
+        ...studySession,
+        cards: cardsUpdated,
+      });
+    } else if (
+      !isHidden &&
+      !isPendingBackReveal &&
+      isPendingRating &&
+      !isLastCard
+    ) {
+      cardsUpdated[currentCardIndex].isPendingRating = false;
+      cardsUpdated[currentCardIndex + 1].isHidden = false;
+      const currentReviewIndex = reviewsUpdated.findIndex(
+        ({ cardId: reviewCardId }) => reviewCardId === cardId,
+      );
+      const { rating = 0 } = reviewsUpdated[currentReviewIndex];
+
+      if (rating > 0 && !recalled) {
+        reviewsUpdated[currentReviewIndex].rating--;
+      } else if (rating < 5 && recalled) {
+        reviewsUpdated[currentReviewIndex].rating++;
       }
 
       setStudySession({
         ...studySession,
         cards: cardsUpdated,
         currentCardIndex: currentCardIndex + 1,
+        reviews: reviewsUpdated,
       });
-      // action that reveals card - also only happens at start
-    } else if (currentCard?.status === 'INFO_CARD_COMPLETE') {
-      // cardsUpdated[currentCardIndex].status = 'INFO_CARD_COMPLETE';
+    } else if (
+      !isHidden &&
+      !isPendingBackReveal &&
+      isPendingRating &&
+      isLastCard
+    ) {
+      cardsUpdated[currentCardIndex].isPendingRating = false;
+      const currentReviewIndex = reviewsUpdated.findIndex(
+        ({ cardId: reviewCardId }) => reviewCardId === cardId,
+      );
+      const { rating = 0 } = reviewsUpdated[currentReviewIndex];
 
-      // const nextCardIndex = currentCardIndex + 1;
-      // // brittle - might be cleaner with doubly linked list
-      // cardsUpdated[nextCardIndex].status =
-      //   cardsUpdated[nextCardIndex].status === 'INFO_CARD_HIDDEN'
-      //   ? 'INFO_CARD_COMPLETE' : 'QUESTION_CARD_PENDING_BACK_REVEAL';
-
-      // setStudySession({
-      //   ...studySession,
-      //   cards: cardsUpdated,
-      //   currentCardIndex: nextCardIndex,
-      // });
-      // action that reveals card - also only happens at start
-    } else if (currentCard?.status === 'QUESTION_CARD_HIDDEN') {
-      cardsUpdated[currentCardIndex].status = 'QUESTION_CARD_PENDING_BACK_REVEAL';
-      setStudySession({
-        ...studySession,
-        cards: cardsUpdated,
-      });
-    } else if (currentCard?.status === 'QUESTION_CARD_PENDING_BACK_REVEAL') {
-      cardsUpdated[currentCardIndex].status =
-        mode === 'REVIEW'
-          ? 'QUESTION_CARD_PENDING_RATING'
-          : 'QUESTION_CARD_COMPLETE';
-      setStudySession({
-        ...studySession,
-        cards: cardsUpdated,
-        // reviews:
-        //   mode === 'LESSON'
-        //     ? [...reviews, { lessonId, cardId: currentCard?.cardId, rating: 0 }]
-        //     : reviews,
-      });
-
-    } else if (currentCard?.status === 'QUESTION_CARD_PENDING_RATING') {
-      // shouldn't be doing this here?
-      if (currentCardIndex + 1 < lessonLength) {
-        const nextCard = cardsUpdated[currentCardIndex + 1];
-        nextCard.status = nextCard.;
+      if (rating > 0 && !recalled) {
+        reviewsUpdated[currentReviewIndex].rating--;
+      } else if (rating < 5 && recalled) {
+        reviewsUpdated[currentReviewIndex].rating++;
       }
+
       setStudySession({
         ...studySession,
         cards: cardsUpdated,
-        currentCardIndex: currentCardIndex + 1,
-        reviews: reviews.map((review) => {
-          if (review.cardId === cards[currentCardIndex]?.cardId) {
-            if (recalled && review.rating < 5) {
-              return {
-                ...review,
-                rating: review.rating + 1,
-              };
-            }
-            if (!recalled && review.rating < 0) {
-              return {
-                ...review,
-                rating: review.rating - 1,
-              };
-            }
-          }
-
-          return review;
-        }),
+        reviews: reviewsUpdated,
       });
-
-      // just show the next card
-    } else if (currentCard?.status === ) {
-      if (currentCardIndex + 1 < lessonLength) {
-        cardsUpdated[currentCardIndex + 1].isCardShowing = true;
-      }
+    } else if (
+      !isLastCard &&
+      !isPendingBackReveal &&
+      !isPendingRating &&
+      !isHidden
+    ) {
+      cardsUpdated[currentCardIndex + 1].isHidden = false;
       setStudySession({
         ...studySession,
         cards: cardsUpdated,
         currentCardIndex: currentCardIndex + 1,
       });
-      // EXIT STUDY SESSION
-    } else {
     }
-    // TODO: UPDATE_RATING
   };
 
   // Order matters here
   const renderControls = () => {
-    if (cards[currentCardIndex]?.nextAction === 'SET_RATING') {
+    const { isPendingBackReveal, isPendingRating, isHidden, isLastCard } =
+      cards[currentCardIndex];
+    if (isPendingRating && !isPendingBackReveal) {
       return (
         <div>
           <Button color="red" onClick={() => handleClick({ recalled: false })}>
@@ -192,19 +209,19 @@ const CardPlayer = ({
           </Button>
         </div>
       );
-    } else if (cards[currentCardIndex]?.nextAction === 'SHOW_ANSWER') {
+    } else if (isPendingBackReveal) {
       return (
         <Button color="purple" onClick={handleClick}>
           Show Answer
         </Button>
       );
-    } else if (currentCardIndex >= lessonLength - 1) {
+    } else if (isLastCard) {
       return (
         <Button color="purple" onClick={handleClick}>
           Return to course overview
         </Button>
       );
-    } else if (currentCardIndex < 0) {
+    } else if (isHidden) {
       return (
         <Button color="purple" onClick={handleClick}>
           Begin
@@ -222,12 +239,12 @@ const CardPlayer = ({
   return (
     <div>
       {cards.map((card) => {
-        const { cardId, front, back, isCardShowing, nextAction } = card;
+        const { cardId, front, back, isHidden, isPendingBackReveal } = card;
 
-        return isCardShowing ? (
+        return !isHidden ? (
           <Card key={cardId}>
             <div>{front}</div>
-            {!!back && !(nextAction === 'SHOW_ANSWER') && (
+            {!!back && !isPendingBackReveal && (
               <div className="mt-2 pt-2 border-t-2">{back}</div>
             )}
           </Card>

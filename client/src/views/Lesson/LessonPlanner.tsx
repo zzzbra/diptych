@@ -56,9 +56,11 @@ const LessonPlanner = () => {
     <div>
       <h1>Lesson Topic: {title}</h1>
       <div className="mt-4">
-        <div className="border-b-2 pb-4">
-          <h3>Lesson Objectives:</h3>
-          <p>{description}</p>
+        <div className="border-b-2 pb-8">
+          <h2>Lesson Objectives</h2>
+          <ol className="pl-8 list-decimal">
+            <li>{description}</li>
+          </ol>
         </div>
 
         <div className="mt-4 py-8">
@@ -66,29 +68,35 @@ const LessonPlanner = () => {
           <ul>
             {mapSort(cards ?? [])?.map((card) => (
               <li key={card.cardId}>
-                <div className="py-2 flex justify-between items-baseline">
-                  Card ID: {card.cardId}
-                  <span>
-                    <Button
-                      onClick={() => {
-                        setIsUpdateModalOpen(true);
-                        setCardToUpdate(card);
-                      }}
-                    >
-                      Edit Card
-                    </Button>
-                    <Button
-                      onClick={() => deleteCard({ cardId: card.cardId })}
-                      color="red"
-                      className="ml-2"
-                    >
-                      Delete Card
-                    </Button>
-                  </span>
-                </div>
                 <Card>
-                  <div>{card.front}</div>
-                  <div>{card.back}</div>
+                  <div className="pb-8 flex justify-between items-baseline">
+                    <span>Card ID: {card.cardId}</span>
+                    <span>
+                      <Button
+                        onClick={() => {
+                          setIsUpdateModalOpen(true);
+                          setCardToUpdate(card);
+                        }}
+                      >
+                        Edit Card
+                      </Button>
+                      <Button
+                        onClick={() => deleteCard({ cardId: card.cardId })}
+                        color="red"
+                        className="ml-2"
+                      >
+                        Delete Card
+                      </Button>
+                    </span>
+                  </div>
+                  <div className="pb-2">Front of card:</div>
+                  <div className="p-4 rounded border-2">{card.front}</div>
+                  {!!card.back && (
+                    <div className="mt-8">
+                      <div className="pb-2">Back of card:</div>
+                      <div className=" p-4 rounded border-2">{card.back}</div>
+                    </div>
+                  )}
                 </Card>
               </li>
             ))}

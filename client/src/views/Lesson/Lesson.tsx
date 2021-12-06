@@ -38,9 +38,9 @@ const Lesson = () => {
   ) : (
     <div>
       <h1>Course: {title}</h1>
-      <div className="mt-4">
+      <div className="mt-4 pb-8">
         <h4 className="pb-2">Lesson Overview</h4>
-        <p>{description}</p>
+        <h2>{description}</h2>
       </div>
       <CardPlayer {...{ cards, mode: 'LESSON', lessonId }} />
     </div>

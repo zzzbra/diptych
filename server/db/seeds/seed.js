@@ -114,7 +114,7 @@ exports.seed = async function (knex) {
     {
       card_id: 5,
       is_question_card: true,
-      front: 'What what kind of output does a hash function produce?',
+      front: 'What kind of output does a hash function produce?',
       back: 'Given input of variable length, a hash function produces output of fixed length.',
       prev_card_id: 4,
     },

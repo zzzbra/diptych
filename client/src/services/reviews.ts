@@ -64,6 +64,7 @@ const reviewsApi = baseApi.injectEndpoints({
         method: 'post',
         data,
       }),
+      invalidatesTags: [REVIEW_TAG_TYPE],
     }),
     updateReview: build.mutation<Review, UpdateReviewArgs>({
       query: ({ reviewId, rating }: UpdateReviewArgs) => ({

@@ -43,10 +43,9 @@ const StudentsClasses = () => {
         {enrolledCourses.map((course) => (
           <li
             key={course.courseId}
-            className="p-2 mb-2 border-2 flex justify-between"
+            className="p-4 mb-2 border-2 flex justify-between"
           >
-            <span>{course.description}</span>
-            <Link to={`/courses/${course.courseId}`}>View course</Link>
+            <Link to={`/courses/${course.courseId}`}>{course.description}</Link>
           </li>
         ))}
       </ul>

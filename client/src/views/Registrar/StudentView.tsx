@@ -11,6 +11,7 @@ import {
   useGetStudentsEnrollmentsQuery,
 } from 'services/enrollments';
 import ErrorMessage from 'components/ErrorMessage';
+import Link from 'components/Link';
 
 const Classroom = () => {
   const { user } = useAuth();
@@ -55,6 +56,10 @@ const Classroom = () => {
   return (
     <div>
       <div>
+        {/* create "breadcrumb style link" */}
+        <div className="pb-2">
+          <Link to="/dashboard">&lt; Go Back</Link>
+        </div>
         <h1 className="pb-6">Your Classes</h1>
         <ul>
           {yourCourses.map((course, key) => (
@@ -65,7 +70,9 @@ const Classroom = () => {
               )}
               key={course.courseId}
             >
-              <span>{course.description}</span>
+              <Link to={`/courses/${course.courseId}`}>
+                {course.description}
+              </Link>
               <Button onClick={() => withdraw({ courseId: course.courseId })}>
                 Drop
               </Button>

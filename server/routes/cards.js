@@ -8,18 +8,13 @@ const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
 // create a card
 router.post('', authorization, async (req, res) => {
   try {
-    const {
-      front,
-      back,
-      lesson_id,
-      is_question_card = false,
-    } = snakeCaseKeys(req.body);
+    const { front, back, lesson_id } = snakeCaseKeys(req.body);
     const [newCard] = await db('cards').insert(
       {
         front,
         back,
         lesson_id,
-        is_question_card,
+        is_question_card: !!back,
       },
       ['*'],
     );

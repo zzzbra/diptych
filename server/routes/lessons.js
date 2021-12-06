@@ -27,10 +27,11 @@ router.post('', authorization, async (req, res) => {
 // get all lessons (or all lessons in a course)
 router.get('', authorization, async (req, res) => {
   const { course_id = '' } = snakeCaseKeys(req.query);
+  console.log({ course_id });
   try {
     const allLessons = !!course_id
-      ? await db('lessons')
-      : await 'lessons'.where({ course_id });
+      ? await db('lessons').where({ course_id })
+      : await db('lessons');
     res.json(allLessons.map((lesson) => camelCaseKeys(lesson)));
   } catch (error) {
     console.error(error.message);

@@ -212,13 +212,13 @@ const CardPlayer = ({
           </Button>
         </div>
       );
-    } else if (isPendingBackReveal) {
+    } else if (!isHidden && isPendingBackReveal) {
       return (
         <Button color="purple" onClick={handleClick}>
           Show Answer
         </Button>
       );
-    } else if (isLastCard) {
+    } else if (!isHidden && isLastCard) {
       return (
         <Button color="purple" onClick={handleClick}>
           Return to course overview
@@ -241,6 +241,24 @@ const CardPlayer = ({
 
   return (
     <div>
+      {mode === 'REVIEW' && (
+        <div className="pb-8 w-8/12">
+          <p>Get ready to test your memory!</p>
+          <p>
+            We will review some information that you've seen in past lessons.
+            You'll be given a prompt which should help you recall a specific
+            fact. When you have recalled that fact, or you think you have, or
+            else are sure you will not be able to remember what the actual
+            answer is, then you can click to reveal the answer. Then, rate your
+            recall based on what the actual answer is, versus what you guessed
+            before it was shown.
+          </p>
+          <p>
+            Remember to give it your best effort, and don't click the 'Show
+            Answer' button too hastily!
+          </p>
+        </div>
+      )}
       {cards.map((card) => {
         const { cardId, front, back, isHidden, isPendingBackReveal } = card;
 

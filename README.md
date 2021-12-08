@@ -1,4 +1,6 @@
-# MOOC-SRS
+# Diptych
+
+## An online educational platform where teachers can create courses, and students can learn at their own pace.
 
 ## Problem Statement
 

@@ -8,7 +8,7 @@ const AllClasses = () => {
   const trClasses = '';
   return (
     <>
-      <h2>All Courses at MOOC-SRS</h2>
+      <h2>All Courses at Diptych</h2>
       <table>
         <thead>
           <tr className={trClasses}>

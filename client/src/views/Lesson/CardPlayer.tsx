@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { isPending, PayloadAction } from '@reduxjs/toolkit';
-import { useHistory, useParams } from 'react-router';
+import { useHistory } from 'react-router';
 import shuffle from 'lodash/shuffle';
 
-import { LessonOverviewArgs } from 'models';
 import { mapSort, deepClone } from 'utils/linkedList';
 import Card from 'components/Card';
 import Button from 'components/Button';
 import {
   useAddNewReviewsMutation,
   useUpdateReviewsMutation,
-  AddReviewsArgs,
 } from 'services/reviews';
 import { Card as CardType } from 'models';
 import {

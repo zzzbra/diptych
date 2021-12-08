@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply text-gray-700;
+  }
+
   h1 {
     @apply text-4xl pb-8;
   }

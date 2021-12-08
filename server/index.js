@@ -13,7 +13,7 @@ const enrollments = require('./routes/enrollments');
 const cards = require('./routes/cards');
 const reviews = require('./routes/reviews');
 
-const PORT = process.env.SERVER_PORT;
+const port = process.env.PORT;
 
 // Middleware
 app.use(cors());
@@ -32,6 +32,6 @@ app.use('/api/v1/cards', cards);
 app.use('/api/v1/reviews', reviews);
 
 // Lift off
-app.listen(PORT, () => {
-  console.info(`Server listening on port ${PORT}`);
+app.listen(port, () => {
+  console.info(`Server listening on port ${port}`);
 });

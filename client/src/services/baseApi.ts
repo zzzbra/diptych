@@ -6,11 +6,12 @@ import { AxiosArgs, MyAxiosResponse, MyAxiosErrorResponse } from 'models';
 import tagTypes from '../tagTypes';
 import { getToken } from '../features/auth/utils';
 
-const protocol = process.env.SERVER_PROTOCOL || 'http';
-const host = process.env.SERVER_HOST || 'localhost';
-const port = process.env.SERVER_PORT || '5000';
+const domain =
+  process.env.NODE_ENV === 'production'
+    ? 'https://diptych.herokuapp.com'
+    : 'http://localhost:5000';
 
-export const baseUrl = `${protocol}://${host}:${port}/api/`;
+export const baseUrl = `${domain}/api/`;
 
 interface AxiosBaseQueryArgs {
   baseUrl: string;

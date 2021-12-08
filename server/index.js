@@ -31,6 +31,8 @@ app.use('/api/v1/enrollments', enrollments);
 app.use('/api/v1/cards', cards);
 app.use('/api/v1/reviews', reviews);
 
+app.use('/api/v1/ping', (req, res) => Promise.resolve().then(res.json('pong')));
+
 // Lift off
 app.listen(port, () => {
   console.info(`Server listening on port ${port}`);

@@ -16,7 +16,7 @@
   }
 
   p {
-    @apply text-lg pb-4;
+    @apply text-lg pb-4 lg:w-8/12;
   }
 
   section {

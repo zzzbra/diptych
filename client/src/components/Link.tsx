@@ -12,7 +12,7 @@ const Link = ({ children, to, className, ...rest }: LinkProps) => {
   return (
     <ReactRouterLink
       className={classNames(
-        'underline text-blue-600 hover:text-blue-800 visited:text-purple-600 pr-2',
+        'underline text-blue-600 hover:text-blue-800 visited:text-purple-600',
         {
           [className ?? '']: !!className,
         },

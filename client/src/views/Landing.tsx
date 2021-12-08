@@ -17,12 +17,13 @@ const Landing = () => {
         </p>
 
         <p>
-          In the same, Diptych intends to serve as a platform for teachers to
+          In the same way those wax tablets captured lecture notes and helped
+          students study, Diptych intends to serve as a platform for teachers to
           design course and lecture materials and for students to practice
           independent self-study of that material.
         </p>
       </section>
-      <Link to="/signup">Get Started</Link>
+      Click <Link to="/signup">here</Link> to get started.
     </div>
   );
 };

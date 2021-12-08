@@ -6,6 +6,7 @@ import { useGetLessonsInCourseQuery } from 'services/lessons';
 import Link from 'components/Link';
 import Spinner from 'components/Spinner';
 import ErrorMessage from 'components/ErrorMessage';
+import { useGetCourseQuery } from 'services/courses';
 
 interface CourseOverviewProps {
   courseId: string;
@@ -13,6 +14,12 @@ interface CourseOverviewProps {
 
 const CourseOverview = (props: any) => {
   const { courseId } = useParams<CourseOverviewProps>();
+  const {
+    data: course,
+    isError: isCourseError,
+    isFetching: isCourseFetching,
+    isLoading: isCourseLoading,
+  } = useGetCourseQuery({ courseId });
   const {
     data: lessons = [],
     error,
@@ -23,11 +30,13 @@ const CourseOverview = (props: any) => {
 
   if (isError) return <ErrorMessage {...{ error }} />;
 
-  return isLoading || isFetching ? (
+  return isLoading || isFetching || isCourseLoading || isCourseFetching ? (
     <Spinner />
   ) : (
     <div>
-      <h1 className="pb-4">Course Title</h1>
+      <h1 className="pb-4">
+        {isCourseError ? 'Course Title' : course?.description}
+      </h1>
       <h2 className="pb-4">Lessons</h2>
       <ul>
         {lessons.map((lesson, key) => (

@@ -47,7 +47,6 @@ router.get('/:course_id', authorization, async (req, res) => {
     const { course_id } = req.params;
     const [course] = await db('courses').where({
       course_id,
-      user_id: req.user,
     });
 
     res.json(camelCaseKeys(course));

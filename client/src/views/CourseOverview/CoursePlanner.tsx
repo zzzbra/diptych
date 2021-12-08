@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 
+import { useGetCourseQuery } from 'services/courses';
 import {
   defaultAddNewLessonArgs,
   useAddNewLessonMutation,
@@ -92,6 +93,13 @@ const CoursePlanner = (props: any) => {
   const [editingLesson, setEditingLesson] = useState('');
   const { courseId } = useParams<CourseOverviewProps>();
   const {
+    data: course,
+    isError: isCourseError,
+    isFetching: isCourseFetching,
+    isLoading: isCourseLoading,
+  } = useGetCourseQuery({ courseId });
+
+  const {
     data: lessons = [],
     error,
     isError,
@@ -104,11 +112,13 @@ const CoursePlanner = (props: any) => {
 
   if (isError) return <ErrorMessage {...{ error }} />;
 
-  return isLoading || isFetching ? (
+  return isLoading || isFetching || isCourseLoading || isCourseFetching ? (
     <div>Loading</div>
   ) : (
     <div>
-      <h1 className="pb-4">Course Title</h1>
+      <h1 className="pb-4">
+        {isCourseError ? 'Course Title' : course?.description}
+      </h1>
       <LessonForm
         {...{ courseId, apiAction: addNewLesson, mutateButtonText: 'Add' }}
       />

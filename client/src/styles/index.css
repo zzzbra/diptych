@@ -16,7 +16,11 @@
   }
 
   p {
-    @apply text-lg pb-2;
+    @apply text-lg pb-4;
+  }
+
+  section {
+    @apply py-4;
   }
 
   html, body, #root {

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { UnauthOnlyRoute, PrivateRoute } from 'views/PrivateRoute';
 import TeacherDashboard from 'views/Dashboard/TeacherDashboard';
 import StudentDashboard from 'views/Dashboard/StudentDashboard';
+import Landing from 'views/Landing';
 import Login from 'views/Login';
 import Signup from 'views/Signup';
 import TeacherRegistrar from 'views/Registrar/TeacherView';
@@ -31,9 +32,7 @@ function App() {
       <PageContentWrapper>
         <Switch>
           <Route exact path="/">
-            <h2>Welcome!</h2>
-            <h1>This is MOOC-SRS</h1>
-            <p>Get ready to learn better than ever.</p>
+            <Landing />
           </Route>
 
           <UnauthOnlyRoute exact path="/login">

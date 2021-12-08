@@ -7,7 +7,7 @@ import Link from 'components/Link';
 const Dashboard = (props: any) => {
   return (
     <div className="py-8">
-      <h1 className="pb-4">Welcome to MOOC-SRS</h1>
+      <h1 className="pb-4">Welcome to Diptych</h1>
 
       <StudentsClasses />
       <StudentReviewOverview />

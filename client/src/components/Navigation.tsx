@@ -18,7 +18,7 @@ const Navigation = () => {
       <div className="container flex justify-between">
         <Link to="/dashboard" className="flex items-center">
           <AcademicCapIcon className="w-10" />
-          <span className="ml-2">MOOC-SRS</span>
+          <span className="ml-2">Diptych</span>
         </Link>
         {isAuthenticated ? (
           <span>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { AcademicCapIcon } from '@heroicons/react/outline';
+import { BookOpenIcon } from '@heroicons/react/solid';
 import { Link, useHistory } from 'react-router-dom';
 
 import Button from 'components/Button';
@@ -17,8 +17,8 @@ const Navigation = () => {
     <nav className="py-5 border-b-2">
       <div className="container flex justify-between">
         <Link to="/dashboard" className="flex items-center">
-          <AcademicCapIcon className="w-10" />
-          <span className="ml-2">Diptych</span>
+          <BookOpenIcon className="w-10 mt-1" />
+          <span className="ml-1 text-2xl">Diptych</span>
         </Link>
         {isAuthenticated ? (
           <span>

@@ -19,7 +19,7 @@ router.post('/enroll', authorization, async (req, res) => {
 
     res.json(camelCaseKeys(newEnrollment));
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.json(error.message);
   }
 });
@@ -33,7 +33,7 @@ router.delete('/withdraw/:courseId', authorization, async (req, res) => {
 
     res.json(enrollments.map((enrollment) => enrollment.course_id));
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.json(error.message);
   }
 });
@@ -46,7 +46,7 @@ router.get('', authorization, async (req, res) => {
       : await db('enrollments').select();
     res.json(enrollments.map((enrollment) => camelCaseKeys(enrollment)));
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.json(error.message);
   }
 });

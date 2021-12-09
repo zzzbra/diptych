@@ -102,7 +102,6 @@ const CardPlayer = ({
       isLastCard &&
       mode !== 'REVIEW'
     ) {
-      console.log('new reviews: ', reviews);
       addNewReviews(reviews);
       push('/dashboard');
     } else if (isHidden) {

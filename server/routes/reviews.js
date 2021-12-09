@@ -11,7 +11,6 @@ const DUMB_SRS_INTERVALS = [0, 1, 3, 8, 21];
 // create a review
 router.post('', authorization, async (req, res) => {
   try {
-    console.log('req.body: ', req.body);
     const reviews = req.body.map((review) => ({
       ...snakeCaseKeys(review),
       student_id: req.user,
@@ -63,7 +62,6 @@ router.put('/:review_id', authorization, async (req, res) => {
     const { review_id } = req.params;
     const { rating } = snakeCaseKeys(req.body);
 
-    console.log('days: ', DUMB_SRS_INTERVALS[rating]);
     const [newReview] = await db('reviews')
       .where({ review_id })
       .update(
@@ -79,23 +77,6 @@ router.put('/:review_id', authorization, async (req, res) => {
     res.status(500).json(error.message);
   }
 });
-
-// update multiple reviews - possible not RESTful
-// router.put('', authorization, async (req, res) => {
-//   try {
-//     console.log('req.body: ', req.body);
-//     const reviews = req.body.map((review) => ({
-//       ...snakeCaseKeys(review),
-//       student_id: req.user,
-//     }));
-
-//     // const updatedReviews = await db('reviews').insert(reviews, ['*']);
-//     // res.json(camelCaseKeys(updatedReviews));
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json(error.message);
-//   }
-// });
 
 // delete a review
 router.delete('/:review_id', authorization, async (req, res) => {

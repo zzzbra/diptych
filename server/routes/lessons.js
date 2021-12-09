@@ -27,7 +27,6 @@ router.post('', authorization, async (req, res) => {
 // get all lessons (or all lessons in a course)
 router.get('', authorization, async (req, res) => {
   const { course_id = '' } = snakeCaseKeys(req.query);
-  console.log({ course_id });
   try {
     const allLessons = !!course_id
       ? await db('lessons').where({ course_id })

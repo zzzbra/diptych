@@ -33,7 +33,6 @@ interface TableInterface {
 }
 
 const Table = ({ thead = {}, data, structure }: TableInterface) => {
-  console.log({ thead }, { data });
   return (
     <table className="table-auto">
       {thead !== undefined && (

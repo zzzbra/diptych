@@ -21,7 +21,6 @@ const StudySession = () => {
   } = useGetReviewsQuery();
 
   const dueReviews = getDueCards(studentReviews);
-
   const dueCardIds = dueReviews.map(({ cardId }) => cardId);
 
   const {

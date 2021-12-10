@@ -14,6 +14,7 @@ import Syllabus from 'views/CourseOverview/Syllabus';
 import LessonPlanner from 'views/Lesson/LessonPlanner';
 import Lesson from 'views/Lesson/Lesson';
 import StudySession from 'views/StudySession';
+import ReviewsOverview from 'views/ReviewsOverview';
 
 import PageContentWrapper from 'components/PageContentWrapper';
 import Spinner from 'components/Spinner';
@@ -59,9 +60,12 @@ function App() {
             {user?.userIsTeacher ? <LessonPlanner /> : <Lesson />}
           </PrivateRoute>
 
-          {/* TODO: StudySession */}
           <PrivateRoute exact path="/study-session">
             <StudySession />
+          </PrivateRoute>
+
+          <PrivateRoute exact path="/my-brain">
+            <ReviewsOverview />
           </PrivateRoute>
 
           <Route path="*" component={() => <h1>Uh Oh! Page not found!!</h1>} />

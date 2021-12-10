@@ -6,7 +6,7 @@ const authorization = require('../middleware/auth');
 
 const { snakeCaseKeys, camelCaseKeys } = require('../utils/formatting');
 
-const DUMB_SRS_INTERVALS = [0, 1, 3, 8, 21];
+const DUMB_SRS_INTERVALS = [0, 1, 3, 8, 21, 52];
 
 // create a review
 router.post('', authorization, async (req, res) => {

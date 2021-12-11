@@ -1,4 +1,7 @@
 const { encryptPassword } = require('../../utils/crypto');
+const node_crypto_intro = require('../scripts/node_crypto/intro');
+const node_crypto_lesson01 = require('../scripts/node_crypto/lesson01.js');
+const node_crypto_lesson02 = require('../scripts/node_crypto/lesson02.js');
 
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
@@ -48,6 +51,11 @@ exports.seed = async function (knex) {
     .select('course_id')
     .where({ description: CRYPTO_CLASS_DESC });
 
+  const INTRO = {
+    title: 'Introduction',
+    description: 'All about this course.',
+  };
+
   const LESSON_1 = {
     title: 'Hash',
     description: 'Learn what a hash is',
@@ -58,12 +66,13 @@ exports.seed = async function (knex) {
     description: 'Learn what Salts are',
   };
 
-  const LESSON_3 = {
-    title: 'HMAC',
-    description: 'Learn what HMAC is',
-  };
+  // const LESSON_3 = {
+  //   title: 'HMAC',
+  //   description: 'Learn what HMAC is',
+  // };
 
-  const CRYPTO_LESSONS = [LESSON_1, LESSON_2, LESSON_3];
+  // const CRYPTO_LESSONS = [LESSON_1, LESSON_2, LESSON_3];
+  const CRYPTO_LESSONS = [INTRO, LESSON_1, LESSON_2];
 
   await knex('lessons').insert(
     CRYPTO_LESSONS.map((lesson) => ({ ...lesson, course_id: cryptoCourseId })),
@@ -83,56 +92,26 @@ exports.seed = async function (knex) {
   ]);
 
   // create cards
-  const [{ lesson_id: lessonOneId }] = await knex('lessons').where({
+  const lessons = await knex('lessons').where({
     course_id: cryptoCourseId,
   });
 
-  const LESSON_ONE_CARDS = [
-    {
-      card_id: 1,
-      front:
-        'What is a Hash? The etyomology of the word hash has culinary roots, meaning to "chop & mix".',
-    },
-    {
-      card_id: 2,
-      prev_card_id: 1,
-      front:
-        'This is still fairly accurate. You take an input of a variable length, and then pass it off to a hashing algorithm, and it returns a fixed length value of what looks like meaningless garbage.',
-    },
-    {
-      card_id: 3,
-      prev_card_id: 2,
-      front:
-        'The important things to keep in mind is that a hashing function, given the same input, will always produce the same output. It needs to be fast to run a hashing function, and **infeasible** to reverse-engineer what the original message was.',
-    },
-    {
-      card_id: 4,
-      prev_card_id: 3,
-      front:
-        'This is useful because it allows developers to store data without having to know what that data is. A common example is storing passwords in a database. ',
-    },
-    {
-      card_id: 5,
-      is_question_card: true,
-      front: 'What kind of output does a hash function produce?',
-      back: 'Given input of variable length, a hash function produces output of fixed length.',
-      prev_card_id: 4,
-    },
-    {
-      card_id: 6,
-      is_question_card: true,
-      front: 'Would you like to smell my finger?',
-      back: 'No thank you.',
-      prev_card_id: 5,
-    },
-  ];
+  const intro_lesson = node_crypto_intro.map((uniqFields) => ({
+    ...uniqFields,
+    lesson_id: lessons[0].lesson_id,
+  }));
 
-  await knex('cards').insert(
-    LESSON_ONE_CARDS.map((uniqFields) => ({
-      ...uniqFields,
-      lesson_id: lessonOneId,
-    })),
-  );
+  const lesson01 = node_crypto_lesson01.map((uniqFields) => ({
+    ...uniqFields,
+    lesson_id: lessons[1].lesson_id,
+  }));
+
+  const lesson02 = node_crypto_lesson02.map((uniqFields) => ({
+    ...uniqFields,
+    lesson_id: lessons[2].lesson_id,
+  }));
+
+  await knex('cards').insert([...intro_lesson, ...lesson01, ...lesson02]);
 
   await knex.raw("SELECT setval('cards_card_id_seq', max(card_id)) from cards");
 };

@@ -12,7 +12,7 @@ exports.up = async function (knex) {
     t.integer('course_id');
     t.foreign('course_id').references('course_id').inTable('courses');
     t.string('title', 255).notNullable();
-    t.string('description', 255).notNullable();
+    t.text('description').notNullable();
     t.timestamps(true, true);
   });
 
@@ -32,8 +32,8 @@ exports.up = async function (knex) {
     t.integer('lesson_id');
     t.foreign('lesson_id').references('lesson_id').inTable('lessons');
     t.boolean('is_question_card').defaultTo(false);
-    t.string('front').notNullable();
-    t.string('back');
+    t.text('front').notNullable();
+    t.text('back');
     t.timestamps(true, true);
   });
 

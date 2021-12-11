@@ -66,7 +66,7 @@ const CardPlayer = ({
     }),
   );
 
-  const { currentCardIndex, cards = [], reviews } = studySession;
+  const { currentCardIndex = 0, cards = [], reviews } = studySession;
   const lessonLength = cards.length;
 
   const handleClick = ({ recalled = false }) => {
@@ -78,7 +78,7 @@ const CardPlayer = ({
       isPendingBackReveal,
       isPendingRating,
       isHidden,
-    } = cardsUpdated[currentCardIndex];
+    } = cardsUpdated[currentCardIndex] || {};
 
     if (
       !isHidden &&
@@ -103,6 +103,8 @@ const CardPlayer = ({
       mode !== 'REVIEW'
     ) {
       addNewReviews(reviews);
+      push('/dashboard');
+    } else if (cards.length === 0) {
       push('/dashboard');
     } else if (isHidden) {
       // NOT_STARTED
@@ -192,7 +194,7 @@ const CardPlayer = ({
   // Order matters here
   const renderControls = () => {
     const { isPendingBackReveal, isPendingRating, isHidden, isLastCard } =
-      cards[currentCardIndex];
+      cards[currentCardIndex] || {};
     if (isPendingRating && !isPendingBackReveal) {
       return (
         <div>
@@ -214,7 +216,7 @@ const CardPlayer = ({
           Show Answer
         </Button>
       );
-    } else if (!isHidden && isLastCard) {
+    } else if ((!isHidden && isLastCard) || cards.length === 0) {
       return (
         <Button color="purple" onClick={handleClick}>
           Return to course overview
@@ -238,7 +240,7 @@ const CardPlayer = ({
   return (
     <div>
       {mode === 'REVIEW' && (
-        <div className="pb-8 w-8/12">
+        <div className="pb-8">
           <p>Get ready to test your memory!</p>
           <p>
             We will review some information that you've seen in past lessons.
@@ -268,7 +270,9 @@ const CardPlayer = ({
         ) : null;
       })}
       {currentCardIndex >= lessonLength && mode === 'LESSON' ? (
-        <div>Congratulations, you've finished this lesson!</div>
+        <div className="pb-8">
+          Congratulations, you've finished this lesson!
+        </div>
       ) : null}
       {renderControls()}
     </div>

@@ -3,19 +3,6 @@ const node_crypto_intro = require('../scripts/node_crypto/intro');
 const node_crypto_lesson01 = require('../scripts/node_crypto/lesson01.js');
 const node_crypto_lesson02 = require('../scripts/node_crypto/lesson02.js');
 
-// const joinLessons = (firstLesson, secondLesson) => {
-//   const lastCardOfFirstLesson = firstLesson[firstLesson.length - 1];
-//   const [firstCardOfSecondLesson] = secondLesson;
-
-//   if (firstCardOfSecondLesson) {
-//     firstCardOfSecondLesson.prev_card_id = lastCardOfFirstLesson.card_id;
-//   }
-
-//   const wholeLesson = [...firstLesson, ...secondLesson];
-
-//   return wholeLesson;
-// };
-
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
   await knex('users').del();
